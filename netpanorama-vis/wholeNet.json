@@ -1,0 +1,130 @@
+{
+    "data": [
+        {
+      "name": "data",
+      "localStorage": "20_Sept.csv",
+      "format": {"type": "csv"}
+    }
+    ],
+
+    "networks": [
+        {
+            "name": "network",
+            "parts": [
+                {
+                    "data": "data",
+
+                    "yieldsNodes": [
+                        {
+                            "id_field": "AI strain",
+                            "type": "Strain",
+                            "data": []
+                        },
+                        {
+                            "id_field": "Epic Code ",
+                            "type": "Paper",
+                            "data": []
+                        },
+                        {
+                            "id_field": "First Author",
+                            "type": "Person",
+                            "data": []
+                        }
+                    ],
+
+                    "yieldsLinks": [
+                        {
+                            "source_id": {"field": "AI strain"}, // the field we created
+                            "source_node_type": "Strain",
+                            "source_id_field": "id",
+
+                            "target_id": {"field": "Epidemic wave"}, // the field we created
+                            "target_node_type": "Wave",
+                            "target_id_field": "id",
+
+                            "data": []
+                        },
+                        {
+                            "source_id": {"field": "Epic Code "}, // the field we created
+                            "source_node_type": "Paper",
+                            "target_id": {"field": "First Author"}, // the field we created
+                            "target_node_type": "Person",
+                            "data": []
+                        },
+                        {
+                            "source_id": {"field": "Epic Code "}, // the field we created
+                            "source_node_type": "Paper",
+                            "target_id": {"field": "Second Author "}, // the field we created
+                            "target_node_type": "Person",
+                            "data": []
+                        },
+                        {
+                            "source_id": {"field": "Epic Code "}, // the field we created
+                            "source_node_type": "Paper",
+                            "target_id": {"field": "Third Author "}, // the field we created
+                            "target_node_type": "Person",
+                            "data": []
+                        },
+                    ]
+                }
+            ],
+            "transform": [
+                {"type": "metric", "metric": "degree"}
+            ]
+        }
+    ],
+
+  "layouts": [
+    {
+      "name": "layout",
+      "network": "network",
+      "type": "webcola",
+      "avoidOverlap": true
+    },
+
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "d3-force"
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "radius",
+      "type": "linear",
+      "range": [100, 500],
+      "domain": { "data": "network.nodes", "field": "degree" }
+    },
+    {
+        "name": "color",
+        "type": "ordinal",
+        "range": ["lightblue", "lightgreen", "red", "purple"],
+        // "scheme": "category20",
+        "domain": ["Person", "Paper", "Strain", "Wave"]
+    }
+  ],
+
+  "vis": [
+    {
+      "entries": "network.links",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "linkpath",
+        "start": "source",
+        "end": "target",
+       "stroke": "gray"
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "circle",
+        "area": { "field": "degree", "scale": "radius" },
+        "fill": { "field": "_type", "scale": "color" }
+        "tooltip": { "expression": "datum.id + ' (degree ' + datum.degree + ')'" }
+      }
+    }
+  ]
+}
