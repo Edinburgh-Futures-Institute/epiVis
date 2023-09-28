@@ -65,6 +65,27 @@
                             "target_node_type": "Person",
                             "data": []
                         },
+                        {
+                            "source_id": {"field": "First Author"}, // the field we created
+                            "source_node_type": "Person",
+                            "target_id": {"field": "Affiliation of 1st author"}, // the field we created
+                            "target_node_type": "Institution",
+                            "data": []
+                        },
+                        {
+                            "source_id": {"field": "Second Author "}, // the field we created
+                            "source_node_type": "Person",
+                            "target_id": {"field": "Affiliation of 2nd author"}, // the field we created
+                            "target_node_type": "Institution",
+                            "data": []
+                        },
+                        {
+                            "source_id": {"field": "Third Author "}, // the field we created
+                            "source_node_type": "Person",
+                            "target_id": {"field": "Affiliation of 3rd author"}, // the field we created
+                            "target_node_type": "Institution",
+                            "data": []
+                        },
                     ]
                 }
             ],
@@ -99,10 +120,28 @@
     {
         "name": "color",
         "type": "ordinal",
-        "range": ["lightblue", "lightgreen", "red", "purple"],
+        "range": ["lightblue", "lightgreen", "red", "purple", "orange"],
         // "scheme": "category20",
-        "domain": ["Person", "Paper", "Strain", "Wave"]
-    }
+        "domain": ["Person", "Paper", "Strain", "Wave", "Institution"]
+    },
+     {
+      "name": "shapeScale",
+      "type": "ordinal",
+      "range": [
+        "circle",
+        "square",
+        "diamond",
+        "triangle",
+        "cross"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
+    },
   ],
 
   "vis": [
@@ -119,11 +158,29 @@
     {
       "entries": "network.nodes",
       "layout": "forcelayout",
+    //   "mark": {
+    //     "type": "circle",
+    //     "area": { "field": "degree", "scale": "radius" },
+    //     "fill": { "field": "_type", "scale": "color" }
+    //     "tooltip": { "expression": "datum.id + ' (degree ' + datum.degree + ')'" }
+    //   },
       "mark": {
-        "type": "circle",
-        "area": { "field": "degree", "scale": "radius" },
-        "fill": { "field": "_type", "scale": "color" }
-        "tooltip": { "expression": "datum.id + ' (degree ' + datum.degree + ')'" }
+        "type": "symbol",
+        "shape": {
+          "field": "_type",
+          "scale": "shapeScale"
+        },
+        "size": {
+          "field": "degree",
+          "scale": "radius"
+        },
+        "fill": {
+          "field": "_type",
+          "scale": "color"
+        },
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        }
       }
     }
   ]

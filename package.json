@@ -10,6 +10,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
+    "@originjs/vite-plugin-commonjs": "^1.0.3",
     "@sveltejs/vite-plugin-svelte": "^2.4.2",
     "@tsconfig/svelte": "^5.0.0",
     "@types/d3": "^7.4.0",
@@ -20,6 +21,7 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "d3": "^7.8.5"
+    "d3": "^7.8.5",
+    "netpanorama-template-viewer": "^0.1.3"
   }
 }

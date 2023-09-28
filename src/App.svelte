@@ -1,11 +1,22 @@
 <script lang="ts">
   import Map from "./lib/Map.svelte";
+  // import * as test from "netpanorama-template-viewer"
+  // import {NetPanoramaTemplateViewer} from "../node_modules/netpanorama-template-viewer/dist/bundle.js"
+  // let NetPanoramaTemplateViewer = require("../node_modules/netpanorama-template-viewer/dist/bundle.js")
+
+  // console.log(NetPanoramaTemplateViewer)
+  // NetPanoramaTemplateViewer.render("../templates/template.json", {
+  //       fileUrl: "../templates/example.pajek",
+  //       nodeColor: "\"red\""
+  //     }, "vis1");
 </script>
 
 <main>
-  Hello
+  <div id="vis1">
+  </div>
   <Map>
   </Map>
+
 </main>
 
 <style>
