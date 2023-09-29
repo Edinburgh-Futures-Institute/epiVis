@@ -2,11 +2,12 @@
     "data": [
         {
       "name": "data",
-      "localStorage": "NLPBIO-authorPub.csv",
-      "format": {"type": "csv"}
+      "url": "./data/[filename]",
+      "format": {
+        "type": "csv"
+      }
     }
     ],
-
     "networks": [
         {
             "name": "network",
@@ -55,7 +56,6 @@
         "name": "color",
         "type": "ordinal",
         "range": ["lightblue", "lightgreen"],
-        // "scheme": "category20",
         "domain": ["Person", "Paper"]
     }
   ],

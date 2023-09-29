@@ -15,7 +15,8 @@
     // TODO: check import, prob use a store
     async function importData() {
         map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
-        data = await d3.csv("src/assets/20_Sept.csv")
+        // data = await d3.csv("src/assets/20_Sept.csv")
+        data = await d3.csv("data/20_Sept.csv")
     }
 
     function processData() {

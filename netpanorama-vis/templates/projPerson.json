@@ -1,0 +1,182 @@
+{
+  "data": [
+    {
+      "name": "data",
+      "url": "./data/[filename]",
+      "format": {
+        "type": "csv"
+      }
+    }
+  ],
+  "networks": [
+    {
+      "name": "network",
+      "parts": [
+        {
+          "data": "data",
+          "yieldsNodes": [
+            {
+              "id_field": "Epic Code ",
+              "type": "Paper",
+              "data": []
+            },
+            {
+              "id_field": "First Author",
+              "type": "Person",
+              "data": []
+            },
+            {
+              "id_field": "Second Author ",
+              "type": "Person",
+              "data": []
+            },
+            {
+              "id_field": "Third Author ",
+              "type": "Person",
+              "data": []
+            }
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Epic Code "
+              },
+              "source_node_type": "Paper",
+              "target_id": {
+                "field": "First Author"
+              },
+              "target_node_type": "Person",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Epic Code "
+              },
+              "source_node_type": "Paper",
+              "target_id": {
+                "field": "Second Author "
+              },
+              "target_node_type": "Person",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Epic Code "
+              },
+              "source_node_type": "Paper",
+              "target_id": {
+                "field": "Third Author "
+              },
+              "target_node_type": "Person",
+              "data": []
+            }
+          ]
+        }
+      ],
+      "transform": [
+        {
+          "type": "project",
+          "fieldName": "_type",
+          "remainingNodeType": "Person",
+          "removedNodeType": "Paper",
+          "directed": false
+        },
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "d3-force"
+    }
+  ],
+  "scales": [
+    {
+      "name": "radius",
+      "type": "linear",
+      "range": [
+        90,
+        250
+      ],
+      "domain": {
+        "data": "network.nodes",
+        "field": "degree"
+      }
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
+    },
+    {
+      "name": "shapeScale",
+      "type": "ordinal",
+      "range": [
+        "circle",
+        "square",
+        "diamond",
+        "triangle",
+        "cross"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
+    }
+  ],
+  "vis": [
+    {
+      "entries": "network.links",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "linkpath",
+        "start": "source",
+        "end": "target",
+       "stroke": "gray"
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "symbol",
+        "shape": {
+          "field": "_type",
+          "scale": "shapeScale"
+        },
+        "size": {
+          "field": "degree",
+          "scale": "radius"
+        },
+        "fill": {
+          "field": "_type",
+          "scale": "color"
+        },
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        }
+      }
+    }
+  ]
+}
