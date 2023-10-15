@@ -74,6 +74,9 @@
         }
       ],
       "transform": [
+        {"type": "filterNodes", "expression": "datum.id !== '' "},
+              {"type": "filterNodes", "expression": "datum.id !== ' ' "},
+              {"type": "filterNodes", "expression": "datum.id !== 'not specified' "},
         {
           "type": "project",
           "fieldName": "_type",

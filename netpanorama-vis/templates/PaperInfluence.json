@@ -42,6 +42,9 @@
         }
       ],
       "transform": [
+        {"type": "filterNodes", "expression": "datum.id !== '' "},
+              {"type": "filterNodes", "expression": "datum.id !== ' ' "},
+              {"type": "filterNodes", "expression": "datum.id !== 'not specified' "},
         {
           "type": "metric",
           "metric": "degree"
