@@ -17,9 +17,6 @@
     } from "./dataLoader.ts"
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
-    import {
-        windows
-    } from "../../../../anaconda3/lib/python3.9/site-packages/nbclassic/static/components/codemirror/src/util/browser.js";
     import {rank} from "d3";
 
     // Column names

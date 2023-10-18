@@ -1,7 +1,4 @@
 import * as d3 from "d3"
-import {
-    all
-} from "../../../../anaconda3/lib/python3.9/site-packages/panel/dist/bundled/js/@microsoft/fast-components@1.21.8/dist/fast-components.js";
 
 // export let data = await d3.csv(`./src/assets/20_Sept.csv`, d => {
 
