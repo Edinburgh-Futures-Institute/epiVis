@@ -54,8 +54,8 @@ export let [yearMin, yearMax] = d3.extent(allYears);
 
 
 // Influence Network
-export let influenceLinks = [];
-export let influenceNodes = [];
+let influenceLinks = [];
+let influenceNodes = [];
 for (let d of data) {
     if (nullOrNS(d["Publication Year "]) || nullOrNS(d["Epic Code "])) continue;
 
@@ -100,3 +100,5 @@ function extractNumbersFromString(inputString: string): number[] {
 }
 
 export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
+
+export {influenceNodes, influenceLinks}

@@ -95,18 +95,7 @@
       "layout": "forcelayout",
       "mark": {
         "type": "symbol",
-        "shape": {
-          "field": "_type",
-          "scale": "shapeScale"
-        },
-        "size": {
-          "field": "degree",
-          "scale": "radius"
-        },
-        "fill": {
-          "field": "_type",
-          "scale": "color"
-        },
+        "shape": "circle",
         "tooltip": {
           "expression": "datum.id + ' (degree ' + datum.degree + ')' "
         }

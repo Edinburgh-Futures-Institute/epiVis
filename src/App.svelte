@@ -17,7 +17,6 @@
     } from "./dataLoader.ts"
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
-    import {rank} from "d3";
 
     // Column names
     let modelCN = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic, 4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Statistical 6.Qualitative 7. Phylogenetic "
@@ -83,14 +82,6 @@
         return filtered
     }
 
-
-    // strain.subscribe(value => {
-    //     currentStrain = value;
-    // })
-    // import * as test from "netpanorama-template-viewer"
-    // import {NetPanoramaTemplateViewer} from "../node_modules/netpanorama-template-viewer/dist/bundle.js"
-    // let NetPanoramaTemplateViewer = require("../node_modules/netpanorama-template-viewer/dist/bundle.js")
-
     function dotGraph() {
         let dot = "digraph { rankdir=LR;"
 
@@ -145,8 +136,6 @@
 
         // dot += "\n"
 
-
-
         influenceLinks.forEach(link => {
             const dotLink = `"${link.source}" -> "${link.target}";`
             dot += dotLink
@@ -173,18 +162,25 @@
             filename: papersFilename,
         }, "vis2");
 
+        window.viewer = projPerson
+        console.log(22, projPerson)
+
+
         NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluence.json", {
             filename: papersFilename,
         }, "vis3");
 
-        // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
-        //     nodes: influenceNodes,
-        //     links: influenceLinks,
-        // }, "vis4");
+        // console.log(influenceNodes, influenceLinks)
+        let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
+        let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
+        NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
+            nodes: `${influenceNodes2}`,
+            links: `${influenceLinks2}`,
+        }, "vis4");
 
-        d3.select("#vis4")
-            .graphviz()
-            .renderDot(dotGraph());
+        // d3.select("#vis4")
+        //     .graphviz()
+        //     .renderDot(dotGraph());
 
         // d3.select("#vis4")
         //     .graphviz()
