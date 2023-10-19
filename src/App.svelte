@@ -17,6 +17,7 @@
     } from "./dataLoader.ts"
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
+    import NetworkVis from "./lib/NetworkVis.svelte";
 
     // Column names
     let modelCN = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic, 4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Statistical 6.Qualitative 7. Phylogenetic "
@@ -52,7 +53,6 @@
     function filterData(currentStrain, currentInstitution, currentModel, currentYearMin, currentYearMax) {
         let filtered: any[] = data
 
-        console.log(222, currentInstitution, currentStrain)
         if (currentInstitution) {
             filtered = filtered.filter(d => d["Affiliation of 1st author"] == currentInstitution);
         }
@@ -79,8 +79,6 @@
                 return true;
             });
         }
-
-        console.log(100)
 
         return filtered
     }
@@ -165,21 +163,20 @@
             filename: papersFilename,
         }, "vis2");
 
-        window.viewer = projPerson
-        console.log(22, projPerson)
-
+        // window.viewer = projPerson
+        // console.log(22, projPerson)
 
         NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluence.json", {
             filename: papersFilename,
         }, "vis3");
 
         // console.log(influenceNodes, influenceLinks)
-        let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
-        let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
-        NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
-            nodes: `${influenceNodes2}`,
-            links: `${influenceLinks2}`,
-        }, "vis4");
+        // let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
+        // let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
+        // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
+        //     nodes: `${influenceNodes2}`,
+        //     links: `${influenceLinks2}`,
+        // }, "vis4");
 
         // d3.select("#vis4")
         //     .graphviz()
@@ -208,9 +205,12 @@
         <div id="vis-div">
             <Map {filteredData}>
             </Map>
-            <Table {filteredData}>
-            </Table>
+            <NetworkVis specPath="../netpanorama-vis/templates/wholeNet.json">
+            </NetworkVis>
         </div>
+
+        <Table {filteredData}>
+        </Table>
 
         <div class="vis-container">
             <div id="vis1" class="vis-component">
@@ -235,8 +235,6 @@
 </main>
 
 <style>
-
-
     main {
         display: flex;
         flex-direction: column;
@@ -255,13 +253,13 @@
     /*    !*width: 100vw;*!*/
     /*}*/
 
-    /*#vis-div {*/
-    /*    display: flex;*/
-    /*    flex-direction: row;*/
-    /*    !*margin: 0;*!*/
-    /*    width: 100vw;*/
-
-    /*}*/
+    #vis-div {
+        display: flex;
+        flex-direction: row;
+        /*flex-grow: 1;*/
+        /*margin: 0;*/
+        /*width: 100vw;*/
+    }
 
 
     /*vis-container {*/

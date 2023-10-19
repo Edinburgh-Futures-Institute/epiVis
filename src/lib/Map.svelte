@@ -6,16 +6,26 @@
 
     export let filteredData;
 
-    const width: number = 1200;
-    const height: number = 800;
-    let strain;
+    // const width: number = 1200;
+    // const height: number = 800;
+
+    let width: number = 900;
+    let height: number = 600;
+
     let groupByCountry = {};
-    let svg;
+
+    let element;
+
+    function updateDimensions() {
+        const rect = element.getBoundingClientRect();
+        width = rect.width;
+        height = rect.height;
+    }
 
 
     // let projection = d3.geoNaturalEarth1()
     let projection = d3.geoMercator()
-        .scale(180) // When merged with timeline
+        .scale(80) // When merged with timeline
         .translate([width / 2, height / 1.4]) // CENTER
 
     let colorScale = d3.scaleLinear([0, 10], ["white", "blue"])
@@ -31,8 +41,6 @@
     // }
 
     onMount(() => {
-        svg = d3.select("#svg")
-
         setLegend();
 
         d3.select("#svg")
@@ -45,7 +53,6 @@
             .attr("stroke", "black")
             .attr("fill", d => {
                 let country = d.properties.SOVEREIGNT.toLowerCase();
-                console.log(country)
 
                 let papers = groupByCountry[country]
                 let size = papers ? papers.length : 0;
@@ -53,7 +60,6 @@
                 return colorScale(size)
             })
             .attr("stroke-width", 1);
-
     });
 
 
@@ -110,7 +116,6 @@
             .selectAll("path")
             .attr("fill", d => {
                 let country = d.properties.SOVEREIGNT.toLowerCase();
-                console.log(country)
 
                 let papers = groupByCountry[country]
                 let size = papers ? papers.length : 0;
@@ -290,9 +295,10 @@
 
 </script>
 
-
-<div id="legend">
+<div bind:this={element} on:resize={updateDimensions}>
+    <div id="legend"></div>
+    <svg id="svg" width={width} height={height}>
+        <g></g>
+    </svg>
 </div>
-<svg id="svg" width={width} height={height}>
-    <g></g>
-</svg>
+
