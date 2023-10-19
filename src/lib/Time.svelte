@@ -50,12 +50,15 @@
 
 </script>
 
-<!--<div></div>-->
 <div id="slider">
 </div>
 
 <style>
     #slider {
-        width: 20%
+        /*width: 20%;*/
+        /*flex: 30%;*/
+        /*margin-top: 25px;*/
+        margin-top: 5px;
+        width: 200px;
     }
 </style>

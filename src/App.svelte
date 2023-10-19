@@ -193,17 +193,19 @@
 </script>
 
 <main>
-    <Dropdown name="Strains" bind:value={currentStrain} allValues={allStrains}>
-    </Dropdown>
-    <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}>
-    </Dropdown>
-    <Dropdown name="Model Types" bind:value={currentModel} allValues={allModels}>
-    </Dropdown>
-    <Time {filteredData} {yearMin} {yearMax} bind:currentYearMin={currentYearMin} bind:currentYearMax={currentYearMax}>
-    </Time>
+
+    <div id="control">
+        <Dropdown name="Strains" bind:value={currentStrain} allValues={allStrains}>
+        </Dropdown>
+        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}>
+        </Dropdown>
+        <Dropdown name="Model Types" bind:value={currentModel} allValues={allModels}>
+        </Dropdown>
+        <Time {filteredData} {yearMin} {yearMax} bind:currentYearMin={currentYearMin} bind:currentYearMax={currentYearMax}>
+        </Time>
+    </div>
 
     <div id="main-div">
-
         <div id="vis-div">
             <Map {filteredData}>
             </Map>
@@ -245,6 +247,12 @@
         /*width: 100vw;*/
         align-items: center;
         justify-content: center;
+    }
+
+    #control {
+        display: flex;
+        flex-direction: row;
+        width: 70%;
     }
 
 
