@@ -1,7 +1,7 @@
 <script lang="ts">
     import * as d3 from "d3";
 
-    import {map} from "../dataLoader"
+    import {map} from "../dataLoader.ts"
     import {onMount} from "svelte";
 
     export let filteredData;
@@ -11,6 +11,7 @@
     let strain;
     let groupByCountry = {};
     let svg;
+
 
     // let projection = d3.geoNaturalEarth1()
     let projection = d3.geoMercator()
@@ -33,12 +34,31 @@
         svg = d3.select("#svg")
 
         setLegend();
+
+        d3.select("#svg")
+            .select("g")
+            // .attr("cursor", "pointer")
+            .selectAll("path")
+            .data(map.features)
+            .join("path")
+            .attr("d", d3.geoPath().projection(projection))
+            .attr("stroke", "black")
+            .attr("fill", d => {
+                let country = d.properties.SOVEREIGNT.toLowerCase();
+                console.log(country)
+
+                let papers = groupByCountry[country]
+                let size = papers ? papers.length : 0;
+
+                return colorScale(size)
+            })
+            .attr("stroke-width", 1);
+
     });
 
 
     function processData() {
         groupByCountry = {};
-        let strains = filteredData.map(d => d["AI strain"])
 
         for (let d of filteredData) {
             let strain = d["AI strain"];
@@ -60,21 +80,37 @@
     }
 
     function render() {
+        // return;
         // svg = d3.select("#svg")
 
         // console.log(123, groupByCountry)
         // const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
 
-        const nations = d3.select("#svg")
+        // d3.select("#svg")
+        //     .select("g")
+        //     // .attr("cursor", "pointer")
+        //     .selectAll("path")
+        //     .data(map.features)
+        //     .join("path")
+        //     .attr("d", d3.geoPath().projection(projection))
+        //     .attr("stroke", "black")
+        //     .attr("fill", d => {
+        //         let country = d.properties.SOVEREIGNT.toLowerCase();
+        //         console.log(country)
+        //
+        //         let papers = groupByCountry[country]
+        //         let size = papers ? papers.length : 0;
+        //
+        //         return colorScale(size)
+        //     })
+        //     .attr("stroke-width", 1);
+
+        d3.select("#svg")
             .select("g")
-            // .attr("cursor", "pointer")
             .selectAll("path")
-            .data(map.features)
-            .join("path")
-            .attr("d", d3.geoPath().projection(projection))
-            .attr("stroke", "black")
             .attr("fill", d => {
                 let country = d.properties.SOVEREIGNT.toLowerCase();
+                console.log(country)
 
                 let papers = groupByCountry[country]
                 let size = papers ? papers.length : 0;
@@ -82,11 +118,6 @@
                 return colorScale(size)
             })
             .attr("stroke-width", 1);
-
-        let leg = Legend(colorScale, {
-            title: "Number of papers",
-            tickSize: 0
-        })
     }
 
     function setLegend() {
@@ -94,8 +125,6 @@
             title: "Number of papers",
             tickSize: 0
         })
-
-        console.log("ll ", leg)
 
         let l = document.querySelector("#legend")
         if (l) {

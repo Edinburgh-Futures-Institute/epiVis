@@ -3,6 +3,7 @@
     // import { someData } from './data'
 
     export let filteredData;
+    console.log("ddd", filteredData)
 
     let handler, rows
     $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
@@ -32,8 +33,6 @@
                 <td>{row["Third Author "]}</td>
                 <td>{row["AI strain"]}</td>
                 <td>{row["Epidemic wave"]}</td>
-
-
             </tr>
         {/each}
         </tbody>

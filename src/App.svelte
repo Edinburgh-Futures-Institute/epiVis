@@ -51,6 +51,8 @@
 
     function filterData(currentStrain, currentInstitution, currentModel, currentYearMin, currentYearMax) {
         let filtered: any[] = data
+
+        console.log(222, currentInstitution, currentStrain)
         if (currentInstitution) {
             filtered = filtered.filter(d => d["Affiliation of 1st author"] == currentInstitution);
         }
@@ -78,6 +80,7 @@
             });
         }
 
+        console.log(100)
 
         return filtered
     }
