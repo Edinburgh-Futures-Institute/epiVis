@@ -1,5 +1,6 @@
 <script lang="ts">
     import {DataHandler} from '@vincjo/datatables'
+    import {MODEL, PURPOSE, SPREAD, STAGE} from "../dataLoader.ts";
     // import { someData } from './data'
 
     export let filteredData;
@@ -17,10 +18,15 @@
             <th>Title</th>
             <th>Year</th>
             <th>First Author</th>
-            <th>Second Author</th>
-            <th>Third Author</th>
+<!--            <th>Second Author</th>-->
+<!--            <th>Third Author</th>-->
             <th>AI strain</th>
             <th>Epidemic wave</th>
+            <th>Model type</th>
+            <th>Purpose</th>
+            <th>Spread across</th>
+            <th>Stage</th>
+            <th>Hosts</th>
         </tr>
         </thead>
         <tbody>
@@ -29,10 +35,13 @@
                 <td>{row["Title "]}</td>
                 <td>{row["Publication Year "]}</td>
                 <td>{row["First Author"]}
-                <td>{row["Second Author "]}</td>
-                <td>{row["Third Author "]}</td>
                 <td>{row["AI strain"]}</td>
                 <td>{row["Epidemic wave"]}</td>
+                <td>{row[MODEL]}</td>
+                <td>{row[PURPOSE]}</td>
+                <td>{row[SPREAD]}</td>
+                <td>{row[STAGE]}</td>
+                <td>{row["Hosts "]}</td>
             </tr>
         {/each}
         </tbody>

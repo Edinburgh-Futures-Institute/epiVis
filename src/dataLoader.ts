@@ -10,6 +10,12 @@ export let papersFilename = "papers6Oct2.csv";
 export let affiliationsFilename = "affiliations6Oct.csv";
 export let authorsPapaersFilename = "authors6Oct.csv";
 
+// COLUMN NAMES
+export let MODEL = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic, 4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Statistical 6.Qualitative 7. Phylogenetic "
+export let PURPOSE = "Purpose (of models) (Task performed): 1. Predict when or where the next outbreak occur; 2. Risk distribution (=which risk factors + how much they contribute); 3.Assess surveillance and interventions; 4. Genetic variance & dominance; 5.Plus scoioeconomic analysis. 6. Estimate epidemiological parameteres in compartmental models"
+export let SPREAD = "Spread across:  1. Between-farm spread; 2. Within-farm spread; 3. Wildlife-livestock interface; 4. Cross-wildlife species spread; 5. Cross-livestock species spread; 6. Animal-human interface"
+export let STAGE = "Stage of outbreak: 1.Preparedness/retrospective analysis; 2. Incursion 3. Exposure; 4.Recovery "
+
 
 // export let data = await d3.csv(`./data/20_Sept.csv`, d => {
 export let data = await d3.csv(`./data/${papersFilename}`, d => {
