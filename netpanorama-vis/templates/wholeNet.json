@@ -123,6 +123,17 @@
               },
               "target_node_type": "Paper",
               "data": []
+            },
+            {
+              "source_id": {
+                "field": "Region of study "
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "Epidemic wave"
+              },
+              "target_node_type": "Wave",
+              "data": []
             }
           ]
         }
@@ -181,14 +192,16 @@
         "lightgreen",
         "red",
         "purple",
-        "orange"
+        "orange",
+        "brown"
       ],
       "domain": [
         "Person",
         "Paper",
         "Strain",
         "Wave",
-        "Institution"
+        "Institution",
+        "Country"
       ]
     },
     {
@@ -199,14 +212,16 @@
         "square",
         "diamond",
         "triangle",
-        "cross"
+        "cross",
+        "triangle-down"
       ],
       "domain": [
         "Person",
         "Paper",
         "Strain",
         "Wave",
-        "Institution"
+        "Institution",
+        "Country"
       ]
     }
   ],
