@@ -6,30 +6,24 @@
 
     export let filteredData;
 
-    // const width: number = 1200;
-    // const height: number = 800;
+    // let width: number = 900;
+    // let height: number = 600;
 
-    let width: number = 900;
+    let width: number;
     let height: number = 600;
 
-    let groupByCountry = {};
-
     let element;
+    let projection;
+    let colorScale;
+
+    let groupByCountry = {};
 
     function updateDimensions() {
         const rect = element.getBoundingClientRect();
         width = rect.width;
         height = rect.height;
+        console.log("WWW ", width, rect)
     }
-
-
-    // let projection = d3.geoNaturalEarth1()
-    let projection = d3.geoMercator()
-        .scale(80) // When merged with timeline
-        .translate([width / 2, height / 1.4]) // CENTER
-
-    let colorScale = d3.scaleLinear([0, 10], ["white", "blue"])
-    // let colorScale = d3.scaleSequential([0, 10], d3.interpolateBlues)
 
     // $: legendSvg =  computeLegend(colorScale);
     // let legendSvg =  computeLegend(colorScale);
@@ -41,6 +35,16 @@
     // }
 
     onMount(() => {
+        console.log("map mount", element)
+        updateDimensions();
+
+        projection = d3.geoMercator()
+        .scale(140) // When merged with timeline
+        .translate([width / 2, height / 1.5]) // CENTER
+
+        colorScale = d3.scaleLinear([0, 10], ["white", "blue"])
+        // let colorScale = d3.scaleSequential([0, 10], d3.interpolateBlues)
+
         setLegend();
 
         d3.select("#svg")
@@ -301,4 +305,12 @@
         <g></g>
     </svg>
 </div>
+
+
+<style>
+    div {
+        /*flex-grow: 1;*/
+        flex: 1;
+    }
+</style>
 

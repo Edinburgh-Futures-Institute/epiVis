@@ -5,13 +5,13 @@
     // export let data;
     export let specPath;
 
-    let element
+    let element;
     let width: number;
-    let height: number;
-
+    let height: number = 600;
 
     onMount(() => {
         updateDimensions();
+        render(width, height)
     })
 
     function updateDimensions() {
@@ -25,11 +25,12 @@
         console.log(222222, width, height)
         NetPanoramaTemplateViewer.render(specPath, {
             filename: papersFilename,
+            width: width,
+            height: height
         }, "vis");
     }
 
-    $: render(width, height)
-
+    // $: render(width, height)
 </script>
 
 <div id="vis" bind:this={element} on:resize={updateDimensions}>
@@ -37,9 +38,7 @@
 
 <style>
     div {
-        flex-grow: 1;
-        /*width: 100%;*/
-        /*display: flex;*/
-        /*flex-flow: column;*/
+        /*flex-grow: 1;*/
+        flex: 1;
     }
 </style>

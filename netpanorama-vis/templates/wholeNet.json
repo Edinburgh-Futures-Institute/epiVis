@@ -1,112 +1,152 @@
 {
-    "data": [
-        {
+  "width": "[width]",
+  "height": "[height]",
+  "data": [
+    {
       "name": "data",
       "url": "./data/[filename]",
       "format": {
         "type": "csv"
       }
     }
-    ],
-
-    "networks": [
+  ],
+  "networks": [
+    {
+      "name": "network",
+      "parts": [
         {
-            "name": "network",
-            "parts": [
-                {
-                    "data": "data",
-
-                    "yieldsNodes": [
-                        {
-                            "id_field": "AI strain",
-                            "type": "Strain",
-                            "data": []
-                        },
-                        {
-                            "id_field": "Epic Code ",
-                            "type": "Paper",
-                            "data": []
-                        },
-                        {
-                            "id_field": "First Author",
-                            "type": "Person",
-                            "data": []
-                        }
-                    ],
-
-                    "yieldsLinks": [
-                        {
-                            "source_id": {"field": "AI strain"},
-                            "source_node_type": "Strain",
-                            "source_id_field": "id",
-
-                            "target_id": {"field": "Epidemic wave"},
-                            "target_node_type": "Wave",
-                            "target_id_field": "id",
-
-                            "data": []
-                        },
-                        {
-                            "source_id": {"field": "Epic Code "},
-                            "source_node_type": "Paper",
-                            "target_id": {"field": "First Author"},
-                            "target_node_type": "Person",
-                            "data": []
-                        },
-                        {
-                            "source_id": {"field": "Epic Code "},
-                            "source_node_type": "Paper",
-                            "target_id": {"field": "Second Author "},
-                            "target_node_type": "Person",
-                            "data": []
-                        },
-                        {
-                            "source_id": {"field": "Epic Code "},
-                            "source_node_type": "Paper",
-                            "target_id": {"field": "Third Author "},
-                            "target_node_type": "Person",
-                            "data": []
-                        },
-                        {
-                            "source_id": {"field": "First Author"},
-                            "source_node_type": "Person",
-                            "target_id": {"field": "Affiliation of 1st author"},
-                            "target_node_type": "Institution",
-                            "data": []
-                        },
-                        {
-                            "source_id": {"field": "Second Author "},
-                            "source_node_type": "Person",
-                            "target_id": {"field": "Affiliation of 2nd author"},
-                            "target_node_type": "Institution",
-                            "data": []
-                        },
-                        {
-                            "source_id": {"field": "Third Author "},
-                            "source_node_type": "Person",
-                            "target_id": {"field": "Affiliation of 3rd author"},
-                            "target_node_type": "Institution",
-                            "data": []
-                        },
-                      {
-                            "source_id": {"field": "AI strain"},
-                            "source_node_type": "Strain",
-                            "target_id": {"field": "Epic Code "},
-                            "target_node_type": "Paper",
-                            "data": []
-                        }
-                    ]
-                }
-            ],
-            "transform": [
-              {"type": "filterNodes", "expression": "datum.id !== '' "},
-              {"type": "filterNodes", "expression": "datum.id !== ' ' "},
-              {"type": "filterNodes", "expression": "datum.id !== 'not specified' "},
-                {"type": "metric", "metric": "degree"}
-            ]
+          "data": "data",
+          "yieldsNodes": [
+            {
+              "id_field": "AI strain",
+              "type": "Strain",
+              "data": []
+            },
+            {
+              "id_field": "Epic Code ",
+              "type": "Paper",
+              "data": []
+            },
+            {
+              "id_field": "First Author",
+              "type": "Person",
+              "data": []
+            }
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "AI strain"
+              },
+              "source_node_type": "Strain",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Epidemic wave"
+              },
+              "target_node_type": "Wave",
+              "target_id_field": "id",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Epic Code "
+              },
+              "source_node_type": "Paper",
+              "target_id": {
+                "field": "First Author"
+              },
+              "target_node_type": "Person",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Epic Code "
+              },
+              "source_node_type": "Paper",
+              "target_id": {
+                "field": "Second Author "
+              },
+              "target_node_type": "Person",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Epic Code "
+              },
+              "source_node_type": "Paper",
+              "target_id": {
+                "field": "Third Author "
+              },
+              "target_node_type": "Person",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "First Author"
+              },
+              "source_node_type": "Person",
+              "target_id": {
+                "field": "Affiliation of 1st author"
+              },
+              "target_node_type": "Institution",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Second Author "
+              },
+              "source_node_type": "Person",
+              "target_id": {
+                "field": "Affiliation of 2nd author"
+              },
+              "target_node_type": "Institution",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Third Author "
+              },
+              "source_node_type": "Person",
+              "target_id": {
+                "field": "Affiliation of 3rd author"
+              },
+              "target_node_type": "Institution",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "AI strain"
+              },
+              "source_node_type": "Strain",
+              "target_id": {
+                "field": "Epic Code "
+              },
+              "target_node_type": "Paper",
+              "data": []
+            }
+          ]
         }
-    ],
-
+      ],
+      "transform": [
+        {
+          "type": "filterNodes",
+          "expression": "datum.id !== '' "
+        },
+        {
+          "type": "filterNodes",
+          "expression": "datum.id !== ' ' "
+        },
+        {
+          "type": "filterNodes",
+          "expression": "datum.id !== 'not specified' "
+        },
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    }
+  ],
   "layouts": [
     {
       "name": "layout",
@@ -114,28 +154,44 @@
       "type": "webcola",
       "avoidOverlap": true
     },
-
     {
       "name": "forcelayout",
       "network": "network",
       "type": "d3-force"
     }
   ],
-
   "scales": [
     {
       "name": "radius",
       "type": "linear",
-      "range": [90, 250],
-      "domain": { "data": "network.nodes", "field": "degree" }
+      "range": [
+        90,
+        250
+      ],
+      "domain": {
+        "data": "network.nodes",
+        "field": "degree"
+      }
     },
     {
-        "name": "color",
-        "type": "ordinal",
-        "range": ["lightblue", "lightgreen", "red", "purple", "orange"],
-        "domain": ["Person", "Paper", "Strain", "Wave", "Institution"]
+      "name": "color",
+      "type": "ordinal",
+      "range": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
     },
-     {
+    {
       "name": "shapeScale",
       "type": "ordinal",
       "range": [
@@ -154,7 +210,6 @@
       ]
     }
   ],
-
   "vis": [
     {
       "entries": "network.links",
@@ -163,7 +218,7 @@
         "type": "linkpath",
         "start": "source",
         "end": "target",
-       "stroke": "gray"
+        "stroke": "gray"
       }
     },
     {
