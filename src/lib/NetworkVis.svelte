@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {papersFilename} from "../dataLoader.ts";
+    import {authorsPapaersFilename, papersFilename} from "../dataLoader.ts";
     import {onMount} from "svelte";
 
     // export let data;
@@ -25,6 +25,7 @@
         console.log(222222, width, height)
         NetPanoramaTemplateViewer.render(specPath, {
             filename: papersFilename,
+            authorsFilename: authorsPapaersFilename,
             width: width,
             height: height
         }, "vis");

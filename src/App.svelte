@@ -18,6 +18,7 @@
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
     import NetworkVis from "./lib/NetworkVis.svelte";
+    import Timevis from "./lib/Timevis.svelte";
 
     // Column names
     let modelCN = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic, 4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Statistical 6.Qualitative 7. Phylogenetic "
@@ -215,6 +216,9 @@
 
         <Table {filteredData}>
         </Table>
+
+        <Timevis>
+        </Timevis>
 
         <div class="vis-container">
             <div id="vis1" class="vis-component">

@@ -8,6 +8,13 @@
       "format": {
         "type": "csv"
       }
+    },
+    {
+      "name": "authors",
+      "url": "./data/[authorsFilename]",
+      "format": {
+        "type": "csv"
+      }
     }
   ],
   "networks": [
@@ -133,6 +140,39 @@
                 "field": "Epidemic wave"
               },
               "target_node_type": "Wave",
+              "data": []
+            }
+          ]
+        },
+        {
+          "data": "authors",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Paper associated "
+              },
+              "source_node_type": "Paper",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Author"
+              },
+              "target_node_type": "Person",
+              "target_id_field": "id",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Afilliation name 1"
+              },
+              "source_node_type": "Institution",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Author"
+              },
+              "target_node_type": "Person",
+              "target_id_field": "id",
               "data": []
             }
           ]
