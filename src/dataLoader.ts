@@ -25,6 +25,17 @@ export let data = await d3.csv(`./data/${papersFilename}`, d => {
 })
 
 
+export let affIdToName = {};
+export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d => {
+    affIdToName[d["Affiliation code"]] = d["Afilliation name -"]
+
+    // d["AI strain"] = trim(d["AI strain"])
+    return d
+})
+
+// console.log(2, affiliationsTable)
+
+
 // let timeCol = "Period of study (in format for visualisations; yellow= if 2020 forward data inlcuded)"
 let timeCol = "Period of study (in format for visualisations)"
 
@@ -57,6 +68,8 @@ for (let d of data) {
 }
 allYears = [... new Set(allYears)].sort()
 export let [yearMin, yearMax] = d3.extent(allYears);
+
+
 
 
 

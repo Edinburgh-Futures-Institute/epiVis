@@ -13,7 +13,7 @@
         allYears,
         yearMin,
         yearMax,
-        paperToTimes, influenceNodes, influenceLinks
+        paperToTimes, influenceNodes, influenceLinks, affIdToName
     } from "./dataLoader.ts"
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
@@ -26,6 +26,9 @@
 
     let allIstitutions = data.reduce((d0, d) => d0.concat(d["Affiliation of 1st author"].split(",").concat(d["Affiliation of 2nd author"].split(",")).concat(d["Affiliation of 3rd author"].split(",")).concat(d["Affiliation of Forth th author"].split(",").concat(d["Affiliation of Fifth th author"].split(",")))), [])
     allIstitutions = [...new Set(allIstitutions)]
+
+    console.log(222, allIstitutions)
+
     // let allStrains = [...new Set(data.map(d => d["AI strain"]))];
     let allStrains = [...new Set(data.map(d => d["AI strain"]).filter(d => !nullOrNS(d)))];
     let allModels = [...new Set(data.map(d => d [modelCN]))];
@@ -156,11 +159,11 @@
     }
 
     async function render() {
-        return;
+        // return;
 
-        await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/wholeNet.json", {
-            filename: papersFilename,
-        }, "vis1");
+        // await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/wholeNet.json", {
+        //     filename: papersFilename,
+        // }, "vis1");
 
         let projPerson = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
             filename: papersFilename,
@@ -181,9 +184,9 @@
         //     links: `${influenceLinks2}`,
         // }, "vis4");
 
-        // d3.select("#vis4")
-        //     .graphviz()
-        //     .renderDot(dotGraph());
+        d3.select("#vis4")
+            .graphviz()
+            .renderDot(dotGraph());
 
         // d3.select("#vis4")
         //     .graphviz()
@@ -196,11 +199,12 @@
 <main>
 
     <div id="control">
-        <Dropdown name="Strains" bind:value={currentStrain} allValues={allStrains}>
+        <Dropdown name="Strains" bind:value={currentStrain} allValues={allStrains} table={undefined}>
         </Dropdown>
-        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}>
+        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}, table={affIdToName}>
+<!--        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}>-->
         </Dropdown>
-        <Dropdown name="Model Types" bind:value={currentModel} allValues={allModels}>
+        <Dropdown name="Model Types" bind:value={currentModel} allValues={allModels} table={undefined}>
         </Dropdown>
         <Time {filteredData} {yearMin} {yearMax} bind:currentYearMin={currentYearMin} bind:currentYearMax={currentYearMax}>
         </Time>
@@ -287,6 +291,4 @@
         /*width: 40vw;*/
         height: 100vh;
     }
-
-
 </style>
