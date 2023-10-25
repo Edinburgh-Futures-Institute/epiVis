@@ -33,8 +33,6 @@ export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d 
     return d
 })
 
-// console.log(2, affiliationsTable)
-
 
 // let timeCol = "Period of study (in format for visualisations; yellow= if 2020 forward data inlcuded)"
 let timeCol = "Period of study (in format for visualisations)"

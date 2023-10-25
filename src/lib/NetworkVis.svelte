@@ -22,7 +22,6 @@
     }
 
     function render(width, height) {
-        console.log(222222, width, height)
         if (width) {
             NetPanoramaTemplateViewer.render(specPath, {
                 filename: papersFilename,
