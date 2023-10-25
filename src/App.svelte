@@ -159,8 +159,6 @@
     }
 
     async function render() {
-        // return;
-
         // await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/wholeNet.json", {
         //     filename: papersFilename,
         // }, "vis1");

@@ -18,7 +18,6 @@
 
     onMount(() => {
         let slider = document.getElementById('slider');
-        let slid = d3.select('div');
         noUiSlider.create(slider, {
             start: [yearMin, yearMax],
             connect: true,

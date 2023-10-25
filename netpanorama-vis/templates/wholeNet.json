@@ -33,11 +33,6 @@
               "id_field": "Epic Code ",
               "type": "Paper",
               "data": []
-            },
-            {
-              "id_field": "First Author",
-              "type": "Person",
-              "data": []
             }
           ],
           "yieldsLinks": [
@@ -48,76 +43,10 @@
               "source_node_type": "Strain",
               "source_id_field": "id",
               "target_id": {
-                "field": "Epidemic wave"
+                "field": "Epidemic waves"
               },
               "target_node_type": "Wave",
               "target_id_field": "id",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "Epic Code "
-              },
-              "source_node_type": "Paper",
-              "target_id": {
-                "field": "First Author"
-              },
-              "target_node_type": "Person",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "Epic Code "
-              },
-              "source_node_type": "Paper",
-              "target_id": {
-                "field": "Second Author "
-              },
-              "target_node_type": "Person",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "Epic Code "
-              },
-              "source_node_type": "Paper",
-              "target_id": {
-                "field": "Third Author "
-              },
-              "target_node_type": "Person",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "First Author"
-              },
-              "source_node_type": "Person",
-              "target_id": {
-                "field": "Affiliation of 1st author"
-              },
-              "target_node_type": "Institution",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "Second Author "
-              },
-              "source_node_type": "Person",
-              "target_id": {
-                "field": "Affiliation of 2nd author"
-              },
-              "target_node_type": "Institution",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "Third Author "
-              },
-              "source_node_type": "Person",
-              "target_id": {
-                "field": "Affiliation of 3rd author"
-              },
-              "target_node_type": "Institution",
               "data": []
             },
             {
@@ -137,7 +66,7 @@
               },
               "source_node_type": "Country",
               "target_id": {
-                "field": "Epidemic wave"
+                "field": "Epidemic waves"
               },
               "target_node_type": "Wave",
               "data": []
