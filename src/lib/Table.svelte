@@ -51,7 +51,7 @@
     div {
         /*display: flex;*/
         /*flex-flow: column;*/
-        width: 100%;
+        width: 100vw;
     }
 
     thead {
@@ -73,6 +73,6 @@
 
     table {
         border-collapse: separate;
-        border-spacing: 0;
+        border-spacing: 10;
     }
 </style>

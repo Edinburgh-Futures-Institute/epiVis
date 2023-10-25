@@ -6,15 +6,12 @@
 
     export let filteredData;
 
-    // let width: number = 900;
-    // let height: number = 600;
-
     let width: number;
     let height: number = 600;
 
     let element;
     let projection;
-    let colorScale;
+    let colorScale = d3.scaleLinear([0, 10], ["white", "blue"]);
 
     let groupByCountry = {};
 
@@ -22,7 +19,6 @@
         const rect = element.getBoundingClientRect();
         width = rect.width;
         height = rect.height;
-        console.log("WWW ", width, rect)
     }
 
     // $: legendSvg =  computeLegend(colorScale);
@@ -35,14 +31,13 @@
     // }
 
     onMount(() => {
-        console.log("map mount", element)
         updateDimensions();
 
         projection = d3.geoMercator()
         .scale(140) // When merged with timeline
         .translate([width / 2, height / 1.5]) // CENTER
 
-        colorScale = d3.scaleLinear([0, 10], ["white", "blue"])
+        // colorScale = d3.scaleLinear([0, 10], ["white", "blue"])
         // let colorScale = d3.scaleSequential([0, 10], d3.interpolateBlues)
 
         setLegend();
@@ -82,7 +77,9 @@
         }
     }
 
+
     $: run(filteredData);
+
 
     function run(filteredData) {
         processData();
@@ -310,7 +307,13 @@
 <style>
     div {
         /*flex-grow: 1;*/
-        flex: 1;
+        /*flex: 1;*/
+        flex: 1 1 0;
+        width: 0;
+    }
+
+    #legend {
+        width:200px;
     }
 </style>
 

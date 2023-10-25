@@ -6,6 +6,13 @@
       "format": {
         "type": "csv"
       }
+    },
+    {
+      "name": "authors",
+      "url": "./data/[authorsFilename]",
+      "format": {
+        "type": "csv"
+      }
     }
   ],
   "networks": [
@@ -19,55 +26,40 @@
               "id_field": "Epic Code ",
               "type": "Paper",
               "data": []
-            },
-            {
-              "id_field": "First Author",
-              "type": "Person",
-              "data": []
-            },
-            {
-              "id_field": "Second Author ",
-              "type": "Person",
-              "data": []
-            },
-            {
-              "id_field": "Third Author ",
-              "type": "Person",
-              "data": []
             }
+          ],
+          "yieldsLinks": [
+          ]
+        },
+        {
+          "data": "authors",
+          "yieldsNodes": [
           ],
           "yieldsLinks": [
             {
               "source_id": {
-                "field": "Epic Code "
+                "field": "Paper associated "
               },
               "source_node_type": "Paper",
+              "source_id_field": "id",
               "target_id": {
-                "field": "First Author"
+                "field": "Author"
               },
               "target_node_type": "Person",
+              "target_id_field": "id",
               "data": []
             },
             {
               "source_id": {
-                "field": "Epic Code "
+                "field": "Afilliation name 1"
               },
-              "source_node_type": "Paper",
+              "source_node_type": "Institution",
+              "source_id_field": "id",
               "target_id": {
-                "field": "Second Author "
+                "field": "Author"
               },
               "target_node_type": "Person",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "Epic Code "
-              },
-              "source_node_type": "Paper",
-              "target_id": {
-                "field": "Third Author "
-              },
-              "target_node_type": "Person",
+              "target_id_field": "id",
               "data": []
             }
           ]

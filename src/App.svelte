@@ -13,7 +13,7 @@
         allYears,
         yearMin,
         yearMax,
-        paperToTimes, influenceNodes, influenceLinks, affIdToName
+        paperToTimes, influenceNodes, influenceLinks, affIdToName, authorsPapaersFilename
     } from "./dataLoader.ts"
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
@@ -167,10 +167,8 @@
 
         let projPerson = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
             filename: papersFilename,
+            authorsFilename: authorsPapaersFilename,
         }, "vis2");
-
-        // window.viewer = projPerson
-        // console.log(22, projPerson)
 
         NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluence.json", {
             filename: papersFilename,
