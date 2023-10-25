@@ -184,9 +184,9 @@
         //     links: `${influenceLinks2}`,
         // }, "vis4");
 
-        d3.select("#vis4")
-            .graphviz()
-            .renderDot(dotGraph());
+        // d3.select("#vis4")
+        //     .graphviz()
+        //     .renderDot(dotGraph());
 
         // d3.select("#vis4")
         //     .graphviz()
@@ -255,6 +255,7 @@
         /*width: 100vw;*/
         align-items: center;
         justify-content: center;
+        margin: 0;
     }
 
     #control {

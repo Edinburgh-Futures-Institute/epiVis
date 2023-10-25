@@ -11,7 +11,7 @@
 
     onMount(() => {
         updateDimensions();
-        render(width, height)
+        // render(width, height)
     })
 
     function updateDimensions() {
@@ -23,15 +23,17 @@
 
     function render(width, height) {
         console.log(222222, width, height)
-        NetPanoramaTemplateViewer.render(specPath, {
-            filename: papersFilename,
-            authorsFilename: authorsPapaersFilename,
-            width: width,
-            height: height
-        }, "vis");
+        if (width) {
+            NetPanoramaTemplateViewer.render(specPath, {
+                filename: papersFilename,
+                authorsFilename: authorsPapaersFilename,
+                width: width,
+                height: height
+            }, "vis");
+        }
     }
 
-    // $: render(width, height)
+    $: render(width, height)
 </script>
 
 <div id="vis" bind:this={element} on:resize={updateDimensions}>

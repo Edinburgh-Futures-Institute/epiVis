@@ -293,6 +293,7 @@
           "field": "_type",
           "scale": "color"
         },
+        "stroke": "black",
         "tooltip": {
           "expression": "datum.id + ' (degree ' + datum.degree + ')' "
         }

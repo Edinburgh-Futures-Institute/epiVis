@@ -4,7 +4,6 @@
     // import { someData } from './data'
 
     export let filteredData;
-    console.log("ddd", filteredData)
 
     let handler, rows
     $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
@@ -52,6 +51,7 @@
     div {
         /*display: flex;*/
         /*flex-flow: column;*/
+        width: 100%;
     }
 
     thead {
