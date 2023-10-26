@@ -64,14 +64,16 @@
                 ])
             ]
         })
-        document.querySelector("#ridgeplot").append(ridgePlot)
+
+        // Remove for now
+        // document.querySelector("#ridgeplot").append(ridgePlot)
 
         let heatmap = Plot.plot({
             // marginBottom: 80,
             width: 1200,
             height: 800,
             x: {label: null},
-            y: {label: null},
+            y: {label: "Model Type"},
             color: {label: "Count", legend: true, scheme: "YlGnBu"},
             marks: [
                 Plot.cell(data, Plot.group({fill: "count"}, {x: PUBYEAR, y: MODEL}))

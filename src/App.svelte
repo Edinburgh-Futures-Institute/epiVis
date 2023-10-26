@@ -13,25 +13,25 @@
         allYears,
         yearMin,
         yearMax,
-        paperToTimes, influenceNodes, influenceLinks, affIdToName, authorsPapaersFilename
+        paperToTimes, influenceNodes, influenceLinks, affIdToName, authorsPapaersFilename, MODEL, affiliationsTable
     } from "./dataLoader.ts"
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
     import NetworkVis from "./lib/NetworkVis.svelte";
     import Timevis from "./lib/Timevis.svelte";
+    import NetworkLegend from "./lib/NetworkLegend.svelte";
 
-    // Column names
-    let modelCN = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic, 4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Statistical 6.Qualitative 7. Phylogenetic "
-    // let modelCN = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic - Bayesian  4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Other Statistical (non stochastic) 6.Qualitative 7. Phylogenetic 8. Simulation"
+    let element: HTMLElement;
+    console.log("ELL ", element)
 
-    let allIstitutions = data.reduce((d0, d) => d0.concat(d["Affiliation of 1st author"].split(",").concat(d["Affiliation of 2nd author"].split(",")).concat(d["Affiliation of 3rd author"].split(",")).concat(d["Affiliation of Forth th author"].split(",").concat(d["Affiliation of Fifth th author"].split(",")))), [])
-    allIstitutions = [...new Set(allIstitutions)]
+    // let allIstitutions = data.reduce((d0, d) => d0.concat(d["Affiliation of 1st author"].split(",").concat(d["Affiliation of 2nd author"].split(",")).concat(d["Affiliation of 3rd author"].split(",")).concat(d["Affiliation of Forth th author"].split(",").concat(d["Affiliation of Fifth th author"].split(",")))), [])
+    // allIstitutions = [...new Set(allIstitutions)]
+    let allInstitutions = [...new Set(affiliationsTable.map(aff => aff["Affiliation code"]))]
 
-    console.log(222, allIstitutions)
 
     // let allStrains = [...new Set(data.map(d => d["AI strain"]))];
     let allStrains = [...new Set(data.map(d => d["AI strain"]).filter(d => !nullOrNS(d)))];
-    let allModels = [...new Set(data.map(d => d [modelCN]))];
+    let allModels = [...new Set(data.map(d => d [MODEL]))];
 
     let currentStrain;
     let currentInstitution;
@@ -58,6 +58,9 @@
         let filtered: any[] = data
 
         if (currentInstitution) {
+
+            // console.log(33332, currentInstitution, d["Affiliation of 1st author"])
+
             filtered = filtered.filter(d => d["Affiliation of 1st author"] == currentInstitution);
         }
 
@@ -66,7 +69,7 @@
         }
 
         if (currentModel) {
-            filtered = filtered.filter(d => d[modelCN] == currentModel);
+            filtered = filtered.filter(d => d[MODEL] == currentModel);
         }
 
         if (currentYearMin || currentYearMax) {
@@ -154,7 +157,7 @@
         }
 
         dot += "}";
-        console.log(dot)
+        // console.log(dot)
         return dot
     }
 
@@ -168,9 +171,9 @@
             authorsFilename: authorsPapaersFilename,
         }, "vis2");
 
-        NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluence.json", {
-            filename: papersFilename,
-        }, "vis3");
+        // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluence.json", {
+        //     filename: papersFilename,
+        // }, "vis3");
 
         // console.log(influenceNodes, influenceLinks)
         // let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
@@ -186,18 +189,20 @@
 
         // d3.select("#vis4")
         //     .graphviz()
+        //     .width(1800)
+        //     .height(1000)
         //     .renderDot(dotGraphTime());
     }
 
     render();
 </script>
 
-<main>
+<main bind:this={element}>
 
     <div id="control">
         <Dropdown name="Strains" bind:value={currentStrain} allValues={allStrains} table={undefined}>
         </Dropdown>
-        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}, table={affIdToName}>
+        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allInstitutions} table={affIdToName}>
 <!--        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}>-->
         </Dropdown>
         <Dropdown name="Model Types" bind:value={currentModel} allValues={allModels} table={undefined}>
@@ -212,6 +217,8 @@
             </Map>
             <NetworkVis specPath="../netpanorama-vis/templates/wholeNet.json">
             </NetworkVis>
+            <NetworkLegend>
+            </NetworkLegend>
         </div>
 
         <Table {filteredData}>
@@ -247,11 +254,10 @@
         display: flex;
         flex-direction: column;
         /*margin-right: 10%;*/
-        /*margin-left: 10%;*/
+        /*margin-left: 300px;*/
         /*width: 100vw;*/
         align-items: center;
         justify-content: center;
-        margin: 0;
     }
 
     #control {
@@ -268,12 +274,18 @@
     /*    !*width: 100vw;*!*/
     /*}*/
 
+    #main-div {
+        /*margin: 300px;*/
+    }
+
     #vis-div {
         display: flex;
         flex-direction: row;
         /*flex-grow: 1;*/
-        /*margin: 0;*/
         /*width: 100vw;*/
+
+        /*TODO check if doable on the main*/
+        margin: 3%;
     }
 
 

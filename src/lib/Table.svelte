@@ -35,7 +35,7 @@
                 <td>{row["Publication Year "]}</td>
                 <td>{row["First Author"]}
                 <td>{row["AI strain"]}</td>
-                <td>{row["Epidemic wave"]}</td>
+                <td>{row["Epidemic waves"]}</td>
                 <td>{row[MODEL]}</td>
                 <td>{row[PURPOSE]}</td>
                 <td>{row[SPREAD]}</td>

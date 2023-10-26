@@ -1,0 +1,105 @@
+{
+  "data": [
+    {
+      "name": "nodes",
+      "values": "[nodes]"
+    },
+    {
+      "name": "links",
+      "values": "[links]"
+    }
+  ],
+  "networks": [
+    {
+      "name": "network",
+      "nodes": "nodes",
+      "links": "links",
+      "transform": [
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "d3-force"
+    }
+  ],
+  "scales": [
+    {
+      "name": "radius",
+      "type": "linear",
+      "range": [
+        90,
+        250
+      ],
+      "domain": {
+        "data": "network.nodes",
+        "field": "degree"
+      }
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
+    },
+    {
+      "name": "shapeScale",
+      "type": "ordinal",
+      "range": [
+        "circle",
+        "square",
+        "diamond",
+        "triangle",
+        "cross"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
+    }
+  ],
+  "vis": [
+    {
+      "entries": "network.links",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "linkpath",
+        "start": "source",
+        "end": "target",
+       "stroke": "gray"
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "symbol",
+        "shape": "circle",
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        }
+      }
+    }
+  ]
+}

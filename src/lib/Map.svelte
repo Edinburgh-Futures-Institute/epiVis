@@ -309,7 +309,7 @@
         /*flex-grow: 1;*/
         /*flex: 1;*/
         flex: 1 1 0;
-        width: 0;
+        /*width: 0;*/
     }
 
     #legend {

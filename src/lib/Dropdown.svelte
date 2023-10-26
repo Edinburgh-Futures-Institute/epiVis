@@ -5,9 +5,8 @@
     // export let table: Record<any, any>;
     export let table;
 
-
-    console.log(table);
-    console.log(allValues);
+    // console.log(table);
+    // console.log(allValues);
 </script>
 
 <!--<button on:click={increment}>-->
@@ -18,10 +17,9 @@
     <label for="cars">{name}:</label>
     <select bind:value name="cars" id="cars">
         <option value=""></option>
-
                 {#each allValues as value}
-        <!--            <option value={value}>{table ? table[value] : value}</option>-->
-                    <option value={value}>{value}</option>
+                    <option value={value}>{table ? table[value] : value}</option>
+<!--                    <option value={value}>{value}</option>-->
                 {/each}
 
         <!--{#if {table}}-->
@@ -42,5 +40,9 @@
     form {
         display: inline-block;
         padding-right: 5%;
+    }
+
+    select {
+        max-width: 200px;
     }
 </style>

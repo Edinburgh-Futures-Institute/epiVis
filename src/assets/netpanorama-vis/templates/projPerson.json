@@ -85,18 +85,9 @@
   ],
   "layouts": [
     {
-      "name": "forcelayout2",
-      "network": "network",
-      "type": "d3-force"
-    },
-    {
       "name": "forcelayout",
       "network": "network",
-      "type": "webcola",
-      "defaultNodeSize22": 1,
-      "linkDistance": 100,
-      "handleDisconnected": true,
-      "avoidOverlap": true
+      "type": "d3-force"
     }
   ],
   "scales": [

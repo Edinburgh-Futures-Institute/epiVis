@@ -1,6 +1,4 @@
 <script lang="ts">
-    import * as d3 from "d3";
-
     import noUiSlider from 'nouislider';
     // Or the namespace:
     import 'nouislider/dist/nouislider.css';
@@ -57,7 +55,7 @@
         /*width: 20%;*/
         /*flex: 30%;*/
         /*margin-top: 25px;*/
-        margin-top: 5px;
+        margin-top: 3%;
         width: 200px;
     }
 </style>

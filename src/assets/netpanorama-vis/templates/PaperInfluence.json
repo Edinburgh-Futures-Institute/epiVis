@@ -6,13 +6,6 @@
       "format": {
         "type": "csv"
       }
-    },
-    {
-      "name": "authors",
-      "url": "./data/[authorsFilename]",
-      "format": {
-        "type": "csv"
-      }
     }
   ],
   "networks": [
@@ -26,40 +19,23 @@
               "id_field": "Epic Code ",
               "type": "Paper",
               "data": []
+            },
+            {
+              "id_field": "Methodology Influenced by",
+              "type": "Paper",
+              "data": []
             }
           ],
           "yieldsLinks": [
-          ]
-        },
-        {
-          "data": "authors",
-          "yieldsNodes": [
-          ],
-          "yieldsLinks": [
             {
               "source_id": {
-                "field": "Paper associated "
+                "field": "Epic Code "
               },
               "source_node_type": "Paper",
-              "source_id_field": "id",
               "target_id": {
-                "field": "Author"
+                "field": "Methodology Influenced by"
               },
-              "target_node_type": "Person",
-              "target_id_field": "id",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "Afilliation name 1"
-              },
-              "source_node_type": "Institution",
-              "source_id_field": "id",
-              "target_id": {
-                "field": "Author"
-              },
-              "target_node_type": "Person",
-              "target_id_field": "id",
+              "target_node_type": "Paper",
               "data": []
             }
           ]
@@ -70,13 +46,6 @@
               {"type": "filterNodes", "expression": "datum.id !== ' ' "},
               {"type": "filterNodes", "expression": "datum.id !== 'not specified' "},
         {
-          "type": "project",
-          "fieldName": "_type",
-          "remainingNodeType": "Person",
-          "removedNodeType": "Paper",
-          "directed": false
-        },
-        {
           "type": "metric",
           "metric": "degree"
         }
@@ -85,18 +54,9 @@
   ],
   "layouts": [
     {
-      "name": "forcelayout2",
-      "network": "network",
-      "type": "d3-force"
-    },
-    {
       "name": "forcelayout",
       "network": "network",
-      "type": "webcola",
-      "defaultNodeSize22": 1,
-      "linkDistance": 100,
-      "handleDisconnected": true,
-      "avoidOverlap": true
+      "type": "d3-force"
     }
   ],
   "scales": [

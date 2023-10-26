@@ -5,7 +5,6 @@ import * as d3 from "d3"
 // export let authorsPapaersFilename = "authors6Oct.csv";
 
 
-
 export let papersFilename = "papers23Oct.csv";
 export let affiliationsFilename = "affiliations23Oct.csv";
 export let authorsPapaersFilename = "authors23Oct.csv";
@@ -21,8 +20,6 @@ export let authorsPapaersFilename = "authors23Oct.csv";
 // let timeCol = "Period of study (in format for visualisations; yellow= if 2020 forward data inlcuded)"
 
 
-
-
 // COLUMN NAMES (column dataset new criteria)
 export let MODEL = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic - Bayesian  4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Other Statistical (non stochastic) 6.Qualitative 7. Phylogenetic 8. Simulation"
 export let PURPOSE = "Purpose (of models) (Task performed): 1. Predict when or where the next outbreak occur; 2. Risk distribution (=which risk factors + how much they contribute); 3.Assess surveillance and interventions; 4. Genetic variance & dominance; 5.Plus scoioeconomic analysis. 6. Estimate epidemiological parameteres in compartmental models 7.Scenario"
@@ -32,9 +29,9 @@ export let PUBYEAR = "Publication Year "
 let timeCol = "Period of study (in format for visualisations; yellow= if 2020 forward data inlcuded)"
 
 
-
 // export let data = await d3.csv(`./data/20_Sept.csv`, d => {
 export let data = await d3.csv(`./data/${papersFilename}`, d => {
+// export let data = await d3.csv(`src/assets/data/${papersFilename}`, d => {
     d["AI strain"] = trim(d["AI strain"])
     return d
 })
@@ -42,12 +39,12 @@ export let data = await d3.csv(`./data/${papersFilename}`, d => {
 
 export let affIdToName = {};
 export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d => {
+// export let affiliationsTable = await d3.csv(`src/assets/data/${affiliationsFilename}`, d => {
     affIdToName[d["Affiliation code"]] = d["Afilliation name -"]
 
     // d["AI strain"] = trim(d["AI strain"])
     return d
 })
-
 
 
 export let allYears = []
@@ -77,9 +74,8 @@ for (let d of data) {
         // if (!isNaN(y2) && y2 != "") allYears.push(parseInt(y2));
     })
 }
-allYears = [... new Set(allYears)].sort()
+allYears = [...new Set(allYears)].sort()
 export let [yearMin, yearMax] = d3.extent(allYears);
-
 
 
 // Influence Network
@@ -116,17 +112,38 @@ function trim(value: string) {
 }
 
 function extractNumbersFromString(inputString: string): number[] {
-  const numberRegex = /\d+(\.\d+)?/g;
-  const matches = inputString.match(numberRegex);
+    const numberRegex = /\d+(\.\d+)?/g;
+    const matches = inputString.match(numberRegex);
 
-  if (matches) {
-    // Convert the matched strings to numbers
-    const numbers = matches.map(match => parseFloat(match));
-    return numbers;
-  } else {
-    return [];
-  }
+    if (matches) {
+        // Convert the matched strings to numbers
+        const numbers = matches.map(match => parseFloat(match));
+        return numbers;
+    } else {
+        return [];
+    }
 }
+
+export type Nodetype = "Person" | "Institution" | "Country";
+
+export enum NodeTypes {
+    Person = "Person",
+    Paper = "Paper",
+    Strain = "Strain",
+    Wave = "Wave",
+    Institution = "Institution",
+    Country = "Country"
+}
+
+export const nodeTypeColorScale = d3.scaleOrdinal(Object.values(NodeTypes), [
+    "lightblue",
+    "lightgreen",
+    "red",
+    "purple",
+    "orange",
+    "brown"
+])
+
 
 export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
 

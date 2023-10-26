@@ -1,4 +1,6 @@
 {
+  "width": "[width]",
+  "height": "[height]",
   "data": [
     {
       "name": "data",
@@ -23,12 +25,52 @@
           "data": "data",
           "yieldsNodes": [
             {
+              "id_field": "AI strain",
+              "type": "Strain",
+              "data": []
+            },
+            {
               "id_field": "Epic Code ",
               "type": "Paper",
               "data": []
             }
           ],
           "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "AI strain"
+              },
+              "source_node_type": "Strain",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Epidemic waves"
+              },
+              "target_node_type": "Wave",
+              "target_id_field": "id",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "AI strain"
+              },
+              "source_node_type": "Strain",
+              "target_id": {
+                "field": "Epic Code "
+              },
+              "target_node_type": "Paper",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Region of study "
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "Epidemic waves"
+              },
+              "target_node_type": "Wave",
+              "data": []
+            }
           ]
         },
         {
@@ -66,15 +108,17 @@
         }
       ],
       "transform": [
-        {"type": "filterNodes", "expression": "datum.id !== '' "},
-              {"type": "filterNodes", "expression": "datum.id !== ' ' "},
-              {"type": "filterNodes", "expression": "datum.id !== 'not specified' "},
         {
-          "type": "project",
-          "fieldName": "_type",
-          "remainingNodeType": "Person",
-          "removedNodeType": "Paper",
-          "directed": false
+          "type": "filterNodes",
+          "expression": "datum.id !== '' "
+        },
+        {
+          "type": "filterNodes",
+          "expression": "datum.id !== ' ' "
+        },
+        {
+          "type": "filterNodes",
+          "expression": "datum.id !== 'not specified' "
         },
         {
           "type": "metric",
@@ -85,18 +129,18 @@
   ],
   "layouts": [
     {
-      "name": "forcelayout2",
-      "network": "network",
-      "type": "d3-force"
-    },
-    {
       "name": "forcelayout",
       "network": "network",
       "type": "webcola",
       "defaultNodeSize22": 1,
-      "linkDistance": 100,
+      "linkDistance": 12,
       "handleDisconnected": true,
       "avoidOverlap": true
+    },
+    {
+      "name": "forcelayout2",
+      "network": "network",
+      "type": "d3-force"
     }
   ],
   "scales": [
@@ -120,14 +164,16 @@
         "lightgreen",
         "red",
         "purple",
-        "orange"
+        "orange",
+        "brown"
       ],
       "domain": [
         "Person",
         "Paper",
         "Strain",
         "Wave",
-        "Institution"
+        "Institution",
+        "Country"
       ]
     },
     {
@@ -138,14 +184,16 @@
         "square",
         "diamond",
         "triangle",
-        "cross"
+        "cross",
+        "triangle-down"
       ],
       "domain": [
         "Person",
         "Paper",
         "Strain",
         "Wave",
-        "Institution"
+        "Institution",
+        "Country"
       ]
     }
   ],
@@ -157,7 +205,7 @@
         "type": "linkpath",
         "start": "source",
         "end": "target",
-       "stroke": "gray"
+        "stroke": "gray"
       }
     },
     {
@@ -177,6 +225,7 @@
           "field": "_type",
           "scale": "color"
         },
+        "stroke": "black",
         "tooltip": {
           "expression": "datum.id + ' (degree ' + datum.degree + ')' "
         }
