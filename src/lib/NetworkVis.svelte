@@ -7,6 +7,7 @@
     export let specPath;
 
     let element;
+    let selectedNet;
     let width: number;
     let height: number = 600;
 
@@ -47,16 +48,36 @@
         }
     }
 
+    function selectTab(e) {
+        console.log(222, e, e.target.value)
+        selectedNet = e;
+    }
+
     $: render(width, height, selectedNodeTypes);
 </script>
 
-<div id="vis" bind:this={element} on:resize={updateDimensions}>
+
+<div id="mainDivNet">
+    <div class="tab">
+      <button class="tablinks" on:click={selectTab}>Full</button>
+      <button class="tablinks" on:click={selectTab}>People</button>
+      <button class="tablinks" on:click={selectTab}>Papers</button>
+    </div>
+    <div id="vis" bind:this={element} on:resize={updateDimensions}>
+    </div>
 </div>
 
 <style>
-    div {
-        /*flex-grow: 1;*/
-        /*flex: 1;*/
+    #mainDivNet {
         flex: 1 1 0;
     }
+
+    #vis {
+        width: 100%;
+        height: 100%;
+    }
+
+    /*div {*/
+    /*    flex: 1 1 0;*/
+    /*}*/
 </style>

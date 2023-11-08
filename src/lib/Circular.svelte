@@ -55,10 +55,12 @@
 
         institutions.sort((a, b) => {
             // return a.data["Country "] - b.data["Country "]
-            return a.data["Country "].localeCompare(b.data["Country "])
+            let countryCompare = a.data["Country "].localeCompare(b.data["Country "])
+            if (countryCompare == 0) {
+                return a.data["Discipline"].localeCompare(b.data["Discipline"])
+            }
+            return countryCompare
         })
-
-        // institutions = institutions.filter(i => i.data["Country "])
 
         let currentCountry = institutions[0].data["Country "]
         let pos = 1
@@ -82,11 +84,6 @@
             pos += 1;
         }
 
-        console.log(countryToCount)
-
-
-
-
         const radialScale = d3.scaleLinear([0, pos], [0, Math.PI * 2])
 
         const countryColorScale = d3.scaleOrdinal(d3.schemeAccent)
@@ -102,41 +99,52 @@
         d3.select(svg)
             .selectAll(".node")
             .data(institutions)
-            // .join("g")
-            // .attr("transform", d => `rotate(${radialScale(d.pos) * 180 / Math.PI - 90}) translate(300,0)`)
-            // .attr("transform", d => `translate(300,0)`)
             .join("circle")
             // .attr("dy", "0.31em")
             // .attr("cx", d => radialScale(d.pos) < Math.PI ? 6 : -6)
             .attr("cx", d => x(d))
             .attr("cy", d => y(d))
             .attr("r", 7)
-            .attr("fill", d => countryColorScale(d.data["Country "]))
+            // .attr("fill", d => countryColorScale(d.data["Country "]))
+            .attr("fill", d => countryColorScale(d.data["Discipline"]))
             // .attr("fill", d => "none")
             .attr("stroke", "black")
             .classed("node", true)
-            // .attr("transform", d => `rotate(${radialScale(d.pos) * 180 / Math.PI}) translate(300,0)`)
+        // .attr("transform", d => `rotate(${radialScale(d.pos) * 180 / Math.PI}) translate(300,0)`)
 
 
-        const pie = d3.pie().padAngle(0.05).sort(null).sortValues(null).startAngle(Math.PI / 2).endAngle(3 *Math.PI);
+        const pie = d3.pie().padAngle(0.05).sort(null).sortValues(null).startAngle(Math.PI / 2).endAngle(3 * Math.PI);
         const arc = d3.arc().innerRadius(distance + 40).outerRadius(distance + 40 + 50);
 
         const countries = d3.select(svg)
             .append("g")
-      .attr("fill", "#ccc")
-      .attr("stroke", "#000")
-      .attr("stroke-width", "1.5px")
-      .attr("stroke-linejoin", "round")
-    .selectAll("path")
-    .data(pie(Object.values(countryToCount)))
-    .join("path")
-      .attr("d", arc.cornerRadius(5));
+            .attr("fill", "#ccc")
+            .attr("stroke", "#000")
+            .attr("stroke-width", "1.5px")
+            .attr("stroke-linejoin", "round")
+            .selectAll("path")
+            .data(pie(Object.values(countryToCount)))
+            .join("path")
+            .attr("d", arc.cornerRadius(5));
 
-    //     const line = d3.lineRadial()
-    // .curve(d3.curveBundle.beta(0.85))
-    // .radius(d => 200)
-    // .angle(d => radialScale(d.pos));
 
+        d3.select(svg)
+            .selectAll("text")
+            .data(pie(Object.values(countryToCount)))
+                .join("text")
+                .attr("transform", (d, i) => {
+                    return `translate(${arc.centroid(d)})`
+                })
+                .attr("x", (d, i) => {
+                    return 0;
+                })
+                .attr("y", d => {
+                    return 0
+                })
+                .text((d, i) => {
+                    return Object.keys(countryToCount)[i]
+                })
+                .attr("text-anchor", "middle")
 
         const linksMark = d3.select(svg)
             .selectAll(".link")
@@ -150,8 +158,8 @@
             .attr("stroke", "black")
             .classed("link", true)
 
-            // .attr("fill", d => countryColorScale(d.data["Country "]))
-            // .attr("transform", d => `rotate(${radialScale(d.pos) * 180 / Math.PI - 90}) translate(300,0)`)
+        // .attr("fill", d => countryColorScale(d.data["Country "]))
+        // .attr("transform", d => `rotate(${radialScale(d.pos) * 180 / Math.PI - 90}) translate(300,0)`)
 
         // let nodesById = new Map(institutions.map(node => [node.id, node]))
         //
@@ -175,7 +183,7 @@
 
 <div bind:this={element} on:resize={updateDimensions}>
     <svg bind:this={svg} width={width} height={width} viewBox="{-width / 2}, {-width / 2}, {width}, {width}">
-<!--    <svg bind:this={svg} width={width} height={width}>-->
+        <!--    <svg bind:this={svg} width={width} height={width}>-->
     </svg>
 </div>
 <div id="affiliationNet">
