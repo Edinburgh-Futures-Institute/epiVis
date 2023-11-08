@@ -7,7 +7,7 @@
     export let specPath;
 
     let element;
-    let selectedNet;
+    let selectedNet = "Full";
     let width: number;
     let height: number = 600;
 
@@ -22,23 +22,52 @@
         height = rect.height;
     }
 
-    function render(width, height, selectedNodeTypes) {
+    // function render(width, height, selectedNodeTypes) {
+    //     // console.log("NET DIM ", width, height)
+    //     if (width) {
+    //         element.innerHTML = ""
+    //
+    //         console.log(selectedNodeTypes, 222)
+    //         if (selectedNodeTypes[0] == NodeTypes.Person && selectedNodeTypes.length == 1) {
+    //             console.log("PEOPLE")
+    //             NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
+    //                 filename: papersFilename,
+    //                 authorsFilename: authorsPapaersFilename,
+    //                 width: width,
+    //                 height: height
+    //             }, "vis");
+    //         } else {
+    //             NetPanoramaTemplateViewer.render(specPath, {
+    //                 filename: papersFilename,
+    //                 authorsFilename: authorsPapaersFilename,
+    //                 width: width,
+    //                 height: height
+    //             }, "vis");
+    //         }
+    //     }
+    // }
+
+    function render(width, height, networkName) {
         // console.log("NET DIM ", width, height)
         if (width) {
             element.innerHTML = ""
 
-
-            console.log(selectedNodeTypes, 222)
-            if (selectedNodeTypes[0] == NodeTypes.Person && selectedNodeTypes.length == 1) {
-                console.log("PEOPLE")
+            if (networkName == "Full") {
+                NetPanoramaTemplateViewer.render(specPath, {
+                    filename: papersFilename,
+                    authorsFilename: authorsPapaersFilename,
+                    width: width,
+                    height: height
+                }, "vis");
+            } else if (networkName == "People") {
                 NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
                     filename: papersFilename,
                     authorsFilename: authorsPapaersFilename,
                     width: width,
                     height: height
                 }, "vis");
-            } else {
-                NetPanoramaTemplateViewer.render(specPath, {
+            } else if (networkName == "Countries") {
+                NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/countryProj.json", {
                     filename: papersFilename,
                     authorsFilename: authorsPapaersFilename,
                     width: width,
@@ -49,19 +78,19 @@
     }
 
     function selectTab(e) {
-        console.log(222, e, e.target.value)
-        selectedNet = e;
+        selectedNet = e.target.textContent;
     }
 
-    $: render(width, height, selectedNodeTypes);
+    $: render(width, height, selectedNet);
+    // $: render(width, height, selectedNodeTypes);
 </script>
 
 
 <div id="mainDivNet">
     <div class="tab">
-      <button class="tablinks" on:click={selectTab}>Full</button>
-      <button class="tablinks" on:click={selectTab}>People</button>
-      <button class="tablinks" on:click={selectTab}>Papers</button>
+        <button class="tablinks" on:click={selectTab}>Full</button>
+        <button class="tablinks" on:click={selectTab}>People</button>
+        <button class="tablinks" on:click={selectTab}>Countries</button>
     </div>
     <div id="vis" bind:this={element} on:resize={updateDimensions}>
     </div>
