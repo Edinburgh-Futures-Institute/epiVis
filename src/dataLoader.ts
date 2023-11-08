@@ -85,18 +85,27 @@ for (let d of data) {
     if (nullOrNS(d["Publication Year "]) || nullOrNS(d["Epic Code "])) continue;
 
     let influenced = d["Methodology Influenced by"]
-
     let influences = influenced.split(";");
+
+    let type: number;
+    let influenceType = d["Model heavily relied on: 1. Yes, 2. No"]
+    if (influenceType?.includes("1")) {
+        type = 1;
+    } else {
+        type = 2;
+    }
 
     influenceNodes.push({id: d["Epic Code "], "layer": parseInt(d["Publication Year "])})
     influences.forEach(paper => {
         let year = extractNumbersFromString(paper)[0];
         if (nullOrNS(year)) return;
 
-        influenceLinks.push({"source": paper, "target": d["Epic Code "]})
+        influenceLinks.push({"source": paper, "target": d["Epic Code "], "influenceType": type})
         influenceNodes.push({"layer": year, "id": paper})
     })
 }
+
+console.log("LINKS ", influenceLinks)
 
 function parseDotNodeId(nodeId: string) {
     return nodeId.replace(",", "").replace(" ", "")

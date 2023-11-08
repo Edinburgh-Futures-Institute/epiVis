@@ -2,30 +2,24 @@
     import {authorsPapaersFilename, nodeTypeColorScale, NodeTypes, papersFilename} from "../dataLoader.ts";
     import {onMount} from "svelte";
 
-    // export let data;
-    // export let specPath;
-
     import * as d3 from "d3";
+
+    export let selectedNodeTypes: NodeTypes[]
 
     let element: HTMLElement;
     let width: number = 180;
     let height: number = 600;
-    const diameter = 10;
     const legendSize = 100;
 
-
     $: {
-        console.log(2, element, Object.values(NodeTypes))
+        console.log("REEEEEE")
         if (element) {
-            console.log(9999)
             d3.select("#svg-legend")
                 .selectAll("path")
                 .data(Object.values(NodeTypes))
                 .join("path")
                 .attr("d", d => {
-                    console.log(10000, d)
                     if (d == NodeTypes.Person) {
-                        console.log(555, d3.symbol().type(d3.symbolCircle).size(legendSize)(d))
                         return d3.symbol().type(d3.symbolCircle).size(legendSize)();
                     } else if (d == NodeTypes.Paper) {
                         return d3.symbol().type(d3.symbolSquare).size(legendSize)();
@@ -49,7 +43,6 @@
                     return `translate(20, ${30 + i * 50})`
                 })
 
-
             d3.select("#svg-legend")
                 .selectAll("text")
                 .data(Object.values(NodeTypes))
@@ -59,15 +52,24 @@
                     return `translate(30, ${35 + i * 50})`
                 })
 
-
-            // d3.select("#svgf")
-            //     .selectAll("circle")
-            //     .data(Object.values(NodeTypes))
-            //     .join("circle")
-            //     .attr("cx", 10)
-            //     .attr("cy", 10)
-            //     .attr("r", 5)
-
+            d3.select(element)
+                .selectAll("input")
+                .data(Object.values(NodeTypes))
+                .join("input")
+                // .text(d => d)
+                .style("position", "absolute")
+                .attr("type", "checkbox")
+                .attr("checked", "true")
+                .style("top", (d, i) => `${20 + i * 50}px`)
+                .style("left", (d, i) => "-190px")
+                .on("click", (e, d) => {
+                    if (selectedNodeTypes.includes(d)) {
+                        selectedNodeTypes = selectedNodeTypes.filter(v => v != d)
+                    } else {
+                        selectedNodeTypes.push(d)
+                    }
+                    console.log(45555, selectedNodeTypes)
+                })
         }
     }
 
@@ -75,7 +77,7 @@
 
 <div bind:this={element}>
 <!--    Translate is ugly hack because netpan does not take all the width space -->
-    <svg id="svg-legend" width={width} height={height} transform="translate(-200, 0)"></svg>
+    <svg id="svg-legend" width={width} height={height} transform="translate(-180, 0)"></svg>
 </div>
 
 <style>
@@ -84,5 +86,7 @@
         /*flex: 1;*/
         /*flex: 1 1 0;*/
         width: 8%;
+        z-index: 10;
+        position: relative;
     }
 </style>

@@ -1,8 +1,9 @@
 <script lang="ts">
-    import {authorsPapaersFilename, papersFilename} from "../dataLoader.ts";
+    import {authorsPapaersFilename, NodeTypes, papersFilename} from "../dataLoader.ts";
     import {onMount} from "svelte";
 
     // export let data;
+    export let selectedNodeTypes;
     export let specPath;
 
     let element;
@@ -20,21 +21,33 @@
         height = rect.height;
     }
 
-    function render(width, height) {
-        console.log("NET DIM ", width, height)
+    function render(width, height, selectedNodeTypes) {
+        // console.log("NET DIM ", width, height)
         if (width) {
             element.innerHTML = ""
 
-            NetPanoramaTemplateViewer.render(specPath, {
-                filename: papersFilename,
-                authorsFilename: authorsPapaersFilename,
-                width: width,
-                height: height
-            }, "vis");
+
+            console.log(selectedNodeTypes, 222)
+            if (selectedNodeTypes[0] == NodeTypes.Person && selectedNodeTypes.length == 1) {
+                console.log("PEOPLE")
+                NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
+                    filename: papersFilename,
+                    authorsFilename: authorsPapaersFilename,
+                    width: width,
+                    height: height
+                }, "vis");
+            } else {
+                NetPanoramaTemplateViewer.render(specPath, {
+                    filename: papersFilename,
+                    authorsFilename: authorsPapaersFilename,
+                    width: width,
+                    height: height
+                }, "vis");
+            }
         }
     }
 
-    $: render(width, height)
+    $: render(width, height, selectedNodeTypes);
 </script>
 
 <div id="vis" bind:this={element} on:resize={updateDimensions}>

@@ -13,13 +13,21 @@
         allYears,
         yearMin,
         yearMax,
-        paperToTimes, influenceNodes, influenceLinks, affIdToName, authorsPapaersFilename, MODEL, affiliationsTable
+        paperToTimes,
+        influenceNodes,
+        influenceLinks,
+        affIdToName,
+        authorsPapaersFilename,
+        MODEL,
+        affiliationsTable,
+        NodeTypes
     } from "./dataLoader.ts"
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
     import NetworkVis from "./lib/NetworkVis.svelte";
     import Timevis from "./lib/Timevis.svelte";
     import NetworkLegend from "./lib/NetworkLegend.svelte";
+    import Circular from "./lib/Circular.svelte";
 
     let element: HTMLElement;
     console.log("ELL ", element)
@@ -38,6 +46,9 @@
     let currentModel;
     let currentYearMin = 0;
     let currentYearMax = 0;
+
+    let selectedNodeTypes = Object.values(NodeTypes);
+    console.log(4345345, selectedNodeTypes)
 
     // let allYears = []
     // for (let d of data) {
@@ -145,7 +156,8 @@
         // dot += "\n"
 
         influenceLinks.forEach(link => {
-            const dotLink = `"${link.source}" -> "${link.target}";`
+            let type = (link.influenceType == 1) ? "solid" : "dotted";
+            const dotLink = `"${link.source}" -> "${link.target}" [style="${type}"];`;
             dot += dotLink
         })
 
@@ -161,40 +173,42 @@
         return dot
     }
 
-    async function render() {
-        // await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/wholeNet.json", {
-        //     filename: papersFilename,
-        // }, "vis1");
+    async function render(element) {
+        if (element) {
+            // await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/wholeNet.json", {
+            //     filename: papersFilename,
+            // }, "vis1");
 
-        let projPerson = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
-            filename: papersFilename,
-            authorsFilename: authorsPapaersFilename,
-        }, "vis2");
+            // let projPerson = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
+            //     filename: papersFilename,
+            //     authorsFilename: authorsPapaersFilename,
+            // }, "vis2");
 
-        // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluence.json", {
-        //     filename: papersFilename,
-        // }, "vis3");
+            // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluence.json", {
+            //     filename: papersFilename,
+            // }, "vis3");
 
-        // console.log(influenceNodes, influenceLinks)
-        // let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
-        // let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
-        // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
-        //     nodes: `${influenceNodes2}`,
-        //     links: `${influenceLinks2}`,
-        // }, "vis4");
+            // console.log(influenceNodes, influenceLinks)
+            // let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
+            // let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
+            // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
+            //     nodes: `${influenceNodes2}`,
+            //     links: `${influenceLinks2}`,
+            // }, "vis4");
 
-        // d3.select("#vis4")
-        //     .graphviz()
-        //     .renderDot(dotGraph());
+            // d3.select("#vis4")
+            //     .graphviz()
+            //     .renderDot(dotGraph());
 
-        // d3.select("#vis4")
-        //     .graphviz()
-        //     .width(1800)
-        //     .height(1000)
-        //     .renderDot(dotGraphTime());
+            d3.select("#vis4")
+                .graphviz()
+                .width(1800)
+                .height(1000)
+                .renderDot(dotGraphTime());
+        }
     }
 
-    render();
+    $: render(element);
 </script>
 
 <main bind:this={element}>
@@ -215,14 +229,19 @@
         <div id="vis-div">
             <Map {filteredData}>
             </Map>
-            <NetworkVis specPath="../netpanorama-vis/templates/wholeNet.json">
+            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="../netpanorama-vis/templates/wholeNet.json">
             </NetworkVis>
-            <NetworkLegend>
+            <NetworkLegend bind:selectedNodeTypes={selectedNodeTypes}>
             </NetworkLegend>
         </div>
 
+
+
         <Table {filteredData}>
         </Table>
+
+        <Circular>
+        </Circular>
 
         <Timevis>
         </Timevis>

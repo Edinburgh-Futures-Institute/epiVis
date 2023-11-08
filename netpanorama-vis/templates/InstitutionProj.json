@@ -1,17 +1,8 @@
 {
-  "width": "[width]",
-  "height": "[height]",
   "data": [
     {
-      "name": "data",
-      "url": "./data/[filename]",
-      "format": {
-        "type": "csv"
-      }
-    },
-    {
-      "name": "authors",
-      "url": "./data/[authorsFilename]",
+      "name": "affiliations",
+      "url": "./data/[affiliations]",
       "format": {
         "type": "csv"
       }
@@ -19,62 +10,67 @@
   ],
   "networks": [
     {
+      "name": "networkAff",
+      "parts": [
+        {
+          "data": "affiliations",
+          "yieldsNodes": [
+            {
+              "id_field": "Intitute ",
+              "type": "Institution",
+              "data": [
+                "*"
+              ]
+            }
+          ],
+          "yieldsLinks": []
+        }
+      ],
+      "transform": [
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    },
+    {
       "name": "network",
       "parts": [
         {
-          "data": "data",
+          "data": "affiliations",
           "yieldsNodes": [
             {
-              "id_field": "Epic Code ",
-              "type": "Paper",
-              "data": []
+              "id_field": "Intitute ",
+              "type": "Institution",
+              "data": [
+                "*"
+              ]
             }
           ],
           "yieldsLinks": [
-          ]
-        },
-        {
-          "data": "authors",
-          "yieldsNodes": [
-          ],
-          "yieldsLinks": [
             {
               "source_id": {
-                "field": "Paper associated "
-              },
-              "source_node_type": "Paper",
-              "source_id_field": "id",
-              "target_id": {
-                "field": "Author"
-              },
-              "target_node_type": "Person",
-              "target_id_field": "id",
-              "data": []
-            },
-            {
-              "source_id": {
-                "field": "Afilliation name 1"
+                "field": "Intitute "
               },
               "source_node_type": "Institution",
               "source_id_field": "id",
               "target_id": {
-                "field": "Author"
+                "field": "Paper associated "
               },
-              "target_node_type": "Person",
+              "target_node_type": "Paper",
               "target_id_field": "id",
-              "data": []
+              "data": [
+                "*"
+              ]
             }
           ]
         }
       ],
       "transform": [
-        {"type": "filterNodes", "expression": "datum.id !== '' "},
-              {"type": "filterNodes", "expression": "datum.id !== ' ' "},
-              {"type": "filterNodes", "expression": "datum.id !== 'not specified' "},
         {
           "type": "project",
           "fieldName": "_type",
-          "remainingNodeType": "Person",
+          "remainingNodeType": "Institution",
           "removedNodeType": "Paper",
           "directed": false
         },
@@ -85,20 +81,31 @@
       ]
     }
   ],
+
+  "orderings": [
+        {
+            "name": "degree_order",
+            "data": "network.nodes",
+            "orderBy": "degree"
+        },
+        {
+            "name": "country",
+            "data": "network.nodes",
+            "orderBy": "Country"
+        }
+    ],
+
   "layouts": [
-    {
-      "name": "forcelayout2",
-      "network": "network",
-      "type": "d3-force"
-    },
     {
       "name": "forcelayout",
       "network": "network",
-      "type": "webcola",
-      "defaultNodeSize22": 1,
-      "linkDistance": 100,
-      "handleDisconnected": true,
-      "avoidOverlap": true
+      "type": "d3-force"
+    },
+      {
+      "name": "l",
+      "data": "network.nodes",
+      "order": "degree_order",
+      "pattern": "circle"
     }
   ],
   "scales": [
@@ -133,6 +140,26 @@
       ]
     },
     {
+      "name": "countryColor",
+      "type": "ordinal",
+      "ranged": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange",
+        "yellow"
+      ],
+      "domain": [
+        "China",
+        "France",
+        "Spain",
+        "Japan",
+        "Russia",
+        "South Korea"
+      ]
+    },
+    {
       "name": "shapeScale",
       "type": "ordinal",
       "range": [
@@ -154,7 +181,7 @@
   "vis": [
     {
       "entries": "network.links",
-      "layout": "forcelayout",
+      "layout": "l",
       "mark": {
         "type": "linkpath",
         "start": "source",
@@ -164,7 +191,7 @@
     },
     {
       "entries": "network.nodes",
-      "layout": "forcelayout",
+      "layout": "l",
       "mark": {
         "type": "symbol",
         "shape": {
@@ -178,6 +205,11 @@
         "fill": {
           "field": "_type",
           "scale": "color"
+        },
+        "fill22": {
+          "fielddd": "datum.Country",
+          "expression": "datum.data.Country",
+          "scale": "countryColor"
         },
         "tooltip": {
           "expression": "datum.id + ' (degree ' + datum.degree + ')' "
