@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {authorsPapaersFilename, nodeTypeColorScale, NodeTypes, papersFilename} from "../dataLoader.ts";
+    import {authorsFilename, nodeTypeColorScale, NodeTypes, papersFilename} from "../dataLoader.ts";
     import {onMount} from "svelte";
 
     import * as d3 from "d3";
@@ -12,7 +12,6 @@
     const legendSize = 100;
 
     $: {
-        console.log("REEEEEE")
         if (element) {
             d3.select("#svg-legend")
                 .selectAll("path")
@@ -30,7 +29,7 @@
                     } else if (d == NodeTypes.Institution) {
                         return d3.symbol().type(d3.symbolCross).size(legendSize)(d);
                     } else if (d == NodeTypes.Country) {
-                        return d3.symbol().type(d3.symbolTriangle2).size(legendSize)(d);
+                        return d3.symbol().type(d3.symbolTriangle).size(legendSize)(d);
                     }
                 })
                 .style("fill", function (d) {
@@ -40,7 +39,7 @@
                 .style("stroke-width", 1)
                 .attr("transform", (d, i) => {
                     // return `translate(${diameter / 2}, ${diameter / 2})`
-                    return `translate(20, ${30 + i * 50})`
+                    return `translate(20, ${30 + i * 50}) ${(d == NodeTypes.Country) ? "rotate(-180)" : ""}`
                 })
 
             d3.select("#svg-legend")
@@ -52,24 +51,24 @@
                     return `translate(30, ${35 + i * 50})`
                 })
 
-            d3.select(element)
-                .selectAll("input")
-                .data(Object.values(NodeTypes))
-                .join("input")
-                // .text(d => d)
-                .style("position", "absolute")
-                .attr("type", "checkbox")
-                .attr("checked", "true")
-                .style("top", (d, i) => `${20 + i * 50}px`)
-                .style("left", (d, i) => "-190px")
-                .on("click", (e, d) => {
-                    if (selectedNodeTypes.includes(d)) {
-                        selectedNodeTypes = selectedNodeTypes.filter(v => v != d)
-                    } else {
-                        selectedNodeTypes.push(d)
-                    }
-                    console.log(45555, selectedNodeTypes)
-                })
+            // d3.select(element)
+            //     .selectAll("input")
+            //     .data(Object.values(NodeTypes))
+            //     .join("input")
+            //     // .text(d => d)
+            //     .style("position", "absolute")
+            //     .attr("type", "checkbox")
+            //     .attr("checked", "true")
+            //     .style("top", (d, i) => `${20 + i * 50}px`)
+            //     .style("left", (d, i) => "-190px")
+            //     .on("click", (e, d) => {
+            //         if (selectedNodeTypes.includes(d)) {
+            //             selectedNodeTypes = selectedNodeTypes.filter(v => v != d)
+            //         } else {
+            //             selectedNodeTypes.push(d)
+            //         }
+            //         console.log(45555, selectedNodeTypes)
+            //     })
         }
     }
 

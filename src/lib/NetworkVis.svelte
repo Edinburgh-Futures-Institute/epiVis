@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {authorsPapaersFilename, NodeTypes, papersFilename} from "../dataLoader.ts";
+    import {authorsFilename, NodeTypes, papersFilename} from "../dataLoader.ts";
     import {onMount} from "svelte";
 
     // export let data;
@@ -8,6 +8,7 @@
 
     let element;
     let selectedNet = "Full";
+    // let selectedNet = "Countries";
     let width: number;
     let height: number = 600;
 
@@ -47,7 +48,7 @@
     //     }
     // }
 
-    function render(width, height, networkName) {
+    async function render(width, height, networkName) {
         // console.log("NET DIM ", width, height)
         if (width) {
             element.innerHTML = ""
@@ -55,24 +56,26 @@
             if (networkName == "Full") {
                 NetPanoramaTemplateViewer.render(specPath, {
                     filename: papersFilename,
-                    authorsFilename: authorsPapaersFilename,
+                    authorsFilename: authorsFilename,
                     width: width,
                     height: height
                 }, "vis");
             } else if (networkName == "People") {
                 NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
                     filename: papersFilename,
-                    authorsFilename: authorsPapaersFilename,
+                    authorsFilename: authorsFilename,
                     width: width,
                     height: height
                 }, "vis");
             } else if (networkName == "Countries") {
-                NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/countryProj.json", {
+                let viewer = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/countryProj.json", {
                     filename: papersFilename,
-                    authorsFilename: authorsPapaersFilename,
+                    authorsFilename: authorsFilename,
                     width: width,
                     height: height
                 }, "vis");
+
+                console.log(viewer.state.network.links)
             }
         }
     }

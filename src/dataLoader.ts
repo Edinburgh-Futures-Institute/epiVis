@@ -7,7 +7,7 @@ import * as d3 from "d3"
 
 export let papersFilename = "papers23Oct.csv";
 export let affiliationsFilename = "affiliations23Oct.csv";
-export let authorsPapaersFilename = "authors23Oct.csv";
+export let authorsFilename = "authors23Oct.csv";
 
 
 //
@@ -26,25 +26,62 @@ export let PURPOSE = "Purpose (of models) (Task performed): 1. Predict when or w
 export let SPREAD = "Spread across:  1. Between-farm spread; 2. Within-farm spread; 3. Wildlife-livestock interface; 4. Cross-wildlife species spread; 5. Cross-livestock species spread; 6. Animal-human interface"
 export let STAGE = "Stage of outbreak: 1.Preparedness (lessons learnt from the past); 2. Incursion 3. Exposure; 4.Response, 5.Recovery (endemic nature)"
 export let PUBYEAR = "Publication Year "
+
 let timeCol = "Period of study (in format for visualisations; yellow= if 2020 forward data inlcuded)"
 
 
-// export let data = await d3.csv(`./data/20_Sept.csv`, d => {
+export let paperIdToPaper = {};
 export let data = await d3.csv(`./data/${papersFilename}`, d => {
-// export let data = await d3.csv(`src/assets/data/${papersFilename}`, d => {
-    d["AI strain"] = trim(d["AI strain"])
+    d["AI strain"] = trim(d["AI strain"]);
+    paperIdToPaper[d["Epic Code "]] = d;
     return d
 })
 
 
 export let affIdToName = {};
 export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d => {
-// export let affiliationsTable = await d3.csv(`src/assets/data/${affiliationsFilename}`, d => {
     affIdToName[d["Affiliation code"]] = d["Afilliation name -"]
-
-    // d["AI strain"] = trim(d["AI strain"])
     return d
 })
+
+export let peopleTable = await d3.csv(`./data/${authorsFilename}`, d => {
+    return d
+})
+
+
+
+export let institutionModelTable = [];
+
+createLinksTables();
+
+function createLinksTables() {
+    peopleTable.forEach(author => {
+        let paperId = author["Paper associated "];
+        let institution = author["Affiliation code 1"];
+
+        // console.log(22, paper, paperIdToPaper)
+        let paper = paperIdToPaper[paperId.toUpperCase()];
+        let models = paper ? paper[MODEL] : null;
+
+        if (models) {
+            models = parseModels(models);
+
+            models.forEach(model => {
+                institutionModelTable.push({
+                    Model: model,
+                    institution: institution
+                })
+            })
+        }
+    })
+}
+
+
+function parseModels(models) {
+    return models.split("(").map(d => d.split("").map(d2 => d2.split("+").map(d => d.split(",").map(d => d.split(")"))))).flat(Infinity).filter(m => !["", " ", "  ", "r", "e", "v", "i", "w"].includes(m));
+}
+
+
 
 
 export let allYears = []
@@ -105,7 +142,6 @@ for (let d of data) {
     })
 }
 
-console.log("LINKS ", influenceLinks)
 
 function parseDotNodeId(nodeId: string) {
     return nodeId.replace(",", "").replace(" ", "")
@@ -133,7 +169,6 @@ function extractNumbersFromString(inputString: string): number[] {
     }
 }
 
-export type Nodetype = "Person" | "Institution" | "Country";
 
 export enum NodeTypes {
     Person = "Person",

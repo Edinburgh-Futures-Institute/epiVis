@@ -14,6 +14,8 @@
       "name": "network",
       "nodes": "nodes",
       "links": "links",
+      "source_node": [ "id", "source" ],
+      "target_node": [ "id",  "target" ],
       "transform": [
         {
           "type": "metric",
@@ -96,6 +98,7 @@
       "mark": {
         "type": "symbol",
         "shape": "circle",
+        "size": 100,
         "tooltip": {
           "expression": "datum.id + ' (degree ' + datum.degree + ')' "
         }

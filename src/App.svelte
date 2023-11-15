@@ -17,7 +17,7 @@
         influenceNodes,
         influenceLinks,
         affIdToName,
-        authorsPapaersFilename,
+        authorsFilename,
         MODEL,
         affiliationsTable,
         NodeTypes
@@ -30,14 +30,12 @@
     import Circular from "./lib/Circular.svelte";
 
     let element: HTMLElement;
-    console.log("ELL ", element)
 
     // let allIstitutions = data.reduce((d0, d) => d0.concat(d["Affiliation of 1st author"].split(",").concat(d["Affiliation of 2nd author"].split(",")).concat(d["Affiliation of 3rd author"].split(",")).concat(d["Affiliation of Forth th author"].split(",").concat(d["Affiliation of Fifth th author"].split(",")))), [])
     // allIstitutions = [...new Set(allIstitutions)]
     let allInstitutions = [...new Set(affiliationsTable.map(aff => aff["Affiliation code"]))]
 
 
-    // let allStrains = [...new Set(data.map(d => d["AI strain"]))];
     let allStrains = [...new Set(data.map(d => d["AI strain"]).filter(d => !nullOrNS(d)))];
     let allModels = [...new Set(data.map(d => d [MODEL]))];
 
@@ -48,19 +46,6 @@
     let currentYearMax = 0;
 
     let selectedNodeTypes = Object.values(NodeTypes);
-    console.log(4345345, selectedNodeTypes)
-
-    // let allYears = []
-    // for (let d of data) {
-    //     let time = d["Period of study (in format for visualisations)"]
-    //     let [y1, y2] = time.split("-")
-    //     console.log(y1, y2)
-    //
-    //     if (!isNaN(y1) && y1 != "") allYears.push(parseInt(y1));
-    //     if (!isNaN(y2) && y2 != "") allYears.push(parseInt(y2));
-    // }
-    // let [yearMin, yearMax] = d3.extent(allYears);
-    // console.log(11111, yearMin, yearMax, allYears)
 
 
     $: filteredData = filterData(currentStrain, currentInstitution, currentModel, currentYearMin, currentYearMax);
@@ -169,7 +154,6 @@
         }
 
         dot += "}";
-        // console.log(dot)
         return dot
     }
 
@@ -188,23 +172,28 @@
             //     filename: papersFilename,
             // }, "vis3");
 
-            // console.log(influenceNodes, influenceLinks)
-            // let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
-            // let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
-            // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
-            //     nodes: `${influenceNodes2}`,
-            //     links: `${influenceLinks2}`,
-            // }, "vis4");
+            // console.log(333, influenceNodes, influenceLinks)
+            let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
+            let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
+
+            console.log(333, JSON.stringify(influenceNodes2))
+            let view = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
+                // nodes: JSON.stringify(influenceNodes2),
+                // links: JSON.stringify(influenceLinks2),
+                nodes: influenceNodes2,
+                links: influenceLinks2,
+            }, "vis4");
+
 
             // d3.select("#vis4")
             //     .graphviz()
             //     .renderDot(dotGraph());
 
-            d3.select("#vis4")
-                .graphviz()
-                .width(1800)
-                .height(1000)
-                .renderDot(dotGraphTime());
+            // d3.select("#vis4")
+            //     .graphviz()
+            //     .width(1800)
+            //     .height(1000)
+            //     .renderDot(dotGraphTime());
         }
     }
 
@@ -246,20 +235,20 @@
         <Timevis>
         </Timevis>
 
-        <div class="vis-container">
-            <div id="vis1" class="vis-component">
-            </div>
-        </div>
+<!--        <div class="vis-container">-->
+<!--            <div id="vis1" class="vis-component">-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <div class="vis-container">
-            <div id="vis2" class="vis-component">
-            </div>
-        </div>
+<!--        <div class="vis-container">-->
+<!--            <div id="vis2" class="vis-component">-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <div class="vis-container">
-            <div id="vis3" class="vis-component">
-            </div>
-        </div>
+<!--        <div class="vis-container">-->
+<!--            <div id="vis3" class="vis-component">-->
+<!--            </div>-->
+<!--        </div>-->
 
         <div class="vis-container">
             <div id="vis4" class="vis-component">

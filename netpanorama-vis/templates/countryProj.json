@@ -41,9 +41,9 @@
         }
       ],
       "transform": [
-        {"type": "filterNodes", "expression": "datum.id !== '' "},
-              {"type": "filterNodes", "expression": "datum.id !== ' ' "},
-              {"type": "filterNodes", "expression": "datum.id !== 'not specified' "},
+        {"type": "filterNodes2", "expression": "datum.id !== '' "},
+              {"type": "filterNodes2", "expression": "datum.id !== ' ' "},
+              {"type": "filterNodes2", "expression": "datum.id !== 'not specified' "},
         {
           "type": "project",
           "fieldName": "_type",
@@ -52,9 +52,10 @@
           "directed": false
         },
         {
-          "type": "metric",
+          "typed": "metric",
           "metric": "degree"
-        }
+        },
+        {"type": "filterNodes", "expression": "datum.id !== '' "}
       ]
     }
   ],
@@ -95,14 +96,16 @@
         "lightgreen",
         "red",
         "purple",
-        "orange"
+        "orange",
+        "brown"
       ],
       "domain": [
         "Person",
         "Paper",
         "Strain",
         "Wave",
-        "Institution"
+        "Institution",
+        "Country"
       ]
     },
     {
@@ -113,14 +116,16 @@
         "square",
         "diamond",
         "triangle",
-        "cross"
+        "cross",
+        "triangle-down"
       ],
       "domain": [
         "Person",
         "Paper",
         "Strain",
         "Wave",
-        "Institution"
+        "Institution",
+        "Country"
       ]
     }
   ],

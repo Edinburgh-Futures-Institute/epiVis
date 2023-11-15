@@ -2,7 +2,7 @@
     import * as d3 from "d3";
 
     import {onMount} from "svelte";
-    import {affiliationsFilename, authorsPapaersFilename, papersFilename} from "../dataLoader.ts";
+    import {affiliationsFilename, authorsFilename, papersFilename} from "../dataLoader.ts";
 
     // export let filteredData;
 
