@@ -2,7 +2,7 @@
     import * as Plot from "@observablehq/plot";
     import * as d3 from "d3"
 
-    import {data, MODEL, PUBYEAR} from "../dataLoader.ts";
+    import {data, MODEL, parseModels, PUBYEAR} from "../dataLoader.ts";
     import {onMount} from "svelte";
 
 
@@ -10,12 +10,18 @@
     let height = 1200;
     let overlap = 1;
 
+    let modelData = []
+    data.forEach(d => {
+        let models = parseModels(d[MODEL])
+        let time = d[PUBYEAR]
+
+        models.forEach(m => {
+            modelData.push({PUBYEAR: time, MODEL: m})
+        })
+    })
+
 
     onMount(() => {
-
-        // console.log(44, d3.groups(data, d => [d[MODEL], d[PUBYEAR]])
-        // console.log(44, d3.groups(data, d => [d[MODEL], d[PUBYEAR]]))
-
         let dataFiltered = data.filter(d => d[MODEL] && d[PUBYEAR])
 
         let group = d3.flatGroup(
@@ -29,11 +35,9 @@
             return {value: d[2].length, year: d[1], model: d[0]}
         })
 
-        console.log(111, group)
 
         // let modelGroup = d3.groups(group, d => d[0]);
         let modelGroup = d3.groups(group, d => d.model);
-        console.log(modelGroup)
 
         let ridgePlot = Plot.plot({
             height: 40 + new Set(dataFiltered.map(d => d[MODEL])).size * 50,
@@ -68,6 +72,7 @@
         // Remove for now
         // document.querySelector("#ridgeplot").append(ridgePlot)
 
+
         let heatmap = Plot.plot({
             // marginBottom: 80,
             width: 1200,
@@ -76,7 +81,8 @@
             y: {label: "Model Type"},
             color: {label: "Count", legend: true, scheme: "YlGnBu"},
             marks: [
-                Plot.cell(data, Plot.group({fill: "count"}, {x: PUBYEAR, y: MODEL}))
+                Plot.cell(modelData, Plot.group({fill: "count"}, {x: "PUBYEAR", y: "MODEL"}))
+                // Plot.cell(data, Plot.group({fill: "count"}, {x: PUBYEAR, y: MODEL}))
             ]
         })
 

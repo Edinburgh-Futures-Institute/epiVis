@@ -69,7 +69,7 @@ function createLinksTables() {
             models.forEach(model => {
                 institutionModelTable.push({
                     Model: model,
-                    institution: institution
+                    Institution: institution
                 })
             })
         }
@@ -77,12 +77,9 @@ function createLinksTables() {
 }
 
 
-function parseModels(models) {
+export function parseModels(models) {
     return models.split("(").map(d => d.split("").map(d2 => d2.split("+").map(d => d.split(",").map(d => d.split(")"))))).flat(Infinity).filter(m => !["", " ", "  ", "r", "e", "v", "i", "w"].includes(m));
 }
-
-
-
 
 export let allYears = []
 export let paperToTimes = {}
@@ -142,7 +139,6 @@ for (let d of data) {
     })
 }
 
-
 function parseDotNodeId(nodeId: string) {
     return nodeId.replace(",", "").replace(" ", "")
 }
@@ -176,7 +172,8 @@ export enum NodeTypes {
     Strain = "Strain",
     Wave = "Wave",
     Institution = "Institution",
-    Country = "Country"
+    Country = "Country",
+    Model = "Model"
 }
 
 export const nodeTypeColorScale = d3.scaleOrdinal(Object.values(NodeTypes), [
@@ -185,7 +182,8 @@ export const nodeTypeColorScale = d3.scaleOrdinal(Object.values(NodeTypes), [
     "red",
     "purple",
     "orange",
-    "brown"
+    "brown",
+    "yellow"
 ])
 
 

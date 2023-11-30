@@ -10,11 +10,15 @@
     let width: number = 1200;
     let height: number = 600;
 
+    let legendWidth = 200;
+    let legendHeight = 350;
+
     let institutions;
     let links;
 
     let element: HTMLElement;
     let svg: HTMLElement;
+    let svgLegend: SVGElement;
     let colorScale = d3.scaleLinear([0, 10], ["white", "blue"]);
 
     onMount(() => {
@@ -25,13 +29,12 @@
 
     function updateDimensions() {
         const rect = element.getBoundingClientRect();
-        width = rect.width;
+        width = rect.width - legendWidth - 200;
         height = rect.height;
     }
 
     async function getNetpanNet() {
         if (width && element) {
-            console.log("RENDERRR")
             // element.innerHTML = ""
 
             let viewer = await NetPanoramaTemplateViewer.render(specPath, {
@@ -43,18 +46,13 @@
             // institutions = viewer.state.networkAff.nodes
             institutions = viewer.state.network.nodes
             links = viewer.state.network.links
-            // console.log(22222, viewer.state.network)
-            // console.log(22222, viewer.state.network.nodes, links)
-            // console.log(22222, viewer.state.network)
         }
     }
 
     function render(width, height) {
         if (!svg) return;
-        console.log("RENDER ")
 
         institutions.sort((a, b) => {
-            // return a.data["Country "] - b.data["Country "]
             let countryCompare = a.data["Country "].localeCompare(b.data["Country "])
             if (countryCompare == 0) {
                 return a.data["Discipline"].localeCompare(b.data["Discipline"])
@@ -86,22 +84,31 @@
 
         const radialScale = d3.scaleLinear([0, pos], [0, Math.PI * 2])
 
-        const countryColorScale = d3.scaleOrdinal(d3.schemeAccent)
+        // const countryColorScale = d3.scaleOrdinal(d3.schemeAccent)
+        const countryColorScale = d3.scaleOrdinal(d3.schemeSet1)
 
         const distance = 300;
-
-
         const x = (d) => distance * Math.cos(radialScale(d.pos))
         const y = (d) => {
             return distance * Math.sin(radialScale(d.pos))
         }
 
+        const linksMark = d3.select(svg)
+            .selectAll(".link")
+            .data(links)
+            .join("line")
+            // .attr("d", d => line(d))
+            .attr("x1", d => x(d.source))
+            .attr("y1", d => y(d.source))
+            .attr("x2", d => x(d.target))
+            .attr("y2", d => y(d.target))
+            .attr("stroke", "black")
+            .classed("link", true)
+
         d3.select(svg)
             .selectAll(".node")
             .data(institutions)
             .join("circle")
-            // .attr("dy", "0.31em")
-            // .attr("cx", d => radialScale(d.pos) < Math.PI ? 6 : -6)
             .attr("cx", d => x(d))
             .attr("cy", d => y(d))
             .attr("r", 7)
@@ -120,12 +127,12 @@
             .append("g")
             .attr("fill", "#ccc")
             .attr("stroke", "#000")
-            .attr("stroke-width", "1.5px")
+            .attr("stroke-width", "1px")
             .attr("stroke-linejoin", "round")
             .selectAll("path")
             .data(pie(Object.values(countryToCount)))
             .join("path")
-            .attr("d", arc.cornerRadius(5));
+            .attr("d", arc.cornerRadius(6));
 
 
         d3.select(svg)
@@ -146,44 +153,41 @@
                 })
                 .attr("text-anchor", "middle")
 
-        const linksMark = d3.select(svg)
-            .selectAll(".link")
-            .data(links)
-            .join("line")
-            // .attr("d", d => line(d))
-            .attr("x1", d => x(d.source))
-            .attr("y1", d => y(d.source))
-            .attr("x2", d => x(d.target))
-            .attr("y2", d => y(d.target))
-            .attr("stroke", "black")
-            .classed("link", true)
 
-        // .attr("fill", d => countryColorScale(d.data["Country "]))
-        // .attr("transform", d => `rotate(${radialScale(d.pos) * 180 / Math.PI - 90}) translate(300,0)`)
+    // Add one dot in the legend for each name.
+        console.log(2323, countryColorScale.domain())
+    d3.select(svgLegend)
+        .selectAll("mydots")
+      .data(countryColorScale.domain())
+      .join("circle")
+        .attr("cx", 100)
+        .attr("cy", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+        .attr("r", 7)
+        .style("fill", function(d){ return countryColorScale(d)})
 
-        // let nodesById = new Map(institutions.map(node => [node.id, node]))
-        //
-        // let nodesp = new Map(
-        //     links.map(
-        //         (d) => {
-        //             let source = d.source
-        //             let targets = [d.target]
-        //             let lado = d.parte
-        //             let orden = d.num_edge
-        //             return [source, {id: source, targetIds: targets, group: "main", order: orden}]
-        //         }
-        //     )
-        // )
-        //
-        // let data = {name: "patterns", children: [...nodesp.values()]}
+    // Add one dot in the legend for each name.
+    d3.select(svgLegend)
+    .selectAll("mylabels")
+      .data(countryColorScale.domain())
+      .join("text")
+        .attr("x", 120)
+        .attr("y", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
+        .style("fill", function(d){ return countryColorScale(d)})
+        .text(function(d){ return d})
+        .attr("text-anchor", "left")
+        .style("alignment-baseline", "middle")
     }
 
-    // $: render(width, height)
+
+
+        // $: render(width, height)
 </script>
 
-<div bind:this={element} on:resize={updateDimensions}>
+<div id="circular-div" bind:this={element} on:resize={updateDimensions}>
     <svg bind:this={svg} width={width} height={width} viewBox="{-width / 2}, {-width / 2}, {width}, {width}">
         <!--    <svg bind:this={svg} width={width} height={width}>-->
+    </svg>
+    <svg  bind:this={svgLegend} width={legendWidth} height={legendHeight}>
     </svg>
 </div>
 <div id="affiliationNet">
@@ -191,12 +195,19 @@
 
 
 <style>
-    div {
+    #circular-div {
         /*flex-grow: 1;*/
         /*flex: 1;*/
         /*width: 0;*/
-        width: 1000px;
-        height: 1000px;
+        /*width: 1000px;*/
+        /*height: 1000px;*/
+        justify-content: center;
+        align-items: center;
+    }
+
+    svg {
+        display: inline-block;
+        vertical-align: top;
     }
 </style>
 

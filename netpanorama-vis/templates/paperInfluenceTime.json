@@ -28,7 +28,7 @@
     {
       "name": "forcelayout",
       "network": "network",
-      "type": "d3-force"
+      "type": "graphviz"
     }
   ],
   "scales": [

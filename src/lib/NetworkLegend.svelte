@@ -30,6 +30,8 @@
                         return d3.symbol().type(d3.symbolCross).size(legendSize)(d);
                     } else if (d == NodeTypes.Country) {
                         return d3.symbol().type(d3.symbolTriangle).size(legendSize)(d);
+                    } else if (d == NodeTypes.Model) {
+                        return d3.symbol().type(d3.symbolStar).size(legendSize)(d);
                     }
                 })
                 .style("fill", function (d) {

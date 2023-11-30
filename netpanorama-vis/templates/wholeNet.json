@@ -165,7 +165,8 @@
         "red",
         "purple",
         "orange",
-        "brown"
+        "brown",
+        "yellow"
       ],
       "domain": [
         "Person",
@@ -173,7 +174,8 @@
         "Strain",
         "Wave",
         "Institution",
-        "Country"
+        "Country",
+        "Model"
       ]
     },
     {
@@ -185,7 +187,8 @@
         "diamond",
         "triangle",
         "cross",
-        "triangle-down"
+        "triangle-down",
+        "diamond"
       ],
       "domain": [
         "Person",
@@ -193,7 +196,8 @@
         "Strain",
         "Wave",
         "Institution",
-        "Country"
+        "Country",
+        "Model"
       ]
     }
   ],

@@ -28,6 +28,7 @@
     import Timevis from "./lib/Timevis.svelte";
     import NetworkLegend from "./lib/NetworkLegend.svelte";
     import Circular from "./lib/Circular.svelte";
+    import Heatmap from "./lib/Heatmap.svelte";
 
     let element: HTMLElement;
 
@@ -54,9 +55,6 @@
         let filtered: any[] = data
 
         if (currentInstitution) {
-
-            // console.log(33332, currentInstitution, d["Affiliation of 1st author"])
-
             filtered = filtered.filter(d => d["Affiliation of 1st author"] == currentInstitution);
         }
 
@@ -113,7 +111,6 @@
         })
 
         dot += "}";
-        // console.log(dot)
         return dot
     }
 
@@ -177,23 +174,21 @@
             let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
 
             console.log(333, JSON.stringify(influenceNodes2))
-            let view = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
-                // nodes: JSON.stringify(influenceNodes2),
-                // links: JSON.stringify(influenceLinks2),
-                nodes: influenceNodes2,
-                links: influenceLinks2,
-            }, "vis4");
+            // let view = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
+            //     nodes: influenceNodes,
+            //     links: influenceLinks,
+            // }, "vis4");
 
 
             // d3.select("#vis4")
             //     .graphviz()
             //     .renderDot(dotGraph());
 
-            // d3.select("#vis4")
-            //     .graphviz()
-            //     .width(1800)
-            //     .height(1000)
-            //     .renderDot(dotGraphTime());
+            d3.select("#vis4")
+                .graphviz()
+                .width(1800)
+                .height(1000)
+                .renderDot(dotGraphTime());
         }
     }
 
@@ -224,13 +219,14 @@
             </NetworkLegend>
         </div>
 
-
-
         <Table {filteredData}>
         </Table>
 
         <Circular>
         </Circular>
+
+<!--        <Heatmap>-->
+<!--        </Heatmap>-->
 
         <Timevis>
         </Timevis>

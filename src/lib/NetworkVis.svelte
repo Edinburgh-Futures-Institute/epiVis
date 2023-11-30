@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {authorsFilename, NodeTypes, papersFilename} from "../dataLoader.ts";
+    import {authorsFilename, institutionModelTable, NodeTypes, papersFilename} from "../dataLoader.ts";
     import {onMount} from "svelte";
 
     // export let data;
@@ -74,8 +74,12 @@
                     width: width,
                     height: height
                 }, "vis");
-
-                console.log(viewer.state.network.links)
+            } else if (networkName == "Models+Institutions") {
+                let viewer = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/institutionModel.json", {
+                    data: institutionModelTable,
+                    width: width,
+                    height: height
+                }, "vis");
             }
         }
     }
@@ -94,6 +98,7 @@
         <button class="tablinks" on:click={selectTab}>Full</button>
         <button class="tablinks" on:click={selectTab}>People</button>
         <button class="tablinks" on:click={selectTab}>Countries</button>
+        <button class="tablinks" on:click={selectTab}>Models+Institutions</button>
     </div>
     <div id="vis" bind:this={element} on:resize={updateDimensions}>
     </div>
