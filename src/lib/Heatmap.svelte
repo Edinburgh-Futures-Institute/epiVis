@@ -7,7 +7,7 @@
     // export let filteredData;
 
     let specPath = "../netpanorama-vis/templates/institutionProj.json"
-    let width: number = 1200;
+    let width: number = 600;
     let height: number = 600;
 
     const c1 = "Assumptions mentioned (Yes/No)"
@@ -22,13 +22,12 @@
     const c10 = "Overall reporting (Sufficient/Insufficient)"
     const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
-
     let element: HTMLElement;
     let svg: SVGElement;
     let svgLegend: SVGElement;
 
     onMount(() => {
-        render()
+        render(width, height)
     })
 
     function updateDimensions() {
@@ -47,9 +46,9 @@
             .domain(allCols)
             .padding(0.01);
 
-        // svg.append("g")
-        //     .attr("transform", "translate(0," + height + ")")
-        //     .call(d3.axisBottom(x))
+        d3.select(svg).append("g")
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(x))
 
 // Build X scales and axis:
         console.log((data.map(d => d["Epic Code "])))
@@ -72,13 +71,22 @@
              .data(d => allCols.map(col => [d["Epic Code "], d[col], col]))
              .join("rect")
           .attr("x", function(d) {
-              console.log(d[2], x(d[2]))
+              // console.log(d[2], x(d[2]))
               return x(d[2]) })
           .attr("y", function(d) { return y(d[0]) })
           .attr("width", x.bandwidth() )
           .attr("height", y.bandwidth() )
           // .style("fill", function(d) { return myColor(d.value)} )
-          .style("fill", function(d) { return "black"} )
+          .style("fill", function(d) {
+              console.log(d)
+              if (d[1] == "Y" || d[1] == "P") {
+                  return "#a6d96a"
+              } else if (d[1] == "N") {
+                  return "#f46d43"
+              } else if (d[1] == "M") {
+                  return "#fee08b"
+              }
+          } )
 
         // d3.select(svg)
         //  selectAll("rect")

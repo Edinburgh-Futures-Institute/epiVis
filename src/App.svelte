@@ -38,7 +38,9 @@
     let allInstitutions = [...new Set(affiliationsTable.map(aff => aff["Affiliation code"]))]
 
 
-    let allStrains = [...new Set(data.map(d => d["AI strain"]).filter(d => !nullOrNS(d)))];
+    // let allStrains = [...new Set(data.map(d => d["AI strain"]).filter(d => !nullOrNS(d)))];
+    let allStrains = [...new Set(data.map(d => d["AI strain"]).flat().filter(d => !nullOrNS(d)))];
+
     let allModels = [...new Set(data.map(d => d [MODEL]))];
 
     let currentStrain;
@@ -60,7 +62,7 @@
         }
 
         if (currentStrain) {
-            filtered = filtered.filter(d => d["AI strain"] == currentStrain);
+            filtered = filtered.filter(d => d["AI strain"].includes(currentStrain));
         }
 
         if (currentModel) {
@@ -217,11 +219,11 @@
         <Table {filteredData}>
         </Table>
 
+        <Heatmap>
+        </Heatmap>
+
         <Circular>
         </Circular>
-
-<!--        <Heatmap>-->
-<!--        </Heatmap>-->
 
         <Timevis>
         </Timevis>

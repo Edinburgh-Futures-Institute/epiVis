@@ -27,7 +27,7 @@ let timeCol = "Period of study (in format for visualisations; yellow= if 2020 fo
 
 export let paperIdToPaper = {};
 export let data = await d3.csv(`./data/${papersFilename}`, d => {
-    d["AI strain"] = trim(d["AI strain"]);
+    d["AI strain"] = parseStrains(d["AI strain"])
     paperIdToPaper[d["Epic Code "]] = d;
     return d
 })
@@ -102,6 +102,11 @@ function createLinksTables() {
 
 export function parseModels(models) {
     return models.split("(").map(d => d.split("").map(d2 => d2.split("+").map(d => d.split(",").map(d => d.split(")"))))).flat(Infinity).filter(m => !["", " ", "  ", "r", "e", "v", "i", "w"].includes(m));
+}
+
+export function parseStrains(strains) {
+    let strainsArray: Array<string> = strains.split(";").map(s => s.trim());
+    return strainsArray;
 }
 
 export let allYears = []
