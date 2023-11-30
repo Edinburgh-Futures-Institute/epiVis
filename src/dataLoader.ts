@@ -1,10 +1,5 @@
 import * as d3 from "d3"
 
-// export let papersFilename = "papers6Oct2.csv";
-// export let affiliationsFilename = "affiliations6Oct.csv";
-// export let authorsPapaersFilename = "authors6Oct.csv";
-
-
 export let papersFilename = "papers23Oct.csv";
 export let affiliationsFilename = "affiliations23Oct.csv";
 export let authorsFilename = "authors23Oct.csv";
@@ -39,10 +34,13 @@ export let data = await d3.csv(`./data/${papersFilename}`, d => {
 
 
 export let affIdToName = {};
+export let affIdToCountry = {};
 export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d => {
     affIdToName[d["Affiliation code"]] = d["Afilliation name -"]
+    affIdToCountry[d["Affiliation code"]] = d["Country "]
     return d
 })
+
 
 export let peopleTable = await d3.csv(`./data/${authorsFilename}`, d => {
     return d
@@ -51,6 +49,10 @@ export let peopleTable = await d3.csv(`./data/${authorsFilename}`, d => {
 
 
 export let institutionModelTable = [];
+export let countryToCountryTable = [];
+
+export let paperIdToAuthors: Object = {};
+export let authorToCountry: Object = {};
 
 createLinksTables();
 
@@ -59,9 +61,19 @@ function createLinksTables() {
         let paperId = author["Paper associated "];
         let institution = author["Affiliation code 1"];
 
-        // console.log(22, paper, paperIdToPaper)
         let paper = paperIdToPaper[paperId.toUpperCase()];
         let models = paper ? paper[MODEL] : null;
+
+        let authorName = author.Author;
+
+        let authorCountry = affIdToCountry[institution];
+        authorToCountry[authorName] = authorCountry;
+
+        if (paperIdToAuthors[paperId]) {
+            paperIdToAuthors[paperId].push(authorName);
+        } else {
+            paperIdToAuthors[paperId] = [authorName];
+        }
 
         if (models) {
             models = parseModels(models);
@@ -74,6 +86,17 @@ function createLinksTables() {
             })
         }
     })
+
+    // This does not create link between the same country (such as France > France)
+    for (let [paper, authors] of Object.entries(paperIdToAuthors)) {
+        let countries = authors.map(a => authorToCountry[a])
+        countries = [...new Set(countries)]
+        for (let i = 0; i < countries.length; i++) {
+            for (let j = i + 1; j < countries.length; j++) {
+                countryToCountryTable.push({Country1: countries[i], Country2: countries[j]})
+            }
+        }
+    }
 }
 
 
@@ -185,6 +208,19 @@ export const nodeTypeColorScale = d3.scaleOrdinal(Object.values(NodeTypes), [
     "brown",
     "yellow"
 ])
+
+
+export const MODELS: Record<number, string> = {
+    1: "Machine Learning",
+    2: "Compartmental",
+    3: "Stochastic - Bayesian",
+    4: "Mixed Approaches",
+    5: "Other Statistical (non stochastic)",
+    6: "Qualitative",
+    7: "Phylogenetic",
+    8: "Simulation",
+    9: "Experiment"
+}
 
 
 export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")

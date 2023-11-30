@@ -4,14 +4,8 @@
     export let allValues: string[];
     // export let table: Record<any, any>;
     export let table;
-
-    // console.log(table);
-    // console.log(allValues);
 </script>
 
-<!--<button on:click={increment}>-->
-<!--  count is {count}-->
-<!--</button>-->
 
 <form>
     <label for="cars">{name}:</label>

@@ -15,6 +15,10 @@
       "format": {
         "type": "csv"
       }
+    },
+    {
+      "name": "countryLinks",
+      "values": "[links]"
     }
   ],
   "networks": [
@@ -32,9 +36,27 @@
               },
               "source_node_type": "Country",
               "target_id": {
-                "field": "Epidemic waves"
+                "field": "AI strain"
               },
-              "target_node_type": "Wave",
+              "target_node_type": "Strain",
+              "data": []
+            }
+          ]
+        },
+        {
+          "data": "countryLinks",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Country1"
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "Country2"
+              },
+              "target_node_type": "Country",
               "data": []
             }
           ]
@@ -48,7 +70,66 @@
           "type": "project",
           "fieldName": "_type",
           "remainingNodeType": "Country",
-          "removedNodeType": "Wave",
+          "removedNodeType": "Strain",
+          "directed": false
+        },
+        {
+          "typed": "metric",
+          "metric": "degree"
+        },
+        {"type": "filterNodes", "expression": "datum.id !== '' "}
+      ]
+    },
+
+    {
+      "name": "network2",
+      "parts": [
+        {
+          "data": "data",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Region of study "
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "AI strain"
+              },
+              "target_node_type": "Strain",
+              "data": []
+            }
+          ]
+        },
+        {
+          "data": "countryLinks",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Country1"
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "Country2"
+              },
+              "target_node_type": "Country",
+              "data": []
+            }
+          ]
+        }
+      ],
+      "transform": [
+        {"type": "filterNodes2", "expression": "datum.id !== '' "},
+              {"type": "filterNodes2", "expression": "datum.id !== ' ' "},
+              {"type": "filterNodes2", "expression": "datum.id !== 'not specified' "},
+        {
+          "type": "project",
+          "fieldName": "_type",
+          "remainingNodeType": "Country",
+          "removedNodeType": "Strain",
           "directed": false
         },
         {
@@ -58,6 +139,7 @@
         {"type": "filterNodes", "expression": "datum.id !== '' "}
       ]
     }
+
   ],
   "layouts": [
     {

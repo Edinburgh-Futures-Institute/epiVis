@@ -1,5 +1,11 @@
 <script lang="ts">
-    import {authorsFilename, institutionModelTable, NodeTypes, papersFilename} from "../dataLoader.ts";
+    import {
+        authorsFilename,
+        countryToCountryTable,
+        institutionModelTable,
+        NodeTypes,
+        papersFilename
+    } from "../dataLoader.ts";
     import {onMount} from "svelte";
 
     // export let data;
@@ -72,8 +78,12 @@
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width,
-                    height: height
+                    height: height,
+                    links: countryToCountryTable
                 }, "vis");
+
+                console.log(333, countryToCountryTable)
+                console.log(333, viewer.state.network )
             } else if (networkName == "Models+Institutions") {
                 let viewer = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/institutionModel.json", {
                     data: institutionModelTable,

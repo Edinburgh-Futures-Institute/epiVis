@@ -19,6 +19,7 @@
         affIdToName,
         authorsFilename,
         MODEL,
+        MODELS,
         affiliationsTable,
         NodeTypes
     } from "./dataLoader.ts"
@@ -71,8 +72,6 @@
                 if (!paperToTimes[d["Epic Code "]]) return false;
 
                 let intervals = paperToTimes[d["Epic Code "]];
-
-                // console.log(intervals, paperToTimes, d, paperToTimes[d["Epic Code "])
 
                 if (currentYearMin && intervals[0][0] < currentYearMin) return false;
                 if (currentYearMax && intervals[intervals.length - 1][1] > currentYearMax) return false;
@@ -169,11 +168,7 @@
             //     filename: papersFilename,
             // }, "vis3");
 
-            // console.log(333, influenceNodes, influenceLinks)
-            let influenceNodes2 = [{id: 1}, {id: 2}, {id: 3}]
-            let influenceLinks2 = [{source: 1, target: 2}, {source: 3, target: 2}]
-
-            console.log(333, JSON.stringify(influenceNodes2))
+            // console.log(333, JSON.stringify(influenceNodes2))
             // let view = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
             //     nodes: influenceNodes,
             //     links: influenceLinks,
@@ -203,7 +198,7 @@
         <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allInstitutions} table={affIdToName}>
 <!--        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}>-->
         </Dropdown>
-        <Dropdown name="Model Types" bind:value={currentModel} allValues={allModels} table={undefined}>
+        <Dropdown name="Model Types" bind:value={currentModel} allValues={Object.keys(MODELS)} table={MODELS}>
         </Dropdown>
         <Time {filteredData} {yearMin} {yearMax} bind:currentYearMin={currentYearMin} bind:currentYearMax={currentYearMax}>
         </Time>

@@ -5,7 +5,6 @@
     import {data, MODEL, parseModels, PUBYEAR} from "../dataLoader.ts";
     import {onMount} from "svelte";
 
-
     let width = 1000;
     let height = 1200;
     let overlap = 1;
@@ -14,12 +13,10 @@
     data.forEach(d => {
         let models = parseModels(d[MODEL])
         let time = d[PUBYEAR]
-
         models.forEach(m => {
             modelData.push({PUBYEAR: time, MODEL: m})
         })
     })
-
 
     onMount(() => {
         let dataFiltered = data.filter(d => d[MODEL] && d[PUBYEAR])
