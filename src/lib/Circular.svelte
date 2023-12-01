@@ -93,6 +93,7 @@
             return distance * Math.sin(radialScale(d.pos))
         }
 
+        //  Lines
         // const linksMark = d3.select(svg)
         //     .selectAll(".link")
         //     .data(links)
@@ -127,7 +128,6 @@
                 let yI = 0 - height + height * distance / 300;
 
                 return `M ${x1} ${y1} Q ${xI} ${yI} ${x2} ${y2}`
-                // return `M ${x1} ${y1} Q ${0} ${0} ${x2} ${y2}`
             })
             .attr("stroke", "black")
             .attr("fill", "none")
@@ -174,7 +174,6 @@
 
             d3.selectAll(".country")
                 .style("opacity", d2 => {
-                    console.log(33, d.data.Country, d2)
                     if (d.data["Country "] == d2.data[0]) {
                         return 1
                     }

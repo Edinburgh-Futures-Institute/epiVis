@@ -3,49 +3,76 @@
     import {MODEL, PURPOSE, SPREAD, STAGE} from "../dataLoader.ts";
     // import { someData } from './data'
 
+    import DataTable from 'datatables.net-dt';
+    import 'datatables.net-dt/css/jquery.dataTables.min.css';
+
+    import {onMount} from "svelte";
+
     export let filteredData;
 
-    let handler, rows
-    $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
-    $: rows = handler.getRows()
+    // let handler, rows
+    // $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
+    // $: rows = handler.getRows()
+
+    onMount(() => {
+        let table = new DataTable('#myTable', {
+            columns: [
+                {title: 'Title', data: "Title "},
+                {title: 'Year', data: "Publication Year "},
+                {title: 'AI Strain', data: "AI strain"},
+                {title: 'Epidemic waves', data: "Epidemic waves"},
+                {title: 'Models', data: MODEL},
+                {title: 'Purpose', data: PURPOSE},
+                {title: 'Spread', data: SPREAD},
+                {title: 'Stage', data: STAGE},
+                {title: 'Hosts', data: "Hosts "},
+            ],
+            data: filteredData
+        });
+    })
 </script>
 
-<div>
-    <table>
-        <thead>
-        <tr>
-            <th>Title</th>
-            <th>Year</th>
-            <th>First Author</th>
-<!--            <th>Second Author</th>-->
-<!--            <th>Third Author</th>-->
-            <th>AI strain</th>
-            <th>Epidemic wave</th>
-            <th>Model type</th>
-            <th>Purpose</th>
-            <th>Spread across</th>
-            <th>Stage</th>
-            <th>Hosts</th>
-        </tr>
-        </thead>
-        <tbody>
-        {#each $rows as row}
-            <tr>
-                <td>{row["Title "]}</td>
-                <td>{row["Publication Year "]}</td>
-                <td>{row["First Author"]}
-                <td>{row["AI strain"]}</td>
-                <td>{row["Epidemic waves"]}</td>
-                <td>{row[MODEL]}</td>
-                <td>{row[PURPOSE]}</td>
-                <td>{row[SPREAD]}</td>
-                <td>{row[STAGE]}</td>
-                <td>{row["Hosts "]}</td>
-            </tr>
-        {/each}
-        </tbody>
-    </table>
-</div>
+
+<table id="myTable">
+</table>
+
+<!--<div>-->
+<!--    <table>-->
+<!--        <thead>-->
+<!--        <tr>-->
+<!--            <th>Title</th>-->
+<!--            <th>Year</th>-->
+<!--            <th>First Author</th>-->
+<!--            &lt;!&ndash;            <th>Second Author</th>&ndash;&gt;-->
+<!--            &lt;!&ndash;            <th>Third Author</th>&ndash;&gt;-->
+<!--            <th>AI strain</th>-->
+<!--            <th>Epidemic wave</th>-->
+<!--            <th>Model type</th>-->
+<!--            <th>Purpose</th>-->
+<!--            <th>Spread across</th>-->
+<!--            <th>Stage</th>-->
+<!--            <th>Hosts</th>-->
+<!--        </tr>-->
+<!--        </thead>-->
+<!--        <tbody>-->
+<!--        {#each $rows as row}-->
+<!--            <tr>-->
+<!--                <td>{row["Title "]}</td>-->
+<!--                <td>{row["Publication Year "]}</td>-->
+<!--                <td>{row["First Author"]}-->
+<!--                <td>{row["AI strain"]}</td>-->
+<!--                <td>{row["Epidemic waves"]}</td>-->
+<!--                <td>{row[MODEL]}</td>-->
+<!--                <td>{row[PURPOSE]}</td>-->
+<!--                <td>{row[SPREAD]}</td>-->
+<!--                <td>{row[STAGE]}</td>-->
+<!--                <td>{row["Hosts "]}</td>-->
+<!--            </tr>-->
+<!--        {/each}-->
+<!--        </tbody>-->
+<!--    </table>-->
+<!--</div>-->
+
 
 <style>
     div {
