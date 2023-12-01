@@ -7,8 +7,6 @@
 
     import {
         data,
-        papersFilename,
-        affiliationsFilename,
         nullOrNS,
         allYears,
         yearMin,
@@ -17,7 +15,6 @@
         influenceNodes,
         influenceLinks,
         affIdToName,
-        authorsFilename,
         MODEL,
         MODELS,
         affiliationsTable,
@@ -193,7 +190,6 @@
 </script>
 
 <main bind:this={element}>
-
     <div id="control">
         <Dropdown name="Strains" bind:value={currentStrain} allValues={allStrains} table={undefined}>
         </Dropdown>
@@ -259,6 +255,8 @@
         /*width: 100vw;*/
         align-items: center;
         justify-content: center;
+        /*margin-left: 300px;*/
+        /*margin-right: 300px;*/
     }
 
     #control {
@@ -277,16 +275,24 @@
 
     #main-div {
         /*margin: 300px;*/
+        display: flex;
+        flex-direction: column;
+        /*margin-right: 10%;*/
+        /*margin-left: 300px;*/
+        /*width: 100vw;*/
+        align-items: center;
+        justify-content: center;
     }
 
     #vis-div {
         display: flex;
         flex-direction: row;
+        width: 95vw;
         /*flex-grow: 1;*/
         /*width: 100vw;*/
 
         /*TODO check if doable on the main*/
-        margin: 3%;
+        /*margin: 3%;*/
     }
 
 

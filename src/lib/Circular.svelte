@@ -23,7 +23,7 @@
 
     onMount(() => {
         getNetpanNet().then(() => {
-            render();
+            render(width, height);
         })
     })
 
@@ -93,16 +93,44 @@
             return distance * Math.sin(radialScale(d.pos))
         }
 
+        // const linksMark = d3.select(svg)
+        //     .selectAll(".link")
+        //     .data(links)
+        //     .join("line")
+        //     // .attr("d", d => line(d))
+        //     .attr("x1", d => x(d.source))
+        //     .attr("y1", d => y(d.source))
+        //     .attr("x2", d => x(d.target))
+        //     .attr("y2", d => y(d.target))
+        //     .attr("stroke", "black")
+        //     .classed("link", true)
+
         const linksMark = d3.select(svg)
             .selectAll(".link")
             .data(links)
-            .join("line")
-            // .attr("d", d => line(d))
-            .attr("x1", d => x(d.source))
-            .attr("y1", d => y(d.source))
-            .attr("x2", d => x(d.target))
-            .attr("y2", d => y(d.target))
+            .join("path")
+            .attr("d", d => {
+                let x1 = x(d.source);
+                let x2 = x(d.target);
+                let y1 = y(d.source);
+                let y2 = y(d.target);
+
+                const distance = Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+                let xMid = (x2 + x1)/2
+                let yMid = (y2 + y1)/2
+
+                let width = (0 - xMid)
+                let height = (0 - yMid)
+
+                let xI = 0 - width + width * distance / 300;
+                let yI = 0 - height + height * distance / 300;
+
+                return `M ${x1} ${y1} Q ${xI} ${yI} ${x2} ${y2}`
+                // return `M ${x1} ${y1} Q ${0} ${0} ${x2} ${y2}`
+            })
             .attr("stroke", "black")
+            .attr("fill", "none")
             .classed("link", true)
 
         d3.select(svg)
@@ -117,10 +145,55 @@
             // .attr("fill", d => "none")
             .attr("stroke", "black")
             .classed("node", true)
-        // .attr("transform", d => `rotate(${radialScale(d.pos) * 180 / Math.PI}) translate(300,0)`)
+            .on("mouseover", mouseOver)
+            .on("mouseleave", mouseLeave)
+
+        function mouseOver(e, d) {
+            d3.selectAll(".node")
+                .style("opacity", .5)
+
+            d3.select(this)
+                .style("opacity", 1)
+
+            d3.selectAll(".nodeText")
+                .attr("display", dtext => {
+                    if (d.id == dtext.id) {
+                        return ""
+                    }
+                    return "none"
+                })
+
+            // TODO: make it faste by precomputing neighbors
+            d3.selectAll(".link")
+                .style("opacity", link => {
+                    if (link.source.id != d.id && link.target.id != d.id) {
+                        return 0.2;
+                    }
+                    return 1;
+                })
+
+            d3.selectAll(".country")
+                .style("opacity", d2 => {
+                    console.log(33, d.data.Country, d2)
+                    if (d.data["Country "] == d2.data[0]) {
+                        return 1
+                    }
+                    return 0.5
+                })
+        }
+
+        function mouseLeave(e, d) {
+            d3.selectAll(".node")
+                .style("opacity", 1)
+
+            d3.selectAll(".link")
+                .style("opacity", link => {
+                    return 1
+                })
+        }
 
 
-        const pie = d3.pie().padAngle(0.05).sort(null).sortValues(null).startAngle(Math.PI / 2).endAngle(3 * Math.PI);
+        const pie = d3.pie().padAngle(0.05).sort(null).sortValues(null).startAngle(Math.PI / 2).endAngle(3 * Math.PI).value(d => d[1]);
         const arc = d3.arc().innerRadius(distance + 40).outerRadius(distance + 40 + 50);
 
         const countries = d3.select(svg)
@@ -129,65 +202,148 @@
             .attr("stroke", "#000")
             .attr("stroke-width", "1px")
             .attr("stroke-linejoin", "round")
-            .selectAll("path")
-            .data(pie(Object.values(countryToCount)))
+            .selectAll(".country")
+            .data(pie(Object.entries(countryToCount)))
             .join("path")
-            .attr("d", arc.cornerRadius(6));
-
+            .attr("d", arc.cornerRadius(6))
+            .classed("country", true)
+            .on("mouseover", mouseOverCountry)
+            .on("mouseleave", mouseLeaveCountry)
 
         d3.select(svg)
-            .selectAll("text")
-            .data(pie(Object.values(countryToCount)))
+            .selectAll("textCountry")
+            // .data(pie(Object.values(countryToCount)))
+            .data(pie(Object.entries(countryToCount)))
+            .join("text")
+            .attr("transform", (d, i) => {
+                return `translate(${arc.centroid(d)})`
+            })
+            .attr("x", (d, i) => {
+                return 0;
+            })
+            .attr("y", d => {
+                return 0
+            })
+            .text((d, i) => {
+                return Object.keys(countryToCount)[i]
+            })
+            .attr("text-anchor", "middle")
+            .classed("textCountry", true)
+            .on("mouseover", mouseOverCountry)
+            .on("mouseleave", mouseLeaveCountry)
+
+
+        function mouseOverCountry(e, d) {
+            d3.selectAll(".node")
+                .style("opacity", .5)
+            // d3.selectAll(".country")
+            //     .style("opacity", .5)
+
+            d3.selectAll(".country")
+                .style("opacity", d2 => {
+                    if (d.index == d2.index) {
+                        return 1
+                    }
+                    return 0.5
+                })
+
+            d3.selectAll(".textCountry")
+                .style("opacity", dtext => {
+                    if (d.index == dtext.index) {
+                        return 1
+                    }
+                    return 0.5
+                })
+
+            d3.selectAll(".nodeText")
+                .attr("display", dtext => {
+                    if (d.id == dtext.id) {
+                        return ""
+                    }
+                    return "none"
+                })
+
+            // TODO: make it faste by precomputing neighbors
+            d3.selectAll(".link")
+                .style("opacity", link => {
+                    if (link.source.id != d.id && link.target.id != d.id) {
+                        return 0.2;
+                    }
+                    return 1;
+                })
+        }
+
+        function mouseLeaveCountry(e, d) {
+            d3.selectAll(".node")
+                .style("opacity", 1)
+
+            d3.selectAll(".link")
+                .style("opacity", link => {
+                    return 1
+                })
+        }
+
+
+
+        // Institutions labels
+        d3.select(svg)
+            .selectAll(".nodeText")
+            .data(institutions)
+            .join("text")
+            .attr("x", d => x(d) + 8)
+            .attr("y", d => y(d) - 10)
+            .text(d => d.id)
+            .classed("nodeText", true)
+            .attr("display", "none")
+            .on("mouseover", mouseOver)
+            .on("mouseleave", mouseLeave)
+
+
+        renderLegend();
+        function renderLegend() {
+            // Add one dot in the legend for each name.
+            d3.select(svgLegend)
+                .selectAll("mydots")
+                .data(countryColorScale.domain())
+                .join("circle")
+                .attr("cx", 100)
+                .attr("cy", function (d, i) {
+                    return 100 + i * 25
+                }) // 100 is where the first dot appears. 25 is the distance between dots
+                .attr("r", 7)
+                .style("fill", function (d) {
+                    return countryColorScale(d)
+                })
+
+            // Add one dot in the legend for each name.
+            d3.select(svgLegend)
+                .selectAll("mylabels")
+                .data(countryColorScale.domain())
                 .join("text")
-                .attr("transform", (d, i) => {
-                    return `translate(${arc.centroid(d)})`
+                .attr("x", 120)
+                .attr("y", function (d, i) {
+                    return 100 + i * 25
+                }) // 100 is where the first dot appears. 25 is the distance between dots
+                .style("fill", function (d) {
+                    return countryColorScale(d)
                 })
-                .attr("x", (d, i) => {
-                    return 0;
+                .text(function (d) {
+                    return d
                 })
-                .attr("y", d => {
-                    return 0
-                })
-                .text((d, i) => {
-                    return Object.keys(countryToCount)[i]
-                })
-                .attr("text-anchor", "middle")
-
-
-    // Add one dot in the legend for each name.
-        console.log(2323, countryColorScale.domain())
-    d3.select(svgLegend)
-        .selectAll("mydots")
-      .data(countryColorScale.domain())
-      .join("circle")
-        .attr("cx", 100)
-        .attr("cy", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
-        .attr("r", 7)
-        .style("fill", function(d){ return countryColorScale(d)})
-
-    // Add one dot in the legend for each name.
-    d3.select(svgLegend)
-    .selectAll("mylabels")
-      .data(countryColorScale.domain())
-      .join("text")
-        .attr("x", 120)
-        .attr("y", function(d,i){ return 100 + i*25}) // 100 is where the first dot appears. 25 is the distance between dots
-        .style("fill", function(d){ return countryColorScale(d)})
-        .text(function(d){ return d})
-        .attr("text-anchor", "left")
-        .style("alignment-baseline", "middle")
+                .attr("text-anchor", "left")
+                .style("alignment-baseline", "middle")
+        }
     }
 
 
-
-        // $: render(width, height)
+    $: render(width, height)
 </script>
 
 <div id="circular-div" bind:this={element} on:resize={updateDimensions}>
     <svg bind:this={svg} width={width} height={width} viewBox="{-width / 2}, {-width / 2}, {width}, {width}">
         <!--    <svg bind:this={svg} width={width} height={width}>-->
     </svg>
-    <svg  bind:this={svgLegend} width={legendWidth} height={legendHeight}>
+    <svg bind:this={svgLegend} width={legendWidth} height={legendHeight}>
     </svg>
 </div>
 <div id="affiliationNet">

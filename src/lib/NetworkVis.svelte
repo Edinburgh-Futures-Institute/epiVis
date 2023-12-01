@@ -16,7 +16,7 @@
     let selectedNet = "Full";
     // let selectedNet = "Countries";
     let width: number;
-    let height: number = 600;
+    let height: number;
 
     onMount(() => {
         updateDimensions();
@@ -55,16 +55,16 @@
     // }
 
     async function render(width, height, networkName) {
-        // console.log("NET DIM ", width, height)
-        if (width) {
+        if (width && height) {
             element.innerHTML = ""
+            let margin = 100;
 
             if (networkName == "Full") {
                 NetPanoramaTemplateViewer.render(specPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
-                    width: width,
-                    height: height
+                    width: width - margin,
+                    height: height - margin
                 }, "vis");
             } else if (networkName == "People") {
                 NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
@@ -82,8 +82,6 @@
                     links: countryToCountryTable
                 }, "vis");
 
-                console.log(333, countryToCountryTable)
-                console.log(333, viewer.state.network )
             } else if (networkName == "Models+Institutions") {
                 let viewer = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/institutionModel.json", {
                     data: institutionModelTable,
@@ -99,7 +97,6 @@
     }
 
     $: render(width, height, selectedNet);
-    // $: render(width, height, selectedNodeTypes);
 </script>
 
 
