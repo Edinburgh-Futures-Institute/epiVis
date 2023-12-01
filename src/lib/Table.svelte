@@ -1,7 +1,6 @@
 <script lang="ts">
     import {DataHandler} from '@vincjo/datatables'
     import {MODEL, PURPOSE, SPREAD, STAGE} from "../dataLoader.ts";
-    // import { someData } from './data'
 
     import DataTable from 'datatables.net-dt';
     import 'datatables.net-dt/css/jquery.dataTables.min.css';
@@ -14,18 +13,21 @@
     // $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
     // $: rows = handler.getRows()
 
+    console.log(filteredData)
     onMount(() => {
         let table = new DataTable('#myTable', {
             columns: [
+                {title: 'Id', data: "Epic Code "},
                 {title: 'Title', data: "Title "},
                 {title: 'Year', data: "Publication Year "},
                 {title: 'AI Strain', data: "AI strain"},
                 {title: 'Epidemic waves', data: "Epidemic waves"},
-                {title: 'Models', data: MODEL},
-                {title: 'Purpose', data: PURPOSE},
-                {title: 'Spread', data: SPREAD},
-                {title: 'Stage', data: STAGE},
-                {title: 'Hosts', data: "Hosts "},
+                // {title: 'Models', data: MODEL},
+                {title: 'Models', data: "Models"},
+                // {title: 'Purpose', data: PURPOSE},
+                // {title: 'Spread', data: SPREAD},
+                // {title: 'Stage', data: STAGE},
+                // {title: 'Hosts', data: "Hosts "},
             ],
             data: filteredData
         });

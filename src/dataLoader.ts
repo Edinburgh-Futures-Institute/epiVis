@@ -19,6 +19,7 @@ export const authorsFilename = "authors3Nov.csv";
 
 
 // COLUMN NAMES (column dataset new criteria)
+// export let MODEL = "Model types (=sc hool of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic - Bayesian  4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Other Statistical (non stochastic) 6.Qualitative 7. Phylogenetic 8. Simulation 9. Experiments"
 export let MODEL = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic - Bayesian  4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Other Statistical (non stochastic) 6.Qualitative 7. Phylogenetic 8. Simulation 9. Experiments"
 export let PURPOSE = "Purpose (of models) (Task performed): 1. Predict when or where the next outbreak occur; 2. Risk distribution (=which risk factors + how much they contribute); 3.Assess surveillance and interventions; 4. Genetic variance & dominance; 5.Plus scoioeconomic analysis. 6. Estimate epidemiological parameteres in compartmental models 7.Scenario"
 export let SPREAD = "Spread across:  1. Between-farm spread; 2. Within-farm spread; 3. Wildlife-livestock interface; 4. Cross-wildlife species spread; 5. Cross-livestock species spread; 6. Animal-human interface"
@@ -32,6 +33,9 @@ export let paperIdToPaper = {};
 export let data = await d3.csv(`./data/${papersFilename}`, d => {
     d["AI strain"] = parseStrains(d["AI strain"])
     paperIdToPaper[d["Epic Code "]] = d;
+
+    d["Models"] = d[MODEL];
+
     return d
 })
 
