@@ -2,7 +2,7 @@
     import * as d3 from "d3";
 
     import {onMount} from "svelte";
-    import {affiliationsFilename, authorsFilename, data, papersFilename} from "../dataLoader.ts";
+    import {affiliationsFilename, authorsFilename, data, papersFilename, allCols} from "../dataLoader.ts";
 
     console.log(222)
 
@@ -11,18 +11,6 @@
     const margin = 30;
     const widthEff: number = width - 2 * margin;
     const heightEff: number = height - 2 * margin;
-
-    const c1 = "Assumptions mentioned (Yes/No)"
-    const c2 = "Assumptions included in Mode/review  Design (Yes/No)"
-    const c3 = "Impacts mentioned (YES/NO)"
-    const c4 = "Impacts included in the model/review design (YES/No)"
-    const c5 = "Nature of impacts (Positive/Negative/Mixed)"
-    const c6 = "Biases mentioned (Yes/No/Insufficiently mentioned)"
-    const c7 = "Impacts of biases explained (Yes/No/Insufficiently explained)"
-    const c8 = "Uncertainty explained (YES/NO/Insufficiently explained)"
-    const c9 = "Impacts of uncertainty explained (YES/NO/Insufficiently explained)"
-    const c10 = "Overall reporting (Sufficient/Insufficient)"
-    const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
     let element: HTMLElement;
     let svg: SVGElement;

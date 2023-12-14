@@ -15,8 +15,10 @@
 
     // console.log(filteredData)
 
+    const className = (i) => `p${i}`
+
     let heatMapColumns = allCols.map((col, i) => {
-        return {title: `C${i}`, data: col, className: col}
+        return {title: `C${i}`, data: col, className: className(i)}
     })
 
     onMount(() => {
@@ -44,18 +46,20 @@
     //     $(row).find('td:eq(2)').css('color', 'blue');
     // }},
             createdRow: function (row, data, dataIndex) {
-                for (let col of allCols.slice(4)) {
+                for (let i = 0; i < allCols.length; i++) {
+                    let col = allCols[i];
                     let value = data[col];
-                    let cell = row.querySelector(`.${col}`);
+                    // let cell = row.querySelector(`.${col}`);
+                    let cell = row.querySelector(`.p${i}`);
 
-                    // switch(value) {
-                    //     case "N":
-                    //         cell.style.background = 'red'
-                    //         break;
-                    //     case "Y":
-                    //         cell.style.background = 'green'
-                    //         break;
-                    // }
+                    switch(value) {
+                        case "N":
+                            cell.style.background = 'red'
+                            break;
+                        case "Y":
+                            cell.style.background = 'green'
+                            break;
+                    }
                 }
 
 

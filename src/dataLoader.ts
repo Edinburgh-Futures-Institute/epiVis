@@ -238,9 +238,9 @@ export const MODELS: Record<number, string> = {
 
 
 // COLUMNS FOR THE HEATMAP
-const c1 = "Assumptions mentioned (Yes/No)"
-const c2 = "Assumptions included in Mode/review  Design (Yes/No)"
-const c3 = "Impacts mentioned (YES/NO)"
+const c1 = "Assumptions mentioned (Yes/No/Limited)"
+const c2 = "Assumptions included in Mode/review  Design (Yes/No?limited)"
+const c3 = "Impacts mentioned (YES/NO?Limited)"
 const c4 = "Impacts included in the model/review design (YES/No)"
 const c5 = "Nature of impacts (Positive/Negative/Mixed)"
 const c6 = "Biases mentioned (Yes/No/Insufficiently mentioned)"
@@ -249,6 +249,10 @@ const c8 = "Uncertainty explained (YES/NO/Insufficiently explained)"
 const c9 = "Impacts of uncertainty explained (YES/NO/Insufficiently explained)"
 const c10 = "Overall reporting (Sufficient/Insufficient)"
 export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
+
+console.log(44444, data[4][c1]);
+console.log(44444, data[4][c2]);
+console.log(44444, data[4][c3]);
 
 
 export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
