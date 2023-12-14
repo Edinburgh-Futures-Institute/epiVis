@@ -1,6 +1,6 @@
 <script lang="ts">
     import {DataHandler} from '@vincjo/datatables'
-    import {MODEL, PURPOSE, SPREAD, STAGE} from "../dataLoader.ts";
+    import {MODEL, PURPOSE, SPREAD, STAGE, allCols} from "../dataLoader.ts";
 
     import DataTable from 'datatables.net-dt';
     import 'datatables.net-dt/css/jquery.dataTables.min.css';
@@ -13,8 +13,14 @@
     // $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
     // $: rows = handler.getRows()
 
-    console.log(filteredData)
+    // console.log(filteredData)
+
+    let heatMapColumns = allCols.map((col, i) => {
+        return {title: `C${i}`, data: col, className: col}
+    })
+
     onMount(() => {
+        console.log(444, heatMapColumns);
         let table = new DataTable('#myTable', {
             columns: [
                 {title: 'Id', data: "Epic Code "},
@@ -28,9 +34,41 @@
                 // {title: 'Spread', data: SPREAD},
                 // {title: 'Stage', data: STAGE},
                 // {title: 'Hosts', data: "Hosts "},
-            ],
+                // {title: 'test', data: allCols[5], className:"test"},
+            ].concat(heatMapColumns),
+    //         'rowCallback': function(row, data, index){
+    // if(data[3]> 11.7){
+    //     $(row).find('td:eq(3)').css('color', 'red');
+    // }
+    // if(data[2].toUpperCase() == 'EE'){
+    //     $(row).find('td:eq(2)').css('color', 'blue');
+    // }},
+            createdRow: function (row, data, dataIndex) {
+                for (let col of allCols.slice(4)) {
+                    let value = data[col];
+                    let cell = row.querySelector(`.${col}`);
+
+                    // switch(value) {
+                    //     case "N":
+                    //         cell.style.background = 'red'
+                    //         break;
+                    //     case "Y":
+                    //         cell.style.background = 'green'
+                    //         break;
+                    // }
+                }
+
+
+      var ageColumn = row.querySelector('.test');
+
+
+
+
+      // You can add more conditions for other columns
+    },
             data: filteredData
         });
+
     })
 </script>
 

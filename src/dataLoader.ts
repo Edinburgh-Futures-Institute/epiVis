@@ -8,7 +8,6 @@ export const affiliationsFilename = "affiliations3Nov.csv";
 export const authorsFilename = "authors3Nov.csv";
 
 
-
 // // COLUMN NAMES (column dataset)
 // export let MODEL = "Model types (=school of thought): 1. Machine learning, 2. Compartmental (deterministic),  3. Stochastic, 4. Mixed approaches (Hybrid model or paper with combined approaches) 5. Statistical 6.Qualitative 7. Phylogenetic "
 // export let PURPOSE = "Purpose (of models) (Task performed): 1. Predict when or where the next outbreak occur; 2. Risk distribution (=which risk factors + how much they contribute); 3.Assess surveillance and interventions; 4. Genetic variance & dominance; 5.Plus scoioeconomic analysis. 6. Estimate epidemiological parameteres in compartmental models"
@@ -236,6 +235,20 @@ export const MODELS: Record<number, string> = {
     8: "Simulation",
     9: "Experiment"
 }
+
+
+// COLUMNS FOR THE HEATMAP
+const c1 = "Assumptions mentioned (Yes/No)"
+const c2 = "Assumptions included in Mode/review  Design (Yes/No)"
+const c3 = "Impacts mentioned (YES/NO)"
+const c4 = "Impacts included in the model/review design (YES/No)"
+const c5 = "Nature of impacts (Positive/Negative/Mixed)"
+const c6 = "Biases mentioned (Yes/No/Insufficiently mentioned)"
+const c7 = "Impacts of biases explained (Yes/No/Insufficiently explained)"
+const c8 = "Uncertainty explained (YES/NO/Insufficiently explained)"
+const c9 = "Impacts of uncertainty explained (YES/NO/Insufficiently explained)"
+const c10 = "Overall reporting (Sufficient/Insufficient)"
+export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
 
 export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")

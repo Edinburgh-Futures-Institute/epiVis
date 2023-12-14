@@ -4,6 +4,7 @@
     import {onMount} from "svelte";
     import {affiliationsFilename, authorsFilename, data, papersFilename} from "../dataLoader.ts";
 
+    console.log(222)
 
     let width: number = 600;
     let height: number = 600;
