@@ -28,7 +28,16 @@
                 {title: 'Id', data: "Epic Code "},
                 {title: 'Title', data: "Title "},
                 {title: 'Year', data: "Publication Year "},
-                {title: 'AI Strain', data: "AI strain"},
+                {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
+                        // console.log(55555, data, row, type, meta)
+                        // return data.replace(",", ", ");
+                        console.log(33333, data)
+                        if (typeof data !== 'string') {
+                            return data.join(", ")
+                        } else {
+                            return data;
+                        }
+                    }},
                 {title: 'Epidemic waves', data: "Epidemic waves"},
                 // {title: 'Models', data: MODEL},
                 {title: 'Models', data: "Models"},
