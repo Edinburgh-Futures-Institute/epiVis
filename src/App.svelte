@@ -216,15 +216,14 @@
         <Table {filteredData}>
         </Table>
 
-        <Heatmap>
-        </Heatmap>
+<!--        <Heatmap>-->
+<!--        </Heatmap>-->
 
         <Circular>
         </Circular>
 
         <Timevis>
         </Timevis>
-
 <!--        <div class="vis-container">-->
 <!--            <div id="vis1" class="vis-component">-->
 <!--            </div>-->

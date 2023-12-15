@@ -27,7 +27,7 @@
         <!--{/if}-->
 
     </select>
-    {value}
+    <!--{value}-->
 </form>
 
 <style>

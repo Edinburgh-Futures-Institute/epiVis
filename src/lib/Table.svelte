@@ -1,5 +1,4 @@
 <script lang="ts">
-    import {DataHandler} from '@vincjo/datatables'
     import {MODEL, PURPOSE, SPREAD, STAGE, allCols} from "../dataLoader.ts";
 
     import DataTable from 'datatables.net-dt';
@@ -9,11 +8,13 @@
 
     export let filteredData;
 
+    // let datatable: DataTable;
+    let datatable;
+    let element;
+
     // let handler, rows
     // $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
     // $: rows = handler.getRows()
-
-    // console.log(filteredData)
 
     const className = (i) => `p${i}`
 
@@ -21,110 +22,134 @@
         return {title: `C${i}`, data: col, className: className(i)}
     })
 
-    onMount(() => {
-        console.log(444, heatMapColumns);
-        let table = new DataTable('#myTable', {
-            columns: [
-                {title: 'Id', data: "Epic Code "},
-                {title: 'Title', data: "Title "},
-                {title: 'Year', data: "Publication Year "},
-                {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
-                        // console.log(55555, data, row, type, meta)
-                        // return data.replace(",", ", ");
-                        console.log(33333, data)
-                        if (typeof data !== 'string') {
-                            return data.join(", ")
-                        } else {
-                            return data;
+
+    // onMount(() => {
+    //     datatable = new DataTable('#myTable', {
+    //         columns: [
+    //             {title: 'Id', data: "Epic Code "},
+    //             {title: 'Title', data: "Title "},
+    //             {title: 'Year', data: "Publication Year "},
+    //             {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
+    //                     // console.log(55555, data, row, type, meta)
+    //                     // return data.replace(",", ", ");
+    //                     if (typeof data !== 'string') {
+    //                         return data.join(", ")
+    //                     } else {
+    //                         return data;
+    //                     }
+    //                 }},
+    //             {title: 'Epidemic waves', data: "Epidemic waves"},
+    //             // {title: 'Models', data: MODEL},
+    //             {title: 'Models', data: "Models"},
+    //             // {title: 'Purpose', data: PURPOSE},
+    //             // {title: 'Spread', data: SPREAD},
+    //             // {title: 'Stage', data: STAGE},
+    //             // {title: 'Hosts', data: "Hosts "},
+    //         ].concat(heatMapColumns),
+    //         createdRow: function (row, data, dataIndex) {
+    //             for (let i = 0; i < allCols.length; i++) {
+    //                 let col = allCols[i];
+    //                 let value = data[col];
+    //                 // let cell = row.querySelector(`.${col}`);
+    //                 let cell = row.querySelector(`.p${i}`);
+    //
+    //                 if (["P", "Y", "S"].includes(value)) {
+    //                     cell.style.background = '#a1d99b'
+    //                 } else if (["N", "I"].includes(value)) {
+    //                     cell.style.background = '#fdbb84'
+    //                 } else if (["M", "L"].includes(value)) {
+    //                     cell.style.background = '#ffeda0'
+    //                 }
+    //             }
+    // },
+    //         data: filteredData
+    //     });
+    // })
+
+
+
+    function redraw(filteredData) {
+        if (!element) return;
+        // console.log("draw", filteredData)
+
+        if (datatable) {
+            datatable.clear();
+            datatable.rows.add(filteredData);
+            datatable.draw();
+        } else {
+            console.log("inti")
+            datatable = new DataTable('#myTable', {
+                columns: [
+                    {title: 'Id', data: "Epic Code "},
+                    {title: 'Title', data: "Title "},
+                    {title: 'Year', data: "Publication Year "},
+                    {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
+                            // console.log(55555, data, row, type, meta)
+                            // return data.replace(",", ", ");
+                            if (typeof data !== 'string') {
+                                return data.join(", ")
+                            } else {
+                                return data;
+                            }
+                        }},
+                    {title: 'Epidemic waves', data: "Epidemic waves"},
+                    // {title: 'Models', data: MODEL},
+                    {title: 'Models', data: "Models"},
+                    // {title: 'Purpose', data: PURPOSE},
+                    // {title: 'Spread', data: SPREAD},
+                    // {title: 'Stage', data: STAGE},
+                    // {title: 'Hosts', data: "Hosts "},
+                ].concat(heatMapColumns),
+                createdRow: function (row, data, dataIndex) {
+                    for (let i = 0; i < allCols.length; i++) {
+                        let col = allCols[i];
+                        let value = data[col];
+                        // let cell = row.querySelector(`.${col}`);
+                        let cell = row.querySelector(`.p${i}`);
+
+                        if (["P", "Y", "S"].includes(value)) {
+                            cell.style.background = '#a1d99b'
+                        } else if (["N", "I"].includes(value)) {
+                            cell.style.background = '#fdbb84'
+                        } else if (["M", "L"].includes(value)) {
+                            cell.style.background = '#ffeda0'
                         }
-                    }},
-                {title: 'Epidemic waves', data: "Epidemic waves"},
-                // {title: 'Models', data: MODEL},
-                {title: 'Models', data: "Models"},
-                // {title: 'Purpose', data: PURPOSE},
-                // {title: 'Spread', data: SPREAD},
-                // {title: 'Stage', data: STAGE},
-                // {title: 'Hosts', data: "Hosts "},
-                // {title: 'test', data: allCols[5], className:"test"},
-            ].concat(heatMapColumns),
-    //         'rowCallback': function(row, data, index){
-    // if(data[3]> 11.7){
-    //     $(row).find('td:eq(3)').css('color', 'red');
-    // }
-    // if(data[2].toUpperCase() == 'EE'){
-    //     $(row).find('td:eq(2)').css('color', 'blue');
-    // }},
-            createdRow: function (row, data, dataIndex) {
-                for (let i = 0; i < allCols.length; i++) {
-                    let col = allCols[i];
-                    let value = data[col];
-                    // let cell = row.querySelector(`.${col}`);
-                    let cell = row.querySelector(`.p${i}`);
-
-                    switch(value) {
-                        case "N":
-                            cell.style.background = 'red'
-                            break;
-                        case "Y":
-                            cell.style.background = 'green'
-                            break;
                     }
-                }
+                },
+                "initComplete": function(settings, json) {
+                       // Create a div element
+                    var customDiv = document.createElement("div");
+                    customDiv.style.display = "inline-block"
+                    customDiv.style.float = 'right';
+                    customDiv.style.marginRight = "20px";
+
+                    customDiv.innerHTML = 'Column Title';
 
 
-      var ageColumn = row.querySelector('.test');
+                    // Insert the div after the search input
+                    var searchInput = document.querySelector('.dataTables_filter');
+                    // var searchInput = document.querySelector('.dataTables_length');
+                    // console.log(22, searchInput, searchInput.parentNode)
 
+                    searchInput.parentNode.insertBefore(customDiv, searchInput.nextSibling);
 
+                    // Insert the div after the search input
+                    // var searchInput = document.querySelector('.dataTables_filter input');
+                    // // searchInput.parentNode.insertBefore(customDiv, searchInput.nextSibling);
+                    // searchInput.parentNode.insertBefore(customDiv, searchInput.nextSibling);
 
+                },
+                data: filteredData
+            });
+        }
+    }
 
-      // You can add more conditions for other columns
-    },
-            data: filteredData
-        });
+    $: redraw(filteredData);
 
-    })
 </script>
 
-
-<table id="myTable">
+<table bind:this={element} id="myTable">
 </table>
-
-<!--<div>-->
-<!--    <table>-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <th>Title</th>-->
-<!--            <th>Year</th>-->
-<!--            <th>First Author</th>-->
-<!--            &lt;!&ndash;            <th>Second Author</th>&ndash;&gt;-->
-<!--            &lt;!&ndash;            <th>Third Author</th>&ndash;&gt;-->
-<!--            <th>AI strain</th>-->
-<!--            <th>Epidemic wave</th>-->
-<!--            <th>Model type</th>-->
-<!--            <th>Purpose</th>-->
-<!--            <th>Spread across</th>-->
-<!--            <th>Stage</th>-->
-<!--            <th>Hosts</th>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        {#each $rows as row}-->
-<!--            <tr>-->
-<!--                <td>{row["Title "]}</td>-->
-<!--                <td>{row["Publication Year "]}</td>-->
-<!--                <td>{row["First Author"]}-->
-<!--                <td>{row["AI strain"]}</td>-->
-<!--                <td>{row["Epidemic waves"]}</td>-->
-<!--                <td>{row[MODEL]}</td>-->
-<!--                <td>{row[PURPOSE]}</td>-->
-<!--                <td>{row[SPREAD]}</td>-->
-<!--                <td>{row[STAGE]}</td>-->
-<!--                <td>{row["Hosts "]}</td>-->
-<!--            </tr>-->
-<!--        {/each}-->
-<!--        </tbody>-->
-<!--    </table>-->
-<!--</div>-->
 
 
 <style>

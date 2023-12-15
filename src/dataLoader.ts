@@ -37,6 +37,7 @@ export let data = await d3.csv(`./data/${papersFilename}`, d => {
 
     return d
 })
+data = data.filter(d => d["Epic Code "])
 
 
 export let affIdToName = {};
@@ -249,11 +250,6 @@ const c8 = "Uncertainty explained (YES/NO/Insufficiently explained)"
 const c9 = "Impacts of uncertainty explained (YES/NO/Insufficiently explained)"
 const c10 = "Overall reporting (Sufficient/Insufficient)"
 export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
-
-console.log(44444, data[4][c1]);
-console.log(44444, data[4][c2]);
-console.log(44444, data[4][c3]);
-
 
 export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
 

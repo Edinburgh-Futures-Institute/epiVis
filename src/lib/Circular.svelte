@@ -20,6 +20,7 @@
     let svg: HTMLElement;
     let svgLegend: SVGElement;
     let colorScale = d3.scaleLinear([0, 10], ["white", "blue"]);
+    let nodeToNeighbors = {};
 
     onMount(() => {
         getNetpanNet().then(() => {
@@ -46,6 +47,20 @@
             // institutions = viewer.state.networkAff.nodes
             institutions = viewer.state.network.nodes
             links = viewer.state.network.links
+
+            console.log(33, links.filter(l => l.source.id == "Korea University"))
+
+            // Fill neighbor map
+            institutions.forEach(node => {
+                nodeToNeighbors[node.id] = [];
+            })
+            links.forEach(link => {
+                let source = link.source.id;
+                let target = link.target.id;
+
+                nodeToNeighbors[source].push(target);
+                nodeToNeighbors[target].push(source);
+            })
         }
     }
 
@@ -86,6 +101,8 @@
 
         // const countryColorScale = d3.scaleOrdinal(d3.schemeAccent)
         const countryColorScale = d3.scaleOrdinal(d3.schemeSet1)
+
+        const radiusScale = d3.scaleLinear(d3.extent(institutions.map(d => d.degree)), [4, 10]);
 
         const distance = 300;
         const x = (d) => distance * Math.cos(radialScale(d.pos))
@@ -133,16 +150,16 @@
             .attr("fill", "none")
             .classed("link", true)
 
-        d3.select(svg)
+        let nodesMark = d3.select(svg)
             .selectAll(".node")
             .data(institutions)
             .join("circle")
             .attr("cx", d => x(d))
             .attr("cy", d => y(d))
-            .attr("r", 7)
+            .attr("r", d => radiusScale(d.degree))
+            // .attr("r", 7)
             // .attr("fill", d => countryColorScale(d.data["Country "]))
             .attr("fill", d => countryColorScale(d.data["Discipline"]))
-            // .attr("fill", d => "none")
             .attr("stroke", "black")
             .classed("node", true)
             .on("mouseover", mouseOver)
@@ -150,7 +167,18 @@
 
         function mouseOver(e, d) {
             d3.selectAll(".node")
-                .style("opacity", .5)
+                .style("opacity", d2 => {
+                    if (!nodeToNeighbors[d.id].includes(d2.id)) {
+                        return 0.3;
+                    }
+                })
+                .attr("stroke-width", d2 => {
+                    if (nodeToNeighbors[d.id].includes(d2.id)) {
+                        return 3;
+                    } else if (d2 == d) {
+                        return 6;
+                    }
+                })
 
             d3.select(this)
                 .style("opacity", 1)
@@ -184,13 +212,13 @@
         function mouseLeave(e, d) {
             d3.selectAll(".node")
                 .style("opacity", 1)
+                .attr("stroke-width", 1)
 
             d3.selectAll(".link")
                 .style("opacity", link => {
                     return 1
                 })
         }
-
 
         const pie = d3.pie().padAngle(0.05).sort(null).sortValues(null).startAngle(Math.PI / 2).endAngle(3 * Math.PI).value(d => d[1]);
         const arc = d3.arc().innerRadius(distance + 40).outerRadius(distance + 40 + 50);

@@ -78,7 +78,8 @@
 
 <div bind:this={element}>
 <!--    Translate is ugly hack because netpan does not take all the width space -->
-    <svg id="svg-legend" width={width} height={height} transform="translate(-180, 0)"></svg>
+    <svg id="svg-legend" width={width} height={height}></svg>
+<!--    <svg id="svg-legend" width={width} height={height} transform="translate(-180, 0)"></svg>-->
 </div>
 
 <style>

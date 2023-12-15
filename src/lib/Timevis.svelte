@@ -36,8 +36,8 @@
         // let modelGroup = d3.groups(group, d => d[0]);
         let modelGroup = d3.groups(group, d => d.model);
 
-        console.log("group", group)
-        console.log("ModelsGroup", modelGroup)
+        // console.log("group", group)
+        // console.log("ModelsGroup", modelGroup)
 
 
         let ridgePlot = Plot.plot({
