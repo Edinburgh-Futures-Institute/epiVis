@@ -48,7 +48,7 @@
             institutions = viewer.state.network.nodes
             links = viewer.state.network.links
 
-            console.log(33, links.filter(l => l.source.id == "Korea University"))
+            // console.log(33, links.filter(l => l.source.id == "Korea University"))
 
             // Fill neighbor map
             institutions.forEach(node => {

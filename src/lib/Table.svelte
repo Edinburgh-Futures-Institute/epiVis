@@ -11,6 +11,7 @@
     // let datatable: DataTable;
     let datatable;
     let element;
+    let columnNameTooltip: HTMLElement;
 
     // let handler, rows
     // $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
@@ -77,15 +78,12 @@
             datatable.rows.add(filteredData);
             datatable.draw();
         } else {
-            console.log("inti")
             datatable = new DataTable('#myTable', {
                 columns: [
                     {title: 'Id', data: "Epic Code "},
                     {title: 'Title', data: "Title "},
                     {title: 'Year', data: "Publication Year "},
                     {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
-                            // console.log(55555, data, row, type, meta)
-                            // return data.replace(",", ", ");
                             if (typeof data !== 'string') {
                                 return data.join(", ")
                             } else {
@@ -93,12 +91,7 @@
                             }
                         }},
                     {title: 'Epidemic waves', data: "Epidemic waves"},
-                    // {title: 'Models', data: MODEL},
-                    {title: 'Models', data: "Models"},
-                    // {title: 'Purpose', data: PURPOSE},
-                    // {title: 'Spread', data: SPREAD},
-                    // {title: 'Stage', data: STAGE},
-                    // {title: 'Hosts', data: "Hosts "},
+                    {title: 'Models', data: "Models", createdCell: createdCellCb},
                 ].concat(heatMapColumns),
                 createdRow: function (row, data, dataIndex) {
                     for (let i = 0; i < allCols.length; i++) {
@@ -118,31 +111,49 @@
                 },
                 "initComplete": function(settings, json) {
                        // Create a div element
-                    var customDiv = document.createElement("div");
-                    customDiv.style.display = "inline-block"
-                    customDiv.style.float = 'right';
-                    customDiv.style.marginRight = "20px";
+                    columnNameTooltip = document.createElement("div");
+                    columnNameTooltip.style.display = "inline-block"
+                    columnNameTooltip.style.float = 'right';
+                    columnNameTooltip.style.marginRight = "20px";
 
-                    customDiv.innerHTML = 'Column Title';
+                    columnNameTooltip.innerHTML = 'Column Title';
 
-
-                    // Insert the div after the search input
-                    var searchInput = document.querySelector('.dataTables_filter');
-                    // var searchInput = document.querySelector('.dataTables_length');
-                    // console.log(22, searchInput, searchInput.parentNode)
-
-                    searchInput.parentNode.insertBefore(customDiv, searchInput.nextSibling);
 
                     // Insert the div after the search input
-                    // var searchInput = document.querySelector('.dataTables_filter input');
-                    // // searchInput.parentNode.insertBefore(customDiv, searchInput.nextSibling);
-                    // searchInput.parentNode.insertBefore(customDiv, searchInput.nextSibling);
+                    let searchInput = document.querySelector('.dataTables_filter');
+                    searchInput.parentNode.insertBefore(columnNameTooltip, searchInput.nextSibling);
 
+                },
+                "headerCallback": function(thead, data, start, end, display) {
+                    var ths = thead.querySelectorAll('th');
+
+                    // Attach mouseover event to each header cell
+                    ths.forEach(th => {
+                        let columnName: string = allCols[th.cellIndex - 6]
+                        if (!columnName) {
+                            columnName = th.textContent;
+                        }
+
+                        th.addEventListener("mouseover", function() {
+                            columnNameTooltip.innerHTML = columnName;
+                        });
+                    })
                 },
                 data: filteredData
             });
         }
     }
+
+    const createdCellCb = (td, cellData, rowData, row, col) => {
+        // Add a hover effect to the cells in the specified column
+        td.addEventListener('mouseover', function () {
+            td.style.backgroundColor = 'lightgray';
+        });
+
+        td.addEventListener('mouseout', function () {
+            td.style.backgroundColor = ''; // Reset background color on mouseout
+        });
+    };
 
     $: redraw(filteredData);
 
