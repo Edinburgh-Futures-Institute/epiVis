@@ -6,6 +6,11 @@ import {viteCommonjs} from "@originjs/vite-plugin-commonjs";
 export default defineConfig({
   plugins: [svelte()],
   build: {
-    target: "esnext"
-  }
+    target: "esnext",
+    outDir: "dist"
+  },
+  base: "./",
+  // root: "./",
+  // base: "epiVis",
+  publicDir: "public"
 })

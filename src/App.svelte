@@ -207,7 +207,8 @@
         <div id="vis-div">
             <Map {filteredData}>
             </Map>
-            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="../netpanorama-vis/templates/wholeNet.json">
+<!--            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="../netpanorama-vis/templates/wholeNet.json">-->
+            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="/netpanorama-vis/templates/wholeNet.json">
             </NetworkVis>
             <NetworkLegend bind:selectedNodeTypes={selectedNodeTypes}>
             </NetworkLegend>

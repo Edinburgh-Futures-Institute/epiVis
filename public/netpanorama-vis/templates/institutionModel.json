@@ -1,0 +1,153 @@
+{
+  "width": "[width]",
+  "height": "[height]",
+  "data": [
+    {
+      "name": "institutionModels",
+      "values": "[data]"
+    }
+  ],
+  "networks": [
+    {
+      "name": "network",
+      "parts": [
+        {
+          "data": "institutionModels",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Model"
+              },
+              "source_node_type": "Model",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Institution"
+              },
+              "target_node_type": "Institution",
+              "target_id_field": "id",
+              "data": [
+                "*"
+              ]
+            }
+          ]
+        }
+      ],
+      "transform": [
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "d3-force"
+    },
+    {
+      "name": "forcelayout2",
+      "network": "network",
+      "type": "webcola",
+      "defaultNodeSize22": 1,
+      "linkDistance": 10,
+      "handleDisconnected": true,
+      "avoidOverlap": true
+    }
+  ],
+  "scales": [
+    {
+      "name": "radius",
+      "type": "linear",
+      "range": [
+        90,
+        250
+      ],
+      "domain": {
+        "data": "network.nodes",
+        "field": "degree"
+      }
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange",
+        "brown",
+        "yellow"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution",
+        "Country",
+        "Model"
+      ]
+    },
+    {
+      "name": "shapeScale",
+      "type": "ordinal",
+      "range": [
+        "circle",
+        "square",
+        "diamond",
+        "triangle",
+        "cross",
+        "triangle-down",
+        "M0,.5L.6,.8L.5,.1L1,-.3L.3,-.4L0,-1L-.3,-.4L-1,-.3L-.5,.1L-.6,.8L0,.5Z"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution",
+        "Country",
+        "Model"
+      ]
+    }
+  ],
+  "vis": [
+    {
+      "entries": "network.links",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "linkpath",
+        "start": "source",
+        "end": "target",
+        "stroke": "gray"
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "symbol",
+        "shape": {
+          "field": "_type",
+          "scale": "shapeScale"
+        },
+        "size": {
+          "field": "degree",
+          "scale": "radius"
+        },
+        "fill": {
+          "field": "_type",
+          "scale": "color"
+        },
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        }
+      }
+    }
+  ]
+}

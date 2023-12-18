@@ -29,6 +29,7 @@ let timeCol = "Period of study (in format for visualisations; yellow= if 2020 fo
 
 
 export let paperIdToPaper = {};
+// export let data = await d3.csv(`./data/${papersFilename}`, d => {
 export let data = await d3.csv(`./data/${papersFilename}`, d => {
     d["AI strain"] = parseStrains(d["AI strain"])
     paperIdToPaper[d["Epic Code "]] = d;
@@ -42,6 +43,7 @@ data = data.filter(d => d["Epic Code "])
 
 export let affIdToName = {};
 export let affIdToCountry = {};
+// export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d => {
 export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d => {
     affIdToName[d["Affiliation code"]] = d["Afilliation name -"]
     affIdToCountry[d["Affiliation code"]] = d["Country "]
@@ -49,6 +51,7 @@ export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d 
 })
 
 
+// export let peopleTable = await d3.csv(`./data/${authorsFilename}`, d => {
 export let peopleTable = await d3.csv(`./data/${authorsFilename}`, d => {
     return d
 })
@@ -251,6 +254,7 @@ const c9 = "Impacts of uncertainty explained (YES/NO/Insufficiently explained)"
 const c10 = "Overall reporting (Sufficient/Insufficient)"
 export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
-export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
+// export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
+export let map = await d3.json("./data/ne_10m_admin_0_countries_lakes.json")
 
 export {influenceNodes, influenceLinks}
