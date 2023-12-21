@@ -6,7 +6,10 @@
 
     // export let filteredData;
 
-    let specPath = "../netpanorama-vis/templates/institutionProj.json"
+    // let specPah = "../netpanorama-vis/templates/institutionProj.json"
+    let specPath = "../../netpanorama-vis/templates/institutionProj.json"
+    // let specPath = "/netpanorama-vis/templates/institutionProj.json"
+
     let width: number = 1200;
     let height: number = 600;
 
@@ -44,10 +47,18 @@
                 height: height
             }, "affiliationNet");
 
+            // let viewer = await NetPanoramaTemplateViewer.render("/netpanorama-vis/templates/wholeNet.json", {
+            //         filename: papersFilename,
+            //         authorsFilename: authorsFilename,
+            //         width: width,
+            //         height: height
+            //     }, "affiliationNet");
+
             // institutions = viewer.state.networkAff.nodes
             institutions = viewer.state.network.nodes
             links = viewer.state.network.links
 
+            console.log(333, viewer)
             // console.log(33, links.filter(l => l.source.id == "Korea University"))
 
             // Fill neighbor map

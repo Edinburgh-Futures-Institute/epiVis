@@ -12,11 +12,14 @@
     export let selectedNodeTypes;
     export let specPath;
 
+
     let element;
     let selectedNet = "Full";
     // let selectedNet = "Countries";
     let width: number;
     let height: number;
+
+    const fullNetPath = "/netpanorama-vis/templates/wholeNet.json"
 
     onMount(() => {
         updateDimensions();
@@ -60,7 +63,7 @@
             let margin = 100;
 
             if (networkName == "Full") {
-                NetPanoramaTemplateViewer.render(specPath, {
+                NetPanoramaTemplateViewer.render(fullNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width - margin,
