@@ -7,8 +7,8 @@
     // export let filteredData;
 
     // let specPah = "../netpanorama-vis/templates/institutionProj.json"
-    let specPath = "../../netpanorama-vis/templates/institutionProj.json"
-    // let specPath = "/netpanorama-vis/templates/institutionProj.json"
+    // let specPath = "../../netpanorama-vis/templates/institutionProj.json"
+    let specPath = "/netpanorama-vis/templates/InstitutionProj.json"
 
     let width: number = 1200;
     let height: number = 600;
@@ -46,13 +46,6 @@
                 width: width,
                 height: height
             }, "affiliationNet");
-
-            // let viewer = await NetPanoramaTemplateViewer.render("/netpanorama-vis/templates/wholeNet.json", {
-            //         filename: papersFilename,
-            //         authorsFilename: authorsFilename,
-            //         width: width,
-            //         height: height
-            //     }, "affiliationNet");
 
             // institutions = viewer.state.networkAff.nodes
             institutions = viewer.state.network.nodes

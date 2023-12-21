@@ -271,7 +271,7 @@
           "field": "_type",
           "scale": "color"
         },
-        "stroke": "black",
+        "stroke": ""[strokeColor]"",
         "tooltip": {
           "expression": "datum.id + ' (degree ' + datum.degree + ')' "
         },

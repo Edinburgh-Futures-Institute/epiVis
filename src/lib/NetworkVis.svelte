@@ -1,5 +1,6 @@
 <script lang="ts">
     import {
+        affiliationsFilename,
         authorsFilename,
         countryToCountryTable,
         institutionModelTable,
@@ -7,6 +8,7 @@
         papersFilename
     } from "../dataLoader.ts";
     import {onMount} from "svelte";
+    import {GRAY} from "../globals.ts";
 
     // export let data;
     export let selectedNodeTypes;
@@ -63,12 +65,15 @@
             let margin = 100;
 
             if (networkName == "Full") {
+
                 NetPanoramaTemplateViewer.render(fullNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width - margin,
-                    height: height - margin
+                    height: height - margin,
+                    strokeColor: GRAY
                 }, "vis");
+
             } else if (networkName == "People") {
                 NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
                     filename: papersFilename,

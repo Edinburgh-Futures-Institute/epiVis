@@ -3,6 +3,7 @@
 
     import {map} from "../dataLoader.ts"
     import {onMount} from "svelte";
+    import {GRAY} from "../globals.ts";
 
     export let filteredData;
 
@@ -49,7 +50,7 @@
             .data(map.features)
             .join("path")
             .attr("d", d3.geoPath().projection(projection))
-            .attr("stroke", "black")
+            .attr("stroke", GRAY)
             .attr("fill", d => {
                 let country = d.properties.SOVEREIGNT.toLowerCase();
 
