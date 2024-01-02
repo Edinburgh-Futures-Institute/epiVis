@@ -40,7 +40,6 @@
 
     let allModels = [...new Set(data.map(d => d [MODEL]))];
 
-
     let currentStrain;
     let currentInstitution;
     let currentModel;
@@ -191,16 +190,26 @@
 </script>
 
 <main bind:this={element}>
-    <div id="control">
-        <Dropdown name="Strains" bind:value={currentStrain} allValues={allStrains} table={undefined}>
-        </Dropdown>
-        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allInstitutions} table={affIdToName}>
-<!--        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}>-->
-        </Dropdown>
-        <Dropdown name="Model Types" bind:value={currentModel} allValues={Object.keys(MODELS)} table={MODELS}>
-        </Dropdown>
-        <Time {filteredData} {yearMin} {yearMax} bind:currentYearMin={currentYearMin} bind:currentYearMax={currentYearMax}>
-        </Time>
+    <div id="header">
+        <div id="title">
+            <img id="title-img" src="/title.png">
+        </div>
+        <div id="control">
+            <div id="control-title" class="title">
+                General Search & Filters:
+            </div>
+            <div id="menu">
+                <Dropdown name="Strains" bind:value={currentStrain} allValues={allStrains} table={undefined}>
+                </Dropdown>
+                <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allInstitutions} table={affIdToName}>
+                    <!--        <Dropdown name="Institutions" bind:value={currentInstitution} allValues={allIstitutions}>-->
+                </Dropdown>
+                <Dropdown name="Model Types" bind:value={currentModel} allValues={Object.keys(MODELS)} table={MODELS}>
+                </Dropdown>
+                <Time {filteredData} {yearMin} {yearMax} bind:currentYearMin={currentYearMin} bind:currentYearMax={currentYearMax}>
+                </Time>
+            </div>
+        </div>
     </div>
 
     <div id="main-div">
@@ -260,10 +269,31 @@
         /*margin-right: 300px;*/
     }
 
-    #control {
+    #title {
+        /*margin-right: 6%;*/
+        /*width: 500px;*/
+        width: 20%;
+    }
+
+    #title-img {
+        /*max-width: 100%;*/
+        /*max-height: 100%;*/
+        /*min-width: 100%;*/
+        min-height: 100%;
+        /*margin-right: 6%;*/
+    }
+
+    #header {
         display: flex;
         flex-direction: row;
-        width: 70%;
+        /*width: 70%;*/
+        width: 100%;
+    }
+
+    #menu {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
     }
 
 
@@ -295,12 +325,6 @@
         /*TODO check if doable on the main*/
         /*margin: 3%;*/
     }
-
-
-    /*vis-container {*/
-    /*    min-height: 50vh;*/
-    /*!*display: inline-block;*!*/
-    /*}*/
 
     .vis-component {
         /*display: inline-block;*/

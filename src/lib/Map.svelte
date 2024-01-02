@@ -289,7 +289,7 @@
                 .attr("fill", "currentColor")
                 .attr("text-anchor", "start")
                 .attr("font-weight", "bold")
-                .attr("class", "title")
+                .attr("class", "title-legend")
                 .text(title));
 
         return svg.node();
