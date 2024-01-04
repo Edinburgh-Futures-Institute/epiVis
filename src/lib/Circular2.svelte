@@ -37,7 +37,6 @@
         // width = rect.width - legendWidth - 200;
         width = rect.width;
         height = rect.height;
-        console.log("WW", width, height)
     }
 
     async function getNetpanNet() {
@@ -46,16 +45,13 @@
 
             let viewer = await NetPanoramaTemplateViewer.render(specPath, {
                 affiliations: affiliationsFilename,
-                width: width,
-                height: height
+                width: 0,
+                height: 0
             }, "affiliationNet");
 
             // institutions = viewer.state.networkAff.nodes
             institutions = viewer.state.network.nodes
             links = viewer.state.network.links
-
-            console.log(333, viewer)
-            // console.log(33, links.filter(l => l.source.id == "Korea University"))
 
             // Fill neighbor map
             institutions.forEach(node => {
@@ -73,8 +69,6 @@
 
     function render(width, height) {
         if (!svg) return;
-
-        console.log("render ", width, height)
 
         institutions.sort((a, b) => {
             let countryCompare = a.data["Country "].localeCompare(b.data["Country "])
@@ -113,7 +107,7 @@
 
         const radiusScale = d3.scaleLinear(d3.extent(institutions.map(d => d.degree)), [4, 10]);
 
-        const distance = 300;
+        const distance = height / 2.5;
         const x = (d) => distance * Math.cos(radialScale(d.pos))
         const y = (d) => {
             return distance * Math.sin(radialScale(d.pos))
@@ -230,7 +224,7 @@
         }
 
         const pie = d3.pie().padAngle(0.05).sort(null).sortValues(null).startAngle(Math.PI / 2).endAngle(3 * Math.PI).value(d => d[1]);
-        const arc = d3.arc().innerRadius(distance + 40).outerRadius(distance + 40 + 50);
+        const arc = d3.arc().innerRadius(distance + 30).outerRadius(distance + 30 + 20);
 
         const countries = d3.select(svg)
             .append("g")
@@ -376,7 +370,7 @@
 </script>
 
 <div id="circular-div" bind:this={element} on:resize={updateDimensions}>
-    <svg bind:this={svg} width={width} height={width} viewBox="{-width / 2}, {-width / 2}, {width}, {width}">
+    <svg bind:this={svg} width={width} height={height} viewBox="{-width / 2}, {-height / 2}, {width}, {height}">
         <!--    <svg bind:this={svg} width={width} height={width}>-->
     </svg>
     <svg bind:this={svgLegend} width={legendWidth} height={legendHeight}>
@@ -388,16 +382,15 @@
 
 <style>
     #circular-div {
-        justify-content: center;
-        align-items: center;
-
+        /*justify-content: center;*/
+        /*align-items: center;*/
         width: 100%;
         height: 100%;
     }
 
-    svg {
-        display: inline-block;
-        vertical-align: top;
-    }
+    /*svg {*/
+    /*    display: inline-block;*/
+    /*    vertical-align: top;*/
+    /*}*/
 </style>
 

@@ -19,8 +19,8 @@
     let element: HTMLElement;
     let elementNet: HTMLElement;
 
-    let selectedNet = "Full";
-    // let selectedNet = "Countries";
+    let selectedNet = "Institutions";
+    // let selectedNet = "Full";
     let width: number;
     let height: number;
 
@@ -156,6 +156,6 @@
     #vis {
         width: 100%;
         /*height: 90%;*/
-        height: 55vh;
+        height: 65vh;
     }
 </style>
