@@ -27,6 +27,7 @@
     import NetworkLegend from "./lib/NetworkLegend.svelte";
     import Circular from "./lib/Circular.svelte";
     import Heatmap from "./lib/Heatmap.svelte";
+    import Visualization from "./lib/Visualization.svelte";
 
     let element: HTMLElement;
 
@@ -37,7 +38,6 @@
 
     // let allStrains = [...new Set(data.map(d => d["AI strain"]).filter(d => !nullOrNS(d)))];
     let allStrains = [...new Set(data.map(d => d["AI strain"]).flat().filter(d => !nullOrNS(d)))];
-
     let allModels = [...new Set(data.map(d => d [MODEL]))];
 
     let currentStrain;
@@ -173,7 +173,6 @@
             //     links: influenceLinks,
             // }, "vis4");
 
-
             // d3.select("#vis4")
             //     .graphviz()
             //     .renderDot(dotGraph());
@@ -192,7 +191,7 @@
 <main bind:this={element}>
     <div id="header" class="main-component">
         <div id="title">
-            <img id="title-img" src="/title.png">
+            <img id="title-img" src="./title.png">
         </div>
         <div id="control">
             <div id="control-title" class="title">
@@ -213,8 +212,11 @@
     </div>
 
     <div id="vis-div" class="main-component">
-        <Map {filteredData}>
-        </Map>
+<!--        <Map {filteredData}>-->
+<!--        </Map>-->
+        <Visualization {filteredData}>
+        </Visualization>
+
 <!--            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="../netpanorama-vis/templates/wholeNet.json">-->
         <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="/netpanorama-vis/templates/wholeNet.json">
         </NetworkVis>
@@ -228,8 +230,8 @@
 <!--        <Heatmap>-->
 <!--        </Heatmap>-->
 
-        <Circular>
-        </Circular>
+<!--        <Circular>-->
+<!--        </Circular>-->
 
         <Timevis>
         </Timevis>
@@ -288,12 +290,7 @@
         display: flex;
         flex-direction: row;
         width: 100%;
-        /*width: 95vw;*/
-        /*flex-grow: 1;*/
-        /*width: 100vw;*/
-
         background-color: white;
-
         column-gap: 3%;
     }
 

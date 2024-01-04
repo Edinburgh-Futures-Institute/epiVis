@@ -43,6 +43,8 @@
 
         setLegend();
 
+        console.log("render map ", width, height)
+
         d3.select("#svg")
             .select("g")
             // .attr("cursor", "pointer")
@@ -272,12 +274,9 @@
 </script>
 
 <div id="main-div" bind:this={element} on:resize={updateDimensions}>
-    <div class="title">
-        Visualization 1
-    </div>
     <div class="vis-frame">
         <div id="legend"></div>
-        <svg id="svg" width={width} height={height}>
+        <svg id="svg" width={width} height={height - 100}>
             <g></g>
         </svg>
     </div>
@@ -286,7 +285,9 @@
 
 <style>
     #main-div {
-        flex: 1 1 0;
+        /*flex: 1 1 0;*/
+        /*width: 100%;*/
+        height: 100%;
     }
 
     #legend {

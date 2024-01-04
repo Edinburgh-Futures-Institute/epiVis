@@ -10,6 +10,7 @@
     import {onMount} from "svelte";
     import {GRAY} from "../globals.ts";
     import Circular2 from "./Circular2.svelte";
+    import Helper from "./Helper.svelte";
 
     export let selectedNodeTypes;
     export let specPath;
@@ -34,7 +35,7 @@
     })
 
     function updateDimensions() {
-        const rect = element.getBoundingClientRect();
+        const rect = elementNet.getBoundingClientRect();
         width = rect.width;
         height = rect.height;
     }
@@ -66,20 +67,18 @@
 
     async function render(width, height, networkName) {
         // if (width && height) {
-
-        console.log(121, elementNet)
-
         if (elementNet) {
             elementNet.innerHTML = ""
 
             let margin = 100;
 
             if (networkName == "Full") {
+                console.log(23232323, width, height)
                 NetPanoramaTemplateViewer.render(fullNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width - margin,
-                    height: height - margin,
+                    height: height,
                     strokeColor: GRAY
                 }, "vis");
 
@@ -120,7 +119,7 @@
 </script>
 
 
-<div id="mainDivNet" bind:this={element} on:resize={updateDimensions}>
+<div id="mainDivNet" bind:this={element}>
 <!--    <div class="title">-->
 <!--        Visualization 2-->
 <!--    </div>-->
@@ -134,34 +133,29 @@
         <button class="tablinks" on:click={selectTab}>Institutions</button>
     </div>
 
-    <div id="vis" class="vis-frame" bind:this={elementNet}>
+    <div id="vis" bind:this={elementNet} on:resize={updateDimensions}>
     {#if selectedNet == "Institutions"}
 	    <Circular2>
         </Circular2>
-    {:else}
+    <!--{:else}-->
 <!--        <div id="vis" class="vis-frame" bind:this={elementNet}>-->
     {/if}
-
     </div>
 
-<!--    <div>How to read this visualization?</div>-->
-
-
+    <Helper visualizationType="{selectedNet}"></Helper>
 
     <!--<div id="vis" class="vis-frame" bind:this={elementNet}>-->
-
-
 </div>
 
 <style>
     #mainDivNet {
-        /*flex: 1 1 0;*/
+        flex: 1 1 0;
+        position: relative;
     }
 
     #vis {
         width: 100%;
-        height: 95%;
-        /*height: 200px;*/
-        /*background-color: white;*/
+        /*height: 90%;*/
+        height: 55vh;
     }
 </style>
