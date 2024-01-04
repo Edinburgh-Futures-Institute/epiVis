@@ -190,7 +190,7 @@
 </script>
 
 <main bind:this={element}>
-    <div id="header">
+    <div id="header" class="main-component">
         <div id="title">
             <img id="title-img" src="/title.png">
         </div>
@@ -212,18 +212,17 @@
         </div>
     </div>
 
-    <div id="main-div">
-        <div id="vis-div">
-            <Map {filteredData}>
-            </Map>
+    <div id="vis-div" class="main-component">
+        <Map {filteredData}>
+        </Map>
 <!--            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="../netpanorama-vis/templates/wholeNet.json">-->
-            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="/netpanorama-vis/templates/wholeNet.json">
-            </NetworkVis>
-            <NetworkLegend bind:selectedNodeTypes={selectedNodeTypes}>
-            </NetworkLegend>
-        </div>
+        <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="/netpanorama-vis/templates/wholeNet.json">
+        </NetworkVis>
+        <NetworkLegend bind:selectedNodeTypes={selectedNodeTypes}>
+        </NetworkLegend>
+    </div>
 
-        <Table {filteredData}>
+    <Table {filteredData}>
         </Table>
 
 <!--        <Heatmap>-->
@@ -234,40 +233,29 @@
 
         <Timevis>
         </Timevis>
-<!--        <div class="vis-container">-->
-<!--            <div id="vis1" class="vis-component">-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="vis-container">-->
-<!--            <div id="vis2" class="vis-component">-->
-<!--            </div>-->
-<!--        </div>-->
-
-<!--        <div class="vis-container">-->
-<!--            <div id="vis3" class="vis-component">-->
-<!--            </div>-->
-<!--        </div>-->
 
         <div class="vis-container">
             <div id="vis4" class="vis-component">
             </div>
         </div>
-    </div>
+
 </main>
 
 <style>
     main {
         display: flex;
         flex-direction: column;
-        /*margin-right: 10%;*/
-        /*margin-left: 300px;*/
         /*width: 100vw;*/
         align-items: center;
         justify-content: center;
+        /*justify-content: space-between;*/
         /*margin-left: 300px;*/
         /*margin-right: 300px;*/
+        /*padding: 1em;*/
+        row-gap: 2em;
     }
+
+
 
     #title {
         /*margin-right: 6%;*/
@@ -296,34 +284,17 @@
         width: 100%;
     }
 
-
-    /*#main-div {*/
-    /*    display: flex;*/
-    /*    flex-direction: column;*/
-    /*    !*margin: 0;*!*/
-    /*    !*width: 100vw;*!*/
-    /*}*/
-
-    #main-div {
-        /*margin: 300px;*/
-        display: flex;
-        flex-direction: column;
-        /*margin-right: 10%;*/
-        /*margin-left: 300px;*/
-        /*width: 100vw;*/
-        align-items: center;
-        justify-content: center;
-    }
-
     #vis-div {
         display: flex;
         flex-direction: row;
-        width: 95vw;
+        width: 100%;
+        /*width: 95vw;*/
         /*flex-grow: 1;*/
         /*width: 100vw;*/
 
-        /*TODO check if doable on the main*/
-        /*margin: 3%;*/
+        background-color: white;
+
+        column-gap: 3%;
     }
 
     .vis-component {

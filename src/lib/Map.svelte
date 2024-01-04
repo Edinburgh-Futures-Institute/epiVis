@@ -8,7 +8,7 @@
     export let filteredData;
 
     let width: number;
-    let height: number = 600;
+    let height: number;
 
     let element;
     let projection;
@@ -88,31 +88,6 @@
     }
 
     function render() {
-        // return;
-        // svg = d3.select("#svg")
-
-        // console.log(123, groupByCountry)
-        // const zoom = d3.zoom().scaleExtent([1, 8]).on("zoom", zoomed);
-
-        // d3.select("#svg")
-        //     .select("g")
-        //     // .attr("cursor", "pointer")
-        //     .selectAll("path")
-        //     .data(map.features)
-        //     .join("path")
-        //     .attr("d", d3.geoPath().projection(projection))
-        //     .attr("stroke", "black")
-        //     .attr("fill", d => {
-        //         let country = d.properties.SOVEREIGNT.toLowerCase();
-        //         console.log(country)
-        //
-        //         let papers = groupByCountry[country]
-        //         let size = papers ? papers.length : 0;
-        //
-        //         return colorScale(size)
-        //     })
-        //     .attr("stroke-width", 1);
-
         d3.select("#svg")
             .select("g")
             .selectAll("path")
@@ -129,7 +104,7 @@
 
     function setLegend() {
         let leg = Legend(colorScale, {
-            title: "Number of papers",
+            title: "Region of study frequency",
             tickSize: 0
         })
 
@@ -297,16 +272,21 @@
 
 </script>
 
-<div bind:this={element} on:resize={updateDimensions}>
-    <div id="legend"></div>
-    <svg id="svg" width={width} height={height}>
-        <g></g>
-    </svg>
+<div id="main-div" bind:this={element} on:resize={updateDimensions}>
+    <div class="title">
+        Visualization 1
+    </div>
+    <div class="vis-frame">
+        <div id="legend"></div>
+        <svg id="svg" width={width} height={height}>
+            <g></g>
+        </svg>
+    </div>
 </div>
 
 
 <style>
-    div {
+    #main-div {
         /*flex-grow: 1;*/
         /*flex: 1;*/
         flex: 1 1 0;

@@ -13,61 +13,11 @@
     let element;
     let columnNameTooltip: HTMLElement;
 
-    // let handler, rows
-    // $: handler = new DataHandler(filteredData, {rowsPerPage: 20})
-    // $: rows = handler.getRows()
-
     const className = (i) => `p${i}`
 
     let heatMapColumns = allCols.map((col, i) => {
         return {title: `C${i}`, data: col, className: className(i)}
     })
-
-
-    // onMount(() => {
-    //     datatable = new DataTable('#myTable', {
-    //         columns: [
-    //             {title: 'Id', data: "Epic Code "},
-    //             {title: 'Title', data: "Title "},
-    //             {title: 'Year', data: "Publication Year "},
-    //             {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
-    //                     // console.log(55555, data, row, type, meta)
-    //                     // return data.replace(",", ", ");
-    //                     if (typeof data !== 'string') {
-    //                         return data.join(", ")
-    //                     } else {
-    //                         return data;
-    //                     }
-    //                 }},
-    //             {title: 'Epidemic waves', data: "Epidemic waves"},
-    //             // {title: 'Models', data: MODEL},
-    //             {title: 'Models', data: "Models"},
-    //             // {title: 'Purpose', data: PURPOSE},
-    //             // {title: 'Spread', data: SPREAD},
-    //             // {title: 'Stage', data: STAGE},
-    //             // {title: 'Hosts', data: "Hosts "},
-    //         ].concat(heatMapColumns),
-    //         createdRow: function (row, data, dataIndex) {
-    //             for (let i = 0; i < allCols.length; i++) {
-    //                 let col = allCols[i];
-    //                 let value = data[col];
-    //                 // let cell = row.querySelector(`.${col}`);
-    //                 let cell = row.querySelector(`.p${i}`);
-    //
-    //                 if (["P", "Y", "S"].includes(value)) {
-    //                     cell.style.background = '#a1d99b'
-    //                 } else if (["N", "I"].includes(value)) {
-    //                     cell.style.background = '#fdbb84'
-    //                 } else if (["M", "L"].includes(value)) {
-    //                     cell.style.background = '#ffeda0'
-    //                 }
-    //             }
-    // },
-    //         data: filteredData
-    //     });
-    // })
-
-
 
     function redraw(filteredData) {
         if (!element) return;
@@ -159,15 +109,32 @@
 
 </script>
 
-<table bind:this={element} id="myTable">
-</table>
+<div id="mainTableDiv" class="main-componenttt">
+    <div id="title-div">
+        <span class="title">Papers Found</span> The table lists all papers corresponding to the above specified filter criteria. Selecting an entity in one or more of the visualizations, will add/remove additional filter criteria.
+    </div>
+    <div id="table-div" class="vis-frame">
+        <table bind:this={element} id="myTable">
+        </table>
+    </div>
+</div>
 
 
 <style>
-    div {
+    #mainTableDiv {
         /*display: flex;*/
         /*flex-flow: column;*/
-        width: 100vw;
+        /*width: 95%;*/
+    }
+
+    #title-div {
+        padding-left: 40px;
+        padding-bottom: 20px;
+    }
+
+    .title {
+        /*padding-left: 40px;*/
+        padding-right: 20px;
     }
 
     thead {
@@ -187,7 +154,14 @@
         background: #f5f5f5;
     }
 
-    table {
+    #table-div {
+    /*    width: 50%;*/
+    /*    width: 90%;*/
+        padding-left: 2em;
+        padding-top: 1em;
+    }
+
+    #myTable {
         border-collapse: separate;
         border-spacing: 10;
     }
