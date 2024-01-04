@@ -77,9 +77,9 @@
             },
             {
               "source_id": {
-                "field": "AI strain"
+                "field": "Epidemic waves"
               },
-              "source_node_type": "Strain",
+              "source_node_type": "Wave",
               "target_id": {
                 "field": "Epic Code "
               },
