@@ -81,7 +81,6 @@
 
     $: run(filteredData);
 
-
     function run(filteredData) {
         processData();
         render();

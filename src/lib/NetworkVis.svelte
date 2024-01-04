@@ -24,6 +24,9 @@
     let height: number;
 
     const fullNetPath = "/netpanorama-vis/templates/wholeNet.json"
+    const peopleNetPath = "/netpanorama-vis/templates/projPerson.json"
+    const countryProjNetPath = "/netpanorama-vis/templates/countryProj.json"
+    const instModelNetPath = "/netpanorama-vis/templates/institutionModel.json"
 
     onMount(() => {
         updateDimensions();
@@ -81,14 +84,14 @@
                 }, "vis");
 
             } else if (networkName == "People") {
-                NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
+                NetPanoramaTemplateViewer.render(peopleNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width,
                     height: height
                 }, "vis");
             } else if (networkName == "Countries") {
-                let viewer = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/countryProj.json", {
+                NetPanoramaTemplateViewer.render(countryProjNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width,
@@ -97,7 +100,7 @@
                 }, "vis");
 
             } else if (networkName == "Models+Institutions") {
-                let viewer = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/institutionModel.json", {
+                await NetPanoramaTemplateViewer.render(instModelNetPath, {
                     data: institutionModelTable,
                     width: width,
                     height: height
@@ -124,8 +127,6 @@
     <div class="tab">
         <span class="title"> Visualization 2 </span>
 
-
-
         <button class="tablinks" on:click={selectTab}>Full</button>
         <button class="tablinks" on:click={selectTab}>People</button>
         <button class="tablinks" on:click={selectTab}>Countries</button>
@@ -140,10 +141,15 @@
     {:else}
 <!--        <div id="vis" class="vis-frame" bind:this={elementNet}>-->
     {/if}
+
     </div>
+
+<!--    <div>How to read this visualization?</div>-->
+
 
 
     <!--<div id="vis" class="vis-frame" bind:this={elementNet}>-->
+
 
 </div>
 
