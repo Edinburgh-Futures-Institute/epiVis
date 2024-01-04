@@ -70,7 +70,7 @@
         if (elementNet) {
             elementNet.innerHTML = ""
 
-            let margin = 100;
+            let margin = 120;
 
             if (networkName == "Full") {
                 console.log(23232323, width, height)
@@ -78,7 +78,7 @@
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width - margin,
-                    height: height,
+                    height: height - margin,
                     strokeColor: GRAY
                 }, "vis");
 
@@ -87,14 +87,14 @@
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width,
-                    height: height
+                    height: height - margin
                 }, "vis");
             } else if (networkName == "Countries") {
                 NetPanoramaTemplateViewer.render(countryProjNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width,
-                    height: height,
+                    height: height - margin,
                     links: countryToCountryTable
                 }, "vis");
 
@@ -102,7 +102,7 @@
                 await NetPanoramaTemplateViewer.render(instModelNetPath, {
                     data: institutionModelTable,
                     width: width,
-                    height: height
+                    height: height - margin
                 }, "vis");
             } else if (networkName == "Institutions") {
 
