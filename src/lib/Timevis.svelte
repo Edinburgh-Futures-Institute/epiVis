@@ -6,9 +6,16 @@
     import {onMount} from "svelte";
     import {MODELS} from "../dataLoader.js";
 
-    let width = 1000;
-    let height = 1200;
+    let element: HTMLElement;
+    let width;
+    let height;
     let overlap = 1;
+
+    function updateDimensions() {
+        const rect = element.getBoundingClientRect();
+        width = rect.width;
+        height = rect.height;
+    }
 
     let modelData = []
     data.forEach(d => {
@@ -20,6 +27,7 @@
     })
 
     onMount(() => {
+        updateDimensions()
         let dataFiltered = data.filter(d => d[MODEL] && d[PUBYEAR])
 
         let group = d3.flatGroup(
@@ -35,10 +43,6 @@
 
         // let modelGroup = d3.groups(group, d => d[0]);
         let modelGroup = d3.groups(group, d => d.model);
-
-        // console.log("group", group)
-        // console.log("ModelsGroup", modelGroup)
-
 
         let ridgePlot = Plot.plot({
             height: 40 + new Set(dataFiltered.map(d => d[MODEL])).size * 50,
@@ -77,8 +81,8 @@
         let heatmap = Plot.plot({
             marginLeft: 150,
             // marginBottom: 80,
-            width: 1200,
-            height: 800,
+            width: width,
+            height: height - 30,
             x: {label: null},
             y: {label: "Model Type", },
             color: {label: "Count", legend: true, scheme: "YlGnBu"},
@@ -93,8 +97,14 @@
 
 </script>
 
-<div id="ridgeplot">
+<!--<div id="ridgeplot">-->
+<!--</div>-->
+
+<div id="heatmap" bind:this={element}>
 </div>
 
-<div id="heatmap">
-</div>
+<style>
+    #heatmap {
+        height: 100%;
+    }
+</style>

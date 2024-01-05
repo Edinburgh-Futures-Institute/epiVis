@@ -233,8 +233,8 @@
 <!--        <Circular>-->
 <!--        </Circular>-->
 
-        <Timevis>
-        </Timevis>
+<!--        <Timevis>-->
+<!--        </Timevis>-->
 
         <div class="vis-container">
             <div id="vis4" class="vis-component">

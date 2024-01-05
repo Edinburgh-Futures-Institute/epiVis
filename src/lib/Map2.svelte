@@ -8,7 +8,7 @@
     export let filteredData;
 
     let width: number;
-    let height: number;
+    let height: number = 100;
 
     let element;
     let projection;

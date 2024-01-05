@@ -32,6 +32,7 @@ export let paperIdToPaper = {};
 // export let data = await d3.csv(`./data/${papersFilename}`, d => {
 export let data = await d3.csv(`./data/${papersFilename}`, d => {
     d["AI strain"] = parseStrains(d["AI strain"])
+    d["Epidemic waves"] = parseStrains(d["Epidemic waves"]).filter(w => w)
     paperIdToPaper[d["Epic Code "]] = d;
 
     d["Models"] = d[MODEL];
@@ -57,9 +58,11 @@ export let peopleTable = await d3.csv(`./data/${authorsFilename}`, d => {
 })
 
 
-
 export let institutionModelTable = [];
 export let countryToCountryTable = [];
+export let paperWaveTable = [];
+export let strainWaveTable = [];
+export let waveCountryTable = [];
 
 export let paperIdToAuthors: Object = {};
 export let authorToCountry: Object = {};
@@ -107,6 +110,26 @@ function createLinksTables() {
             }
         }
     }
+
+    for (let paper of data) {
+        let strains = paper["AI strain"]
+        let waves = paper["Epidemic waves"]
+
+        for (let w: string of waves) {
+            paperWaveTable.push({Paper: paper["Epic Code "], Wave: w})
+            waveCountryTable.push({Country: paper["Region of study "], Wave: w})
+        }
+
+        for (let st of strains) {
+            for (let w: string of waves) {
+                if (w.toLowerCase().includes(st.toLowerCase())) {
+                    strainWaveTable.push({Strain: st, Wave: w})
+                }
+            }
+        }
+    }
+
+    console.log(waveCountryTable)
 }
 
 

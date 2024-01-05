@@ -5,7 +5,7 @@
         countryToCountryTable,
         institutionModelTable,
         NodeTypes,
-        papersFilename
+        papersFilename, paperWaveTable, strainWaveTable, waveCountryTable
     } from "../dataLoader.ts";
     import {onMount} from "svelte";
     import {GRAY} from "../globals.ts";
@@ -19,8 +19,8 @@
     let element: HTMLElement;
     let elementNet: HTMLElement;
 
-    let selectedNet = "Institutions";
-    // let selectedNet = "Full";
+    // let selectedNet = "Institutions";
+    let selectedNet = "Full";
     let width: number;
     let height: number;
 
@@ -73,13 +73,15 @@
             let margin = 120;
 
             if (networkName == "Full") {
-                console.log(23232323, width, height)
                 NetPanoramaTemplateViewer.render(fullNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width - margin,
                     height: height - margin,
-                    strokeColor: GRAY
+                    strokeColor: GRAY,
+                    strainWavesLinks: strainWaveTable,
+                    wavePapersLinks: paperWaveTable,
+                    waveCountryLinks: waveCountryTable
                 }, "vis");
 
             } else if (networkName == "People") {

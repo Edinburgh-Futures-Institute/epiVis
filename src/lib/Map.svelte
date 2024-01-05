@@ -36,7 +36,7 @@
 
         projection = d3.geoMercator()
         .scale(140) // When merged with timeline
-        .translate([width / 2, height / 1.5]) // CENTER
+        .translate([width / 2, 1]) // CENTER
 
         // colorScale = d3.scaleLinear([0, 10], ["white", "blue"])
         // let colorScale = d3.scaleSequential([0, 10], d3.interpolateBlues)

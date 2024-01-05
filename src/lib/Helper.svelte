@@ -28,9 +28,11 @@
 {#if isHovered}
 	<div style="top: {y}px; left: {x}px;" class="tooltip">
         {#if visualizationType == "Map"}
-            MAP
+            The map shows the regions of study of the scientific papers. The more colored a country is, the more papers have studied a strain in this country.
         {:else if visualizationType == "Models"}
-            Models are ...
+            This visualization is a heatmap showing the frequency of usage of different model types according the years.
+            {:else if visualizationType == "Full"}
+            This visualization shows a network of all entities in the data: papers, people, institutions, strains, waves, and countries.
         {/if}
     </div>
 {/if}
