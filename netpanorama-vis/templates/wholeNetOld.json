@@ -21,12 +21,8 @@
       "values": "[strainWavesLinks]"
     },
     {
-      "name": "wavePaper",
-      "values": "[wavePapersLinks]"
-    },
-    {
-      "name": "waveCountry",
-      "values": "[waveCountryLinks]"
+      "name": "strainPaper",
+      "values": "[strainPapersLinks]"
     }
   ],
   "parameters": [
@@ -63,12 +59,52 @@
           "data": "data",
           "yieldsNodes": [
             {
+              "id_field": "AI strain",
+              "type": "Strain",
+              "data": []
+            },
+            {
               "id_field": "Epic Code ",
               "type": "Paper",
               "data": []
             }
           ],
           "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "AI strain"
+              },
+              "source_node_type": "Strain",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Epidemic waves"
+              },
+              "target_node_type": "Wave",
+              "target_id_field": "id",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Epidemic waves"
+              },
+              "source_node_type": "Wave",
+              "target_id": {
+                "field": "Epic Code "
+              },
+              "target_node_type": "Paper",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Region of study "
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "Epidemic waves"
+              },
+              "target_node_type": "Wave",
+              "data": []
+            }
           ]
         },
         {
@@ -99,66 +135,6 @@
                 "field": "Author"
               },
               "target_node_type": "Person",
-              "target_id_field": "id",
-              "data": []
-            }
-          ]
-        },
-        {
-          "data": "strainWave",
-          "yieldsNodes": [
-          ],
-          "yieldsLinks": [
-            {
-              "source_id": {
-                "field": "Strain"
-              },
-              "source_node_type": "Strain",
-              "source_id_field": "id",
-              "target_id": {
-                "field": "Wave"
-              },
-              "target_node_type": "Wave",
-              "target_id_field": "id",
-              "data": []
-            }
-          ]
-        },
-        {
-          "data": "wavePaper",
-          "yieldsNodes": [
-          ],
-          "yieldsLinks": [
-            {
-              "source_id": {
-                "field": "Wave"
-              },
-              "source_node_type": "Wave",
-              "source_id_field": "id",
-              "target_id": {
-                "field": "Paper"
-              },
-              "target_node_type": "Paper",
-              "target_id_field": "id",
-              "data": []
-            }
-          ]
-        },
-        {
-          "data": "waveCountry",
-          "yieldsNodes": [
-          ],
-          "yieldsLinks": [
-            {
-              "source_id": {
-                "field": "Wave"
-              },
-              "source_node_type": "Wave",
-              "source_id_field": "id",
-              "target_id": {
-                "field": "Country"
-              },
-              "target_node_type": "Country",
               "target_id_field": "id",
               "data": []
             }
