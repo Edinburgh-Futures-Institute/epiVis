@@ -326,14 +326,28 @@
         }
       }
     },
+
     {
       "entries": "network.nodes",
       "layout": "forcelayout",
-      "ifInSelection": "node_selection.nodes",
       "mark": {
         "type": "text",
         "text": {
-          "expression": "datum.id"
+          "conditions": [
+            {
+              "test": "datum._type == 'Strain'",
+              "value": {
+                "field": "id"
+              }
+            },
+            {
+              "inSelection": "node_selection.nodes",
+              "value": {
+                "expression": "datum.id"
+              }
+            }
+          ],
+          "value": ""
         },
         "dx": 6,
         "dy": 6,
@@ -343,5 +357,7 @@
         "strokeWidth": 0.5
       }
     }
+
+
   ]
 }

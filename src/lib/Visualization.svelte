@@ -48,7 +48,7 @@
     </div>
 
 
-    <Helper visualizationType="{selectedVis}"></Helper>
+    <Helper visualizationType="{selectedVis}" parentEl="{element}"></Helper>
 </div>
 
 

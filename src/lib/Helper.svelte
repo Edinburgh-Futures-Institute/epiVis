@@ -1,19 +1,31 @@
 <script lang="ts">
 
     export let visualizationType;
+    export let parentEl: HTMLElement;
     let isHovered = false;
     let x: number;
 	let y: number;
 
+    console.log(22, parentEl)
+
 
     function mouseOver(event) {
 		isHovered = true;
-		x = event.clientX + 5;
-		y = event.clientY + 5;
+		x = event.pageX + 5;
+		y = event.pageY + 5;
 	}
 	function mouseMove(event) {
-		x = event.clientX + 5;
-		y = event.clientY + 5;
+        console.log(parentEl.style.left, parentEl.offsetLeft)
+
+        // x = event.pageX + 5;
+		// y = event.pageY + 5;
+
+        // console.log(element.style.left, element.offsetLeft)
+		x = event.pageX + 5 - parentEl.offsetLeft;
+		y = event.pageY + 5 - parentEl.offsetTop;
+
+		// x = event.clientX + 5 + window.scrollX;
+		// y = event.clientY + 5 + window.scrollY;
 	}
 	function mouseLeave() {
 		isHovered = false;
@@ -41,6 +53,7 @@
     #helper {
         text-decoration: underline;
         position: absolute;
+        /*position: relative;*/
         bottom: 1em;
     }
 

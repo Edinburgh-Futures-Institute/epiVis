@@ -331,14 +331,20 @@
 
         renderLegend();
         function renderLegend() {
+            d3.select("#svg-legend").html("")
+
+            let xStart = 10;
+            // let xStart = 100;
+
             // Add one dot in the legend for each name.
-            d3.select(svgLegend)
+            // d3.select(svgLegend)
+            d3.select("#svg-legend")
                 .selectAll("mydots")
                 .data(countryColorScale.domain())
                 .join("circle")
-                .attr("cx", 100)
+                .attr("cx", xStart)
                 .attr("cy", function (d, i) {
-                    return 100 + i * 25
+                    return xStart + i * 25
                 }) // 100 is where the first dot appears. 25 is the distance between dots
                 .attr("r", 7)
                 .style("fill", function (d) {
@@ -346,14 +352,15 @@
                 })
 
             // Add one dot in the legend for each name.
-            d3.select(svgLegend)
+            // d3.select(svgLegend)
+            d3.select("#svg-legend")
                 .selectAll("mylabels")
                 .data(countryColorScale.domain())
                 .join("text")
-                .attr("x", 120)
+                .attr("x", xStart + 20)
                 .attr("y", function (d, i) {
-                    return 100 + i * 25
-                }) // 100 is where the first dot appears. 25 is the distance between dots
+                    return xStart + i * 25
+                })
                 .style("fill", function (d) {
                     return countryColorScale(d)
                 })

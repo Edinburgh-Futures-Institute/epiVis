@@ -5,6 +5,7 @@
     import * as d3 from "d3";
 
     export let selectedNodeTypes: NodeTypes[]
+    export let selectedNet: string;
 
     let element: HTMLElement;
     let width: number = 180;
@@ -12,7 +13,9 @@
     const legendSize = 100;
 
     $: {
-        if (element) {
+        d3.select("#svg-legend").html("")
+
+        if (element && selectedNet) {
             d3.select("#svg-legend")
                 .selectAll("path")
                 .data(Object.values(NodeTypes))

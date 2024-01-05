@@ -38,6 +38,9 @@
 
     // let allStrains = [...new Set(data.map(d => d["AI strain"]).filter(d => !nullOrNS(d)))];
     let allStrains = [...new Set(data.map(d => d["AI strain"]).flat().filter(d => !nullOrNS(d)))];
+    allStrains = allStrains.filter(strain => strain.length < 20)
+
+
     let allModels = [...new Set(data.map(d => d [MODEL]))];
 
     let currentStrain;
@@ -48,6 +51,7 @@
 
     let selectedNodeTypes = Object.values(NodeTypes);
 
+    let selectedVis = "Full";
 
     $: filteredData = filterData(currentStrain, currentInstitution, currentModel, currentYearMin, currentYearMax);
 
@@ -114,7 +118,6 @@
 
     function dotGraphTime() {
         let dot = "digraph { rankdir=LR;"
-
         let rankKey = "layer"
 
         let rankToNodesIds: Record<string, (string | number)[]> = {};
@@ -137,8 +140,11 @@
 
         influenceLinks.forEach(link => {
             let type = (link.influenceType == 1) ? "solid" : "dotted";
-            const dotLink = `"${link.source}" -> "${link.target}" [style="${type}"];`;
-            dot += dotLink
+            let color = (link.influenceType == 1) ? "red" : "black";
+
+            // const dotLink = `"${link.source}" -> "${link.target}" [style="${type}"];`;
+            const dotLink = `"${link.source}" -> "${link.target}" [color="${color}"];`;
+            dot += dotLink;
         })
 
         let ranks = Object.keys(rankToNodesIds);
@@ -179,7 +185,7 @@
 
             d3.select("#vis4")
                 .graphviz()
-                .width(1800)
+                .width(1400)
                 .height(1000)
                 .renderDot(dotGraphTime());
         }
@@ -218,9 +224,9 @@
         </Visualization>
 
 <!--            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="../netpanorama-vis/templates/wholeNet.json">-->
-        <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="/netpanorama-vis/templates/wholeNet.json">
+        <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} bind:selectedNet="{selectedVis}" specPath="/netpanorama-vis/templates/wholeNet.json">
         </NetworkVis>
-        <NetworkLegend bind:selectedNodeTypes={selectedNodeTypes}>
+        <NetworkLegend bind:selectedNodeTypes={selectedNodeTypes} selectedNet="{selectedVis}">
         </NetworkLegend>
     </div>
 

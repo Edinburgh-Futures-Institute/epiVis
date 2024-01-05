@@ -14,13 +14,12 @@
 
     export let selectedNodeTypes;
     export let specPath;
-
+    export let selectedNet;
 
     let element: HTMLElement;
-    let elementNet: HTMLElement;
 
+    let elementNet: HTMLElement;
     // let selectedNet = "Institutions";
-    let selectedNet = "Full";
     let width: number;
     let height: number;
 
@@ -144,7 +143,7 @@
     {/if}
     </div>
 
-    <Helper visualizationType="{selectedNet}"></Helper>
+    <Helper visualizationType="{selectedNet}" parentEl="{element}"></Helper>
 
     <!--<div id="vis" class="vis-frame" bind:this={elementNet}>-->
 </div>
@@ -158,6 +157,6 @@
     #vis {
         width: 100%;
         /*height: 90%;*/
-        height: 65vh;
+        height: 72vh;
     }
 </style>

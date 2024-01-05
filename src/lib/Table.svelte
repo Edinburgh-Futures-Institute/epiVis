@@ -127,6 +127,10 @@
         /*width: 95%;*/
     }
 
+    #table-div {
+        background-color: white;
+    }
+
     #title-div {
         padding-left: 40px;
         padding-bottom: 20px;

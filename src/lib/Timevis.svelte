@@ -79,7 +79,7 @@
 
 
         let heatmap = Plot.plot({
-            marginLeft: 150,
+            marginLeft: 250,
             // marginBottom: 80,
             width: width,
             height: height - 30,
@@ -93,6 +93,8 @@
         })
 
         document.querySelector("#heatmap").append(heatmap)
+
+        d3.select("#heatmap").selectAll("svg > g > text").style("font-size", "13px");
     })
 
 </script>
