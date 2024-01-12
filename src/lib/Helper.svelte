@@ -6,9 +6,6 @@
     let x: number;
 	let y: number;
 
-    console.log(22, parentEl)
-
-
     function mouseOver(event) {
 		isHovered = true;
 		x = event.pageX + 5;

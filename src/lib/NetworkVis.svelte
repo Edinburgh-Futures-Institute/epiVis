@@ -1,10 +1,8 @@
 <script lang="ts">
     import {
-        affiliationsFilename,
         authorsFilename,
         countryToCountryTable,
         institutionModelTable,
-        NodeTypes,
         papersFilename, paperWaveTable, strainWaveTable, waveCountryTable
     } from "../dataLoader.ts";
     import {onMount} from "svelte";
@@ -15,6 +13,7 @@
     export let selectedNodeTypes;
     export let specPath;
     export let selectedNet;
+    export let viewer;
 
     let element: HTMLElement;
 
@@ -39,31 +38,6 @@
         height = rect.height;
     }
 
-    // function render(width, height, selectedNodeTypes) {
-    //     // console.log("NET DIM ", width, height)
-    //     if (width) {
-    //         element.innerHTML = ""
-    //
-    //         console.log(selectedNodeTypes, 222)
-    //         if (selectedNodeTypes[0] == NodeTypes.Person && selectedNodeTypes.length == 1) {
-    //             console.log("PEOPLE")
-    //             NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
-    //                 filename: papersFilename,
-    //                 authorsFilename: authorsPapaersFilename,
-    //                 width: width,
-    //                 height: height
-    //             }, "vis");
-    //         } else {
-    //             NetPanoramaTemplateViewer.render(specPath, {
-    //                 filename: papersFilename,
-    //                 authorsFilename: authorsPapaersFilename,
-    //                 width: width,
-    //                 height: height
-    //             }, "vis");
-    //         }
-    //     }
-    // }
-
     async function render(width, height, networkName) {
         // if (width && height) {
         if (elementNet) {
@@ -72,7 +46,7 @@
             let margin = 120;
 
             if (networkName == "Full") {
-                NetPanoramaTemplateViewer.render(fullNetPath, {
+                viewer = await NetPanoramaTemplateViewer.render(fullNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width - margin,
@@ -84,14 +58,14 @@
                 }, "vis");
 
             } else if (networkName == "People") {
-                NetPanoramaTemplateViewer.render(peopleNetPath, {
+                viewer = await NetPanoramaTemplateViewer.render(peopleNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width,
                     height: height - margin
                 }, "vis");
             } else if (networkName == "Countries") {
-                NetPanoramaTemplateViewer.render(countryProjNetPath, {
+                viewer = NetPanoramaTemplateViewer.render(countryProjNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width,
@@ -100,7 +74,7 @@
                 }, "vis");
 
             } else if (networkName == "Models+Institutions") {
-                await NetPanoramaTemplateViewer.render(instModelNetPath, {
+                viewer = NetPanoramaTemplateViewer.render(instModelNetPath, {
                     data: institutionModelTable,
                     width: width,
                     height: height - margin
@@ -125,7 +99,7 @@
 <!--        Visualization 2-->
 <!--    </div>-->
     <div class="tab">
-        <span class="title"> Visualization 2 </span>
+        <span class="title"> Visualization Type 2 </span>
 
         <button class="tablinks" on:click={selectTab}>Full</button>
         <button class="tablinks" on:click={selectTab}>People</button>

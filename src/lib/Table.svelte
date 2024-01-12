@@ -31,7 +31,7 @@
             datatable = new DataTable('#myTable', {
                 columns: [
                     {title: 'Id', data: "Epic Code "},
-                    {title: 'Title', data: "Title "},
+                    {title: 'Title', data: "Title ", className: "titleCol"},
                     {title: 'Year', data: "Publication Year "},
                     {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
                             if (typeof data !== 'string') {
@@ -169,4 +169,10 @@
         border-collapse: separate;
         border-spacing: 10;
     }
+
+    .titleCol {
+    /*text-align : center;*/
+    font-weight: bold;
+    }
+
 </style>

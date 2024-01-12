@@ -47,6 +47,15 @@ body {
     /*padding-right: 3%;*/
 }
 
+
+
+.titleCol {
+    /*text-align : center;*/
+    font-weight: bold;
+}
+
+
+
 button {
     border-radius: 8px;
     border: 1px solid transparent;

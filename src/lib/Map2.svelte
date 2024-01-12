@@ -1,5 +1,6 @@
 <script lang="ts">
     import * as d3 from "d3";
+    import { geoEckert3 } from "d3-geo-projection";
 
     import {map} from "../dataLoader.ts"
     import {onMount} from "svelte";
@@ -34,12 +35,10 @@
     onMount(() => {
         updateDimensions();
 
-        projection = d3.geoMercator()
-        .scale(140) // When merged with timeline
-        .translate([width / 2, height / 1.5]) // CENTER
-
-        // colorScale = d3.scaleLinear([0, 10], ["white", "blue"])
-        // let colorScale = d3.scaleSequential([0, 10], d3.interpolateBlues)
+        // projection = d3.geoMercator()
+        projection = geoEckert3()
+        .scale(180) // When merged with timeline
+        .translate([width / 2, height / 2]) // CENTER
 
         setLegend();
 

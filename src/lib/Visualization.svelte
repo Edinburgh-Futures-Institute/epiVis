@@ -28,7 +28,7 @@
 
 <div id="main-div" bind:this={element} on:resize={updateDimensions}>
     <div class="tab">
-        <span class="title"> Visualization 2 </span>
+        <span class="title"> Visualization Type 1 </span>
 
         <button class="tablinks" on:click={selectTab}>Map</button>
         <button class="tablinks" on:click={selectTab}>Models</button>

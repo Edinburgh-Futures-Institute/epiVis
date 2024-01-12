@@ -2,13 +2,11 @@
     import * as d3 from "d3";
     import "d3-graphviz";
 
-    import Map from "./lib/Map.svelte";
     import Dropdown from "./lib/Dropdown.svelte";
 
     import {
         data,
         nullOrNS,
-        allYears,
         yearMin,
         yearMax,
         paperToTimes,
@@ -23,34 +21,25 @@
     import Table from "./lib/Table.svelte";
     import Time from "./lib/Time.svelte";
     import NetworkVis from "./lib/NetworkVis.svelte";
-    import Timevis from "./lib/Timevis.svelte";
     import NetworkLegend from "./lib/NetworkLegend.svelte";
-    import Circular from "./lib/Circular.svelte";
-    import Heatmap from "./lib/Heatmap.svelte";
     import Visualization from "./lib/Visualization.svelte";
 
     let element: HTMLElement;
 
-    // let allIstitutions = data.reduce((d0, d) => d0.concat(d["Affiliation of 1st author"].split(",").concat(d["Affiliation of 2nd author"].split(",")).concat(d["Affiliation of 3rd author"].split(",")).concat(d["Affiliation of Forth th author"].split(",").concat(d["Affiliation of Fifth th author"].split(",")))), [])
-    // allIstitutions = [...new Set(allIstitutions)]
     let allInstitutions = [...new Set(affiliationsTable.map(aff => aff["Affiliation code"]))]
 
-
-    // let allStrains = [...new Set(data.map(d => d["AI strain"]).filter(d => !nullOrNS(d)))];
     let allStrains = [...new Set(data.map(d => d["AI strain"]).flat().filter(d => !nullOrNS(d)))];
     allStrains = allStrains.filter(strain => strain.length < 20)
 
-
-    let allModels = [...new Set(data.map(d => d [MODEL]))];
-
-    let currentStrain;
-    let currentInstitution;
-    let currentModel;
+    let currentStrain: string;
+    let currentInstitution: string;
+    let currentModel: string;
     let currentYearMin = 0;
     let currentYearMax = 0;
 
-    let selectedNodeTypes = Object.values(NodeTypes);
+    let viewer;
 
+    let selectedNodeTypes = Object.values(NodeTypes);
     let selectedVis = "Full";
 
     $: filteredData = filterData(currentStrain, currentInstitution, currentModel, currentYearMin, currentYearMax);
@@ -82,6 +71,22 @@
                 return true;
             });
         }
+
+
+        // TODO: works but very hacky, check Netpan for better update of list/object parameters
+        if (viewer) {
+            let paperIds = filtered.map(d => d["Epic Code "]);
+            let netpanNodes = viewer.state.network.nodes.filter(n => paperIds.includes(n.id));
+
+            netpanNodes.forEach(n => {
+                Object.keys(n).forEach((key) => !["data", "variable"].includes(key) || delete n[key]);
+            })
+            console.log(netpanNodes)
+            // viewer.setParam("node_selection", {nodes: netpanNodes.map(n => n.id), links: []})
+            viewer.setParam("node_selection", {nodes: netpanNodes, links: []})
+            // viewer.state.node_selection = {nodes: netpanNodes, links: []};
+        }
+
 
         return filtered
     }
@@ -130,13 +135,10 @@
             }
         })
 
-        // console.log(22, rankToNodesIds)
         for (let [rank, nodesIds] of Object.entries(rankToNodesIds)) {
             nodesIds = nodesIds.map(v => `"${v}"`)
             dot += `{rank=same; ${rank}, ${nodesIds.join(",")}}`
         }
-
-        // dot += "\n"
 
         influenceLinks.forEach(link => {
             let type = (link.influenceType == 1) ? "solid" : "dotted";
@@ -224,7 +226,7 @@
         </Visualization>
 
 <!--            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="../netpanorama-vis/templates/wholeNet.json">-->
-        <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} bind:selectedNet="{selectedVis}" specPath="/netpanorama-vis/templates/wholeNet.json">
+        <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} bind:selectedNet="{selectedVis}" bind:viewer="{viewer}" specPath="/netpanorama-vis/templates/wholeNet.json">
         </NetworkVis>
         <NetworkLegend bind:selectedNodeTypes={selectedNodeTypes} selectedNet="{selectedVis}">
         </NetworkLegend>
@@ -260,7 +262,7 @@
         /*margin-left: 300px;*/
         /*margin-right: 300px;*/
         /*padding: 1em;*/
-        row-gap: 2em;
+        row-gap: 1em;
     }
 
 
@@ -275,7 +277,8 @@
         /*max-width: 100%;*/
         /*max-height: 100%;*/
         /*min-width: 100%;*/
-        min-height: 100%;
+        /*min-height: 100%;*/
+        max-height: 140px;
         /*margin-right: 6%;*/
     }
 
@@ -284,6 +287,7 @@
         flex-direction: row;
         /*width: 70%;*/
         width: 100%;
+        padding-top: 1em;
     }
 
     #menu {
