@@ -2,7 +2,9 @@
     import {MODEL, PURPOSE, SPREAD, STAGE, allCols} from "../dataLoader.ts";
 
     import DataTable from 'datatables.net-dt';
+    import 'datatables.net-rowgroup'; // Import RowGroup plugin
     import 'datatables.net-dt/css/jquery.dataTables.min.css';
+
 
     import {onMount} from "svelte";
 
@@ -31,7 +33,7 @@
             datatable = new DataTable('#myTable', {
                 columns: [
                     {title: 'Id', data: "Epic Code "},
-                    {title: 'Title', data: "Title ", className: "titleCol"},
+                    // {title: 'Title', data: "Title ", className: "titleCol"},
                     {title: 'Year', data: "Publication Year "},
                     {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
                             if (typeof data !== 'string') {
@@ -89,7 +91,10 @@
                         });
                     })
                 },
-                data: filteredData
+                data: filteredData,
+                rowGroup: {
+                    dataSrc: 'Title ' // Group by the 'name' column
+                }
             });
         }
     }
@@ -121,12 +126,6 @@
 
 
 <style>
-    #mainTableDiv {
-        /*display: flex;*/
-        /*flex-flow: column;*/
-        /*width: 95%;*/
-    }
-
     #table-div {
         background-color: white;
     }
@@ -161,7 +160,7 @@
     #table-div {
     /*    width: 50%;*/
     /*    width: 90%;*/
-        padding-left: 2em;
+        padding-left: 1em;
         padding-top: 1em;
     }
 
@@ -170,9 +169,5 @@
         border-spacing: 10;
     }
 
-    .titleCol {
-    /*text-align : center;*/
-    font-weight: bold;
-    }
-
+    /*    Datatable css is an app.css */
 </style>

@@ -29,6 +29,7 @@
     "d3-geo-projection": "^4.0.0",
     "d3-graphviz": "^5.1.0",
     "datatables.net-dt": "^1.13.8",
+    "datatables.net-rowgroup": "^1.4.1",
     "netpanorama-template-viewer": "^0.1.3",
     "nouislider": "^15.7.1"
   }
