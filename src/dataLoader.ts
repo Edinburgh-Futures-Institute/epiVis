@@ -25,10 +25,6 @@ export enum NodeTypes {
     Model = "Model"
 }
 
-// export const papersFilename = "papers3Nov.csv";
-// export const affiliationsFilename = "affiliations3Nov.csv";
-// export const authorsFilename = "authors3Nov.csv";
-
 export const papersFilename = "papers13Jan.csv";
 export const affiliationsFilename = "affiliations13Jan.csv";
 export const authorsFilename = "authors13Jan.csv";
@@ -54,6 +50,7 @@ export let PUBYEAR = "Publication Year "
 let timeCol = "Period of study (in format for visualisations; yellow= if 2020 forward data inlcuded)"
 
 
+
 export let paperIdToPaper = {};
 // export let data = await d3.csv(`./data/${papersFilename}`, d => {
 export let data = await d3.csv(`./data/${papersFilename}`, d => {
@@ -67,6 +64,8 @@ export let data = await d3.csv(`./data/${papersFilename}`, d => {
 })
 data = data.filter(d => d["Epic Code "])
 
+
+export let countriesInTheData = [...new Set(data.map(d => d["Region of study "].toLowerCase()))]
 
 export let affIdToName = {};
 export let affIdToCountry = {};

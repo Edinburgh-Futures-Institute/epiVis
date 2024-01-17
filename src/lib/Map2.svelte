@@ -2,7 +2,7 @@
     import * as d3 from "d3";
     import { geoEckert3 } from "d3-geo-projection";
 
-    import {map} from "../dataLoader.ts"
+    import {map, countriesInTheData} from "../dataLoader.ts"
     import {onMount} from "svelte";
     import {GRAY} from "../globals.ts";
 
@@ -13,8 +13,11 @@
 
     let element;
     let projection;
-    let colorScale = d3.scaleLinear([0, 10], ["white", "blue"]);
-    let grayedOut = GRAY
+
+    // let colorScale = d3.scaleLinear([0, 10], ["white", "blue"]);
+    let colorScale = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, 10]);
+
+    let grayedOut = "rgb(234,234,234)"
 
     let groupByCountry = {};
 
@@ -23,15 +26,6 @@
         width = rect.width;
         height = rect.height;
     }
-
-    // $: legendSvg =  computeLegend(colorScale);
-    // let legendSvg =  computeLegend(colorScale);
-    //
-    // function computeLegend(color) {
-    //     console.log(color)
-    //     let svgLegend =  legend(color)
-    //     return svgLegend
-    // }
 
     onMount(() => {
         updateDimensions();
@@ -53,14 +47,13 @@
             .attr("stroke", GRAY)
             .attr("fill", d => {
                 let country = d.properties.SOVEREIGNT.toLowerCase();
-
                 let papers = groupByCountry[country]
                 let size = papers ? papers.length : 0;
 
-                if (size) {
+                if (countriesInTheData.includes(country)) {
                     return colorScale(size)
                 } else {
-                    return "rgb(227,220,220)"
+                    return grayedOut
                 }
             })
             .attr("stroke-width", 1);
@@ -100,10 +93,16 @@
                 let papers = groupByCountry[country]
                 let size = papers ? papers.length : 0;
 
-                if (size) {
+                // if (size) {
+                //     return colorScale(size)
+                // } else {
+                //     return grayedOut
+                // }
+
+                if (countriesInTheData.includes(country)) {
                     return colorScale(size)
                 } else {
-                    return GRAY
+                    return grayedOut
                 }
             })
             .attr("stroke-width", 1);
