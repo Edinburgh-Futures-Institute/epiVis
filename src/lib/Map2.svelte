@@ -14,6 +14,7 @@
     let element;
     let projection;
     let colorScale = d3.scaleLinear([0, 10], ["white", "blue"]);
+    let grayedOut = GRAY
 
     let groupByCountry = {};
 
@@ -42,8 +43,6 @@
 
         setLegend();
 
-        console.log("render map ", width, height)
-
         d3.select("#svg")
             .select("g")
             // .attr("cursor", "pointer")
@@ -58,7 +57,11 @@
                 let papers = groupByCountry[country]
                 let size = papers ? papers.length : 0;
 
-                return colorScale(size)
+                if (size) {
+                    return colorScale(size)
+                } else {
+                    return "rgb(227,220,220)"
+                }
             })
             .attr("stroke-width", 1);
     });
@@ -97,7 +100,11 @@
                 let papers = groupByCountry[country]
                 let size = papers ? papers.length : 0;
 
-                return colorScale(size)
+                if (size) {
+                    return colorScale(size)
+                } else {
+                    return GRAY
+                }
             })
             .attr("stroke-width", 1);
     }
@@ -275,7 +282,8 @@
 <div id="main-div" bind:this={element} on:resize={updateDimensions}>
     <div class="vis-frame">
         <div id="legend"></div>
-        <svg id="svg" width={width} height={height - 100}>
+<!--        <svg id="svg" width={width} height={height - 100}>-->
+        <svg id="svg" width={width} height={height * 0.75}>
             <g></g>
         </svg>
     </div>

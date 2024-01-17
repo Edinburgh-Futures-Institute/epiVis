@@ -27,6 +27,10 @@
     {
       "name": "waveCountry",
       "values": "[waveCountryLinks]"
+    },
+    {
+      "name": "modelPaper",
+      "values": "[modelPapersLinks]"
     }
   ],
   "parameters": [
@@ -159,6 +163,26 @@
                 "field": "Country"
               },
               "target_node_type": "Country",
+              "target_id_field": "id",
+              "data": []
+            }
+          ]
+        },
+        {
+          "data": "modelPaper",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Paper"
+              },
+              "source_node_type": "Paper",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Model"
+              },
+              "target_node_type": "Model",
               "target_id_field": "id",
               "data": []
             }

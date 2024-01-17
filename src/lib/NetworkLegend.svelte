@@ -3,6 +3,7 @@
     import {onMount} from "svelte";
 
     import * as d3 from "d3";
+    import {GRAY} from "../globals.ts";
 
     export let selectedNodeTypes: NodeTypes[]
     export let selectedNet: string;
@@ -40,7 +41,8 @@
                 .style("fill", function (d) {
                     return nodeTypeColorScale(d)
                 })
-                .style("stroke", "black")
+                // .style("stroke", "black")
+                .style("stroke", GRAY)
                 .style("stroke-width", 1)
                 .attr("transform", (d, i) => {
                     // return `translate(${diameter / 2}, ${diameter / 2})`

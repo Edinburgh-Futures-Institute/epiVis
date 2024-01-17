@@ -2,7 +2,7 @@
     import {
         authorsFilename,
         countryToCountryTable,
-        institutionModelTable,
+        institutionModelTable, paperModelTable,
         papersFilename, paperWaveTable, strainWaveTable, waveCountryTable
     } from "../dataLoader.ts";
     import {onMount} from "svelte";
@@ -54,7 +54,8 @@
                     strokeColor: GRAY,
                     strainWavesLinks: strainWaveTable,
                     wavePapersLinks: paperWaveTable,
-                    waveCountryLinks: waveCountryTable
+                    waveCountryLinks: waveCountryTable,
+                    modelPapersLinks: paperModelTable
                 }, "vis");
 
             } else if (networkName == "People") {
@@ -72,7 +73,6 @@
                     height: height - margin,
                     links: countryToCountryTable
                 }, "vis");
-
             } else if (networkName == "Models+Institutions") {
                 viewer = NetPanoramaTemplateViewer.render(instModelNetPath, {
                     data: institutionModelTable,

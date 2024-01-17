@@ -1,11 +1,37 @@
 import * as d3 from "d3"
 
-// export let papersFilename = "papers23Oct.csv";
-// export let affiliationsFilename = "affiliations23Oct.csv";
-// export let authorsFilename = "authors23Oct.csv";
-export const papersFilename = "papers3Nov.csv";
-export const affiliationsFilename = "affiliations3Nov.csv";
-export const authorsFilename = "authors3Nov.csv";
+
+
+export const MODELS: Record<number, string> = {
+    1: "Machine Learning",
+    2: "Compartmental",
+    3: "Stochastic - Bayesian",
+    4: "Mixed Approaches",
+    5: "Other Statistical (non stochastic)",
+    6: "Qualitative",
+    7: "Phylogenetic",
+    8: "Simulation",
+    9: "Experiment"
+}
+
+
+export enum NodeTypes {
+    Person = "Person",
+    Paper = "Paper",
+    Strain = "Strain",
+    Wave = "Wave",
+    Institution = "Institution",
+    Country = "Country",
+    Model = "Model"
+}
+
+// export const papersFilename = "papers3Nov.csv";
+// export const affiliationsFilename = "affiliations3Nov.csv";
+// export const authorsFilename = "authors3Nov.csv";
+
+export const papersFilename = "papers13Jan.csv";
+export const affiliationsFilename = "affiliations13Jan.csv";
+export const authorsFilename = "authors13Jan.csv";
 
 
 // // COLUMN NAMES (column dataset)
@@ -63,6 +89,8 @@ export let countryToCountryTable = [];
 export let paperWaveTable = [];
 export let strainWaveTable = [];
 export let waveCountryTable = [];
+export let paperModelTable = [];
+
 
 export let paperIdToAuthors: Object = {};
 export let authorToCountry: Object = {};
@@ -127,6 +155,16 @@ function createLinksTables() {
                 }
             }
         }
+
+
+        let models = parseModels(paper[MODEL]);
+
+        models.forEach(m => {
+            if (m != "4") {
+                // paperModelTable.push({Model: MODELS[m], Paper: paper["Epic Code "]});
+                paperModelTable.push({Model: m, Paper: paper["Epic Code "]});
+            }
+        })
     }
 }
 
@@ -228,15 +266,6 @@ function extractNumbersFromString(inputString: string): number[] {
 }
 
 
-export enum NodeTypes {
-    Person = "Person",
-    Paper = "Paper",
-    Strain = "Strain",
-    Wave = "Wave",
-    Institution = "Institution",
-    Country = "Country",
-    Model = "Model"
-}
 
 export const nodeTypeColorScale = d3.scaleOrdinal(Object.values(NodeTypes), [
     "lightblue",
@@ -248,18 +277,6 @@ export const nodeTypeColorScale = d3.scaleOrdinal(Object.values(NodeTypes), [
     "yellow"
 ])
 
-
-export const MODELS: Record<number, string> = {
-    1: "Machine Learning",
-    2: "Compartmental",
-    3: "Stochastic - Bayesian",
-    4: "Mixed Approaches",
-    5: "Other Statistical (non stochastic)",
-    6: "Qualitative",
-    7: "Phylogenetic",
-    8: "Simulation",
-    9: "Experiment"
-}
 
 
 // COLUMNS FOR THE HEATMAP
