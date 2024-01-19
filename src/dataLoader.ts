@@ -91,6 +91,10 @@ export let waveCountryTable = [];
 export let paperModelTable = [];
 
 
+// Used for the circular layout
+export let paperAffiliationTable = [];
+
+
 export let paperIdToAuthors: Object = {};
 export let authorToCountry: Object = {};
 
@@ -99,14 +103,14 @@ createLinksTables();
 function createLinksTables() {
     peopleTable.forEach(author => {
         let paperId = author["Paper associated "];
-        let institution = author["Affiliation code 1"];
+        let affiliation = author["Affiliation code 1"];
 
         let paper = paperIdToPaper[paperId.toUpperCase()];
         let models = paper ? paper[MODEL] : null;
 
         let authorName = author.Author;
 
-        let authorCountry = affIdToCountry[institution];
+        let authorCountry = affIdToCountry[affiliation];
         authorToCountry[authorName] = authorCountry;
 
         if (paperIdToAuthors[paperId]) {
@@ -114,6 +118,8 @@ function createLinksTables() {
         } else {
             paperIdToAuthors[paperId] = [authorName];
         }
+        
+        paperAffiliationTable.push({Paper: paperId, Affiliation: affiliation});
 
         if (models) {
             models = parseModels(models);
@@ -121,7 +127,7 @@ function createLinksTables() {
             models.forEach(model => {
                 institutionModelTable.push({
                     Model: model,
-                    Institution: institution
+                    Institution: affiliation
                 })
             })
         }
@@ -214,6 +220,9 @@ export let [yearMin, yearMax] = d3.extent(allYears);
 // Influence Network
 let influenceLinks = [];
 let influenceNodes = [];
+
+export let paperToInfluences = {};
+
 for (let d of data) {
     if (nullOrNS(d["Publication Year "]) || nullOrNS(d["Epic Code "])) continue;
 
@@ -235,6 +244,12 @@ for (let d of data) {
 
         influenceLinks.push({"source": paper, "target": d["Epic Code "], "influenceType": type})
         influenceNodes.push({"layer": year, "id": paper})
+
+        if (paperToInfluences[d["Epic Code "]]) {
+            paperToInfluences[d["Epic Code "]].push(paper)
+        } else {
+            paperToInfluences[d["Epic Code "]] = [paper]
+        }
     })
 }
 

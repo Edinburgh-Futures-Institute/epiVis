@@ -5,6 +5,7 @@
     import Timevis from "./Timevis.svelte";
     import Helper from "./Helper.svelte";
     import Heatmap from "./Heatmap.svelte";
+    import InfluenceNet from "./InfluenceNet.svelte";
 
     export let filteredData;
 
@@ -12,7 +13,8 @@
     let height: number;
 
     let element: HTMLElement;
-    let selectedVis = "Map";
+    // let selectedVis = "Map";
+    let selectedVis = "Influence";
 
     function updateDimensions() {
         const rect = element.getBoundingClientRect();
@@ -32,6 +34,7 @@
 
         <button class="tablinks" on:click={selectTab}>Map</button>
         <button class="tablinks" on:click={selectTab}>Models</button>
+        <button class="tablinks" on:click={selectTab}>Influence</button>
     </div>
 
 
@@ -42,6 +45,9 @@
         {:else if selectedVis === "Models"}
             <Timevis>
             </Timevis>
+        {:else if selectedVis === "Influence"}
+            <InfluenceNet>
+            </InfluenceNet>
         {:else}
             <span></span>
         {/if}

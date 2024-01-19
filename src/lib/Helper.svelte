@@ -12,12 +12,6 @@
 		y = event.pageY + 5;
 	}
 	function mouseMove(event) {
-        console.log(parentEl.style.left, parentEl.offsetLeft)
-
-        // x = event.pageX + 5;
-		// y = event.pageY + 5;
-
-        // console.log(element.style.left, element.offsetLeft)
 		x = event.pageX + 5 - parentEl.offsetLeft;
 		y = event.pageY + 5 - parentEl.offsetTop;
 

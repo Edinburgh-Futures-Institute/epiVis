@@ -31,7 +31,8 @@
         updateDimensions();
 
         // projection = d3.geoMercator()
-        projection = geoEckert3()
+        // projection = geoEckert3()
+            projection = d3.geoNaturalEarth1()
         .scale(180) // When merged with timeline
         .translate([width / 2, height / 2]) // CENTER
 

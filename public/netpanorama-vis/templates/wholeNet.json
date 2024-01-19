@@ -214,8 +214,8 @@
       "name": "forcelayout",
       "network": "network",
       "type": "webcola",
-      "defaultNodeSize22": 1,
-      "linkDistance": 12,
+      "defaultNodeSize2": 0.01,
+      "linkDistance": 40,
       "handleDisconnected": true,
       "avoidOverlap": true
     },
@@ -291,7 +291,20 @@
         "type": "linkpath",
         "start": "source",
         "end": "target",
-        "stroke": "gray"
+        "stroke": "gray",
+        "opacity":  {
+          "conditions": [
+            {
+              "selectionIsEmpty": "node_selection.nodes",
+              "value": 1
+            },
+            {
+              "inSelection": "neighbours.links",
+              "value": 1
+            }
+          ],
+          "value": 0.2
+        }
       }
     },
     {

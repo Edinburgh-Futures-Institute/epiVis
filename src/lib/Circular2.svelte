@@ -3,21 +3,19 @@
     import * as d3 from "d3";
 
     import {onMount} from "svelte";
-    import {affiliationsFilename, authorsFilename, papersFilename} from "../dataLoader.ts";
+    import {affiliationsFilename, paperAffiliationTable} from "../dataLoader.ts";
 
-    let specPath = "/netpanorama-vis/templates/InstitutionProj.json"
+    // let specPath = "/netpanorama-vis/templates/InstitutionProj.json"
+    let specPath = "/netpanorama-vis/templates/affiliationProj.json"
 
     let width: number;
     let height: number;
 
-    // let legendWidth = 200;
-    // let legendHeight = 350;
-
     let legendWidth = 10;
     let legendHeight = 10;
 
-    let institutions;
-    let links;
+    let affiliations: [];
+    let links: [];
 
     let element: HTMLElement;
     let svg: HTMLElement;
@@ -41,36 +39,53 @@
 
     async function getNetpanNet() {
         if (width && element) {
-            // element.innerHTML = ""
-
+            console.log(paperAffiliationTable)
             let viewer = await NetPanoramaTemplateViewer.render(specPath, {
                 affiliations: affiliationsFilename,
+                affiliationPaperLinks: paperAffiliationTable,
                 width: 0,
                 height: 0
             }, "affiliationNet");
 
             // institutions = viewer.state.networkAff.nodes
-            institutions = viewer.state.network.nodes
+            // affiliations = viewer.state.networkAff.nodes
+            affiliations = viewer.state.network.nodes
+            // affiliations = viewer.state.networkAff.nodes
             links = viewer.state.network.links
 
+            // TODO: affiliation codes in authors table do not exist in affiliation table
+            console.log(affiliations)
+            console.log("LINKS ", links)
+
+            affiliations = affiliations.filter(aff => aff.data);
             // Fill neighbor map
-            institutions.forEach(node => {
+            affiliations.forEach(node => {
                 nodeToNeighbors[node.id] = [];
             })
-            links.forEach(link => {
+            // links.forEach(link => {
+
+            for (let link of links) {
                 let source = link.source.id;
                 let target = link.target.id;
 
+                if (!nodeToNeighbors[source] || !nodeToNeighbors[target]) {
+                    continue;
+                }
+                // console.log(link)
+
                 nodeToNeighbors[source].push(target);
                 nodeToNeighbors[target].push(source);
-            })
+            }
+
+            console.log(2222, nodeToNeighbors)
         }
     }
 
     function render(width, height) {
         if (!svg) return;
 
-        institutions.sort((a, b) => {
+        // institutions.sort((a, b) => {
+        affiliations.sort((a, b) => {
             let countryCompare = a.data["Country "].localeCompare(b.data["Country "])
             if (countryCompare == 0) {
                 return a.data["Discipline"].localeCompare(b.data["Discipline"])
@@ -78,11 +93,13 @@
             return countryCompare
         })
 
-        let currentCountry = institutions[0].data["Country "]
+        // let currentCountry = institutions[0].data["Country "]
+        let currentCountry = affiliations[0].data["Country "]
         let pos = 1
         let countryToCount = {};
 
-        for (let inst of institutions) {
+        // for (let inst of institutions) {
+        for (let inst of affiliations) {
             let country = inst.data["Country "]
 
             if (countryToCount[country]) {
@@ -105,7 +122,8 @@
         // const countryColorScale = d3.scaleOrdinal(d3.schemeAccent)
         const countryColorScale = d3.scaleOrdinal(d3.schemeSet1)
 
-        const radiusScale = d3.scaleLinear(d3.extent(institutions.map(d => d.degree)), [4, 10]);
+        // const radiusScale = d3.scaleLinear(d3.extent(institutions.map(d => d.degree)), [4, 10]);
+        const radiusScale = d3.scaleLinear(d3.extent(affiliations.map(d => d.degree)), [4, 10]);
 
         const distance = height / 2.5;
         const x = (d) => distance * Math.cos(radialScale(d.pos))
@@ -155,12 +173,12 @@
 
         let nodesMark = d3.select(svg)
             .selectAll(".node")
-            .data(institutions)
+            // .data(institutions)
+            .data(affiliations)
             .join("circle")
             .attr("cx", d => x(d))
             .attr("cy", d => y(d))
             .attr("r", d => radiusScale(d.degree))
-            // .attr("r", 7)
             // .attr("fill", d => countryColorScale(d.data["Country "]))
             .attr("fill", d => countryColorScale(d.data["Discipline"]))
             .attr("stroke", "black")
@@ -313,16 +331,16 @@
                 })
         }
 
-
-
         // Institutions labels
         d3.select(svg)
             .selectAll(".nodeText")
-            .data(institutions)
+            // .data(institutions)
+            .data(affiliations)
             .join("text")
             .attr("x", d => x(d) + 8)
             .attr("y", d => y(d) - 10)
-            .text(d => d.id)
+            // .text(d => d.id)
+            .text(d => d.data["Afilliation name -"])
             .classed("nodeText", true)
             .attr("display", "none")
             .on("mouseover", mouseOver)
