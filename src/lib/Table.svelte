@@ -5,7 +5,6 @@
     import 'datatables.net-rowgroup'; // Import RowGroup plugin
     import 'datatables.net-dt/css/jquery.dataTables.min.css';
 
-
     import {onMount} from "svelte";
 
     export let filteredData;
@@ -14,6 +13,8 @@
     let datatable;
     let element;
     let columnNameTooltip: HTMLElement;
+    $: hideColumns = false;
+    let rerender = false;
 
     const className = (i) => `p${i}`
 
@@ -21,30 +22,36 @@
         return {title: `C${i}`, data: col, className: className(i)}
     })
 
-    function redraw(filteredData) {
+    function redraw(filteredData, hideColumns: boolean) {
         if (!element) return;
-        // console.log("draw", filteredData)
 
-        if (datatable) {
+        if (datatable && !rerender) {
             datatable.clear();
             datatable.rows.add(filteredData);
             datatable.draw();
         } else {
-            datatable = new DataTable('#myTable', {
-                columns: [
-                    {title: 'Id', data: "Epic Code "},
+            if (datatable) {
+                datatable.destroy();
+                element.innerHTML = "";
+            }
+
+            let columns = hideColumns ? [] : [
+                // {title: 'Id', data: "Epic Code "},
                     // {title: 'Title', data: "Title ", className: "titleCol"},
                     {title: 'Year', data: "Publication Year "},
-                    {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
-                            if (typeof data !== 'string') {
-                                return data.join(", ")
-                            } else {
-                                return data;
-                            }
-                        }},
+                    // {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
+                    //         if (typeof data !== 'string') {
+                    //             return data.join(", ")
+                    //         } else {
+                    //             return data;
+                    //         }
+                    //     }},
                     {title: 'Epidemic waves', data: "Epidemic waves"},
                     {title: 'Models', data: "Models", createdCell: createdCellCb},
-                ].concat(heatMapColumns),
+            ];
+
+            datatable = new DataTable('#myTable', {
+                columns: columns.concat(heatMapColumns),
                 createdRow: function (row, data, dataIndex) {
                     for (let i = 0; i < allCols.length; i++) {
                         let col = allCols[i];
@@ -62,19 +69,38 @@
                     }
                 },
                 "initComplete": function(settings, json) {
-                       // Create a div element
+
+                    // Button for redrawing
+                    let button = document.createElement("button");
+                    button.style.display = "inline-block"
+                    button.innerHTML = 'Hide';
+                    button.style.marginLeft = "20px";
+
+                    button.onclick = () => {
+                        rerender = true;
+                        hideColumns = !hideColumns;
+
+                        // Weird but I have to call the function
+                        redraw(filteredData, hideColumns)
+                        // hideColumns = true;
+
+                        rerender = false;
+                    }
+
+                    // Insert the div after the search input
+                    let searchInput = document.querySelector('.dataTables_filter');
+                    searchInput.parentNode.insertBefore(button, searchInput.nextSibling);
+
+                    // Title of column element
                     columnNameTooltip = document.createElement("div");
                     columnNameTooltip.style.display = "inline-block"
                     columnNameTooltip.style.float = 'right';
                     columnNameTooltip.style.marginRight = "20px";
-
                     columnNameTooltip.innerHTML = 'Column Title';
 
-
                     // Insert the div after the search input
-                    let searchInput = document.querySelector('.dataTables_filter');
+                    // let searchInput = document.querySelector('.dataTables_filter');
                     searchInput.parentNode.insertBefore(columnNameTooltip, searchInput.nextSibling);
-
                 },
                 "headerCallback": function(thead, data, start, end, display) {
                     var ths = thead.querySelectorAll('th');
@@ -93,10 +119,23 @@
                 },
                 data: filteredData,
                 rowGroup: {
-                    dataSrc: 'Title ' // Group by the 'name' column
+                    dataSrc: 'Title ', // Group by the 'name' column,
+                    startRender: function(rows, group) {
+                        // Customize the title shown in the group row
+                        let index = rows[0][0]
+                        let datum = filteredData[index];
+
+                        let title = `${datum["Epic Code "]}: ${group} (${datum["Publication Year "]}) (${datum["Epidemic waves"]})`
+                        return title
+                        // return group
+                    }
                 }
             });
         }
+
+        datatable.order(
+            [[0, 'desc']]
+        ).draw()
     }
 
     const createdCellCb = (td, cellData, rowData, row, col) => {
@@ -110,7 +149,7 @@
         });
     };
 
-    $: redraw(filteredData);
+    $: redraw(filteredData, hideColumns);
 
 </script>
 

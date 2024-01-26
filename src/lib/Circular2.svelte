@@ -77,7 +77,7 @@
                 nodeToNeighbors[target].push(source);
             }
 
-            console.log(2222, nodeToNeighbors)
+            // console.log(2222, nodeToNeighbors)
         }
     }
 

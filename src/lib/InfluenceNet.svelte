@@ -28,6 +28,15 @@
     let g: SVGElement;
     let svgLegend: SVGElement;
 
+
+    let papers = data;
+    let papersIds = data.map(d => d["Epic Code "]);
+
+    // We only have the ids for now
+    let influencesIds = Object.values(paperToInfluences).reduce((a, b) => a.concat(b))
+    influencesIds = [...new Set(influencesIds)]
+    // console.log(222, influencesIds)
+
     onMount(() => {
         updateDimensions();
         getNet().then(() => {
@@ -43,14 +52,6 @@
     }
 
     async function getNet() {
-        let papers = data;
-        let papersIds = data.map(d => d["Epic Code "]);
-
-        // We only have the ids for now
-        let influencesIds = Object.values(paperToInfluences).reduce((a, b) => a.concat(b))
-        influencesIds = [...new Set(influencesIds)]
-        console.log(222, influencesIds)
-
         // let indexToNodeId = {};
         // let idToNodeIndex = {};
         // influenceNodes.forEach((n, i) => {
@@ -78,12 +79,14 @@
         // console.log(perms);
     }
 
+    influenceNodes.filter(n => n);
+
     function render(width, height) {
         if (!svg) return;
 
         var x = d3.scaleBand()
             .range([margin, widthEff])
-            .domain(allCols)
+            .domain(influencesIds)
             .padding(0.01);
 
 // Build X scales and axis:
@@ -94,40 +97,36 @@
 
         d3.select(g).append("g").classed("axis", true)
             .attr("transform", "translate(0," + heightEff + ")")
-            .call(d3.axisBottom(x))
+            .call(d3.axisBottom(x)
+                // .tickFormat((d, i) => i))
+                .tickFormat((d, i) => ""))
 
          d3.select(g).append("g")
         .call(d3.axisLeft(y));
 
-
+        // TODO: always same order of influences
         d3.select(g)
             .selectAll(".row")
           .data(data, d => d)
           .join("g")
           .classed("row", true)
              .selectAll("rect")
-             .data(d => allCols.map(col => [d["Epic Code "], d[col], col]))
+             // .data(d => allCols.map(col => [d["Epic Code "], d[col], col]))
+             // .data(d => paperToInfluences[d["Epic Code "]])
+             .data(d => influencesIds.map(influence => [influence, paperToInfluences[d["Epic Code "]], d["Epic Code "]]))
              .join("rect")
           .attr("x", function(d) {
-              return x(d[2]) })
-          .attr("y", function(d) { return y(d[0]) })
+              return x(d[0]) })
+          .attr("y", function(d) { return y(d[2]) })
           .attr("width", x.bandwidth() )
           .attr("height", y.bandwidth() )
           .style("fill", function(d) {
-              if (d[1] == "Y" || d[1] == "P" || d[1] == "S") {
-                  return "#a6d96a"
-              } else if (d[1] == "N" || d[1] == "I") {
-                  return "#f46d43"
-              } else if (d[1] == "M" || d[1] == "L") {
-                  return "#fee08b"
+              if (d[1] && d[1].includes(d[0])) {
+                  return "black"
               }
+              return "white"
           } )
-
-
-
-
     }
-
 
     // $: render(width, height)
 </script>
