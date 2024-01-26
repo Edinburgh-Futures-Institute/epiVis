@@ -82,7 +82,6 @@
             netpanNodes.forEach(n => {
                 Object.keys(n).forEach((key) => !["data", "variable"].includes(key) || delete n[key]);
             })
-            console.log(netpanNodes)
             // viewer.setParam("node_selection", {nodes: netpanNodes.map(n => n.id), links: []})
             viewer.setParam("node_selection", {nodes: netpanNodes, links: []})
             // viewer.state.node_selection = {nodes: netpanNodes, links: []};

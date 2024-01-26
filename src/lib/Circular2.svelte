@@ -6,7 +6,9 @@
     import {affiliationsFilename, paperAffiliationTable} from "../dataLoader.ts";
 
     // let specPath = "/netpanorama-vis/templates/InstitutionProj.json"
-    let specPath = "/netpanorama-vis/templates/affiliationProj.json"
+
+    // let specPath = "/netpanorama-vis/templates/affiliationProj.json"
+    let specPath = "/netpanorama-vis/templates/affiliationProjOneTable.json"
 
     let width: number;
     let height: number;
@@ -39,7 +41,7 @@
 
     async function getNetpanNet() {
         if (width && element) {
-            console.log(paperAffiliationTable)
+            // console.log(paperAffiliationTable)
             let viewer = await NetPanoramaTemplateViewer.render(specPath, {
                 affiliations: affiliationsFilename,
                 affiliationPaperLinks: paperAffiliationTable,
@@ -47,10 +49,11 @@
                 height: 0
             }, "affiliationNet");
 
-            // institutions = viewer.state.networkAff.nodes
+            // affiliations = viewer.state.network.nodes
+            // links = viewer.state.network.links
+
             // affiliations = viewer.state.networkAff.nodes
             affiliations = viewer.state.network.nodes
-            // affiliations = viewer.state.networkAff.nodes
             links = viewer.state.network.links
 
             // TODO: affiliation codes in authors table do not exist in affiliation table
@@ -62,7 +65,6 @@
             affiliations.forEach(node => {
                 nodeToNeighbors[node.id] = [];
             })
-            // links.forEach(link => {
 
             for (let link of links) {
                 let source = link.source.id;
@@ -71,13 +73,10 @@
                 if (!nodeToNeighbors[source] || !nodeToNeighbors[target]) {
                     continue;
                 }
-                // console.log(link)
 
                 nodeToNeighbors[source].push(target);
                 nodeToNeighbors[target].push(source);
             }
-
-            // console.log(2222, nodeToNeighbors)
         }
     }
 
