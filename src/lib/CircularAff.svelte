@@ -210,7 +210,7 @@
 
             d3.selectAll(".nodeText")
                 .attr("display", dtext => {
-                    if (d.id == dtext.id) {
+                    if (d.id == dtext.id || nodeToNeighbors[d.id].includes(dtext.id)) {
                         return ""
                     }
                     return "none"
@@ -220,7 +220,7 @@
             d3.selectAll(".link")
                 .style("opacity", link => {
                     if (link.source.id != d.id && link.target.id != d.id) {
-                        return 0.2;
+                        return 0.07;
                     }
                     return 1;
                 })
@@ -338,15 +338,21 @@
         // Institutions labels
         d3.select(svg)
             .selectAll(".nodeText")
-            // .data(institutions)
             .data(affiliations)
             .join("text")
             .attr("x", d => x(d) + 8)
             .attr("y", d => y(d) - 10)
-            // .text(d => d.id)
             .text(d => d.data["Afilliation name -"])
             .classed("nodeText", true)
             .attr("display", "none")
+            .attr("text-anchor", d => {
+                let rad = radialScale(d.pos);
+                if (rad < Math.PI / 2 || rad > 3 * Math.PI / 2) {
+                    return "end";
+                } else {
+                    return "start"
+                }
+            })
             .on("mouseover", mouseOver)
             .on("mouseleave", mouseLeave)
 

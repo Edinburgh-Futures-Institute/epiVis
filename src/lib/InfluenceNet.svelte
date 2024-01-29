@@ -82,12 +82,12 @@
         if (!svg) return;
 
         var x = d3.scaleBand()
-            .range([margin, widthEff])
+            .range([0, width])
             .domain(influencesIds)
             .paddingInner(0.25)
 
         var y = d3.scaleBand()
-            .range([heightEff, margin])
+            .range([heightEff - 5, margin])
             .domain(papersIds)
             .paddingInner(0.5)
 
@@ -102,9 +102,8 @@
             .on("mouseover", function(e, d, i) {
               d3.select(tooltip).transition()
                 .style("opacity", 1);
-              d3.select(tooltip).html("Value: " + d)
+              d3.select(tooltip).html(d)
                 .style("left", (e.pageX - element.offsetLeft) + "px")
-                // .style("top", (e.pageY - element.offsetTop) + "px");
                 .style("top", e.pageY - (element.getBoundingClientRect().top + window.pageYOffset) + "px")
             })
             .on("mouseout", function() {
@@ -112,6 +111,8 @@
                 .style("opacity", 0);
             });
 
+        d3.select(g).selectAll(".tick line")
+            .attr("stroke-width", 2)
 
         d3.select(g).append("g")
             .call(d3.axisLeft(y));
