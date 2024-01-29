@@ -372,9 +372,9 @@
         "text": {
           "conditions": [
             {
-              "test": "datum._type == 'Strain'",
+              "selectionIsEmpty": "node_selection.nodes",
               "value": {
-                "field": "id"
+                "expression": "datum._type == 'Strain' ? datum.id : ''"
               }
             },
             {
@@ -394,7 +394,5 @@
         "strokeWidth": 0.5
       }
     }
-
-
   ]
 }
