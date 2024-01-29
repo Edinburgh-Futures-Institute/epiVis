@@ -1,4 +1,3 @@
-
 <script lang="ts">
     import * as d3 from "d3";
     import * as reorder from "reorder.js";
@@ -20,22 +19,19 @@
     $: widthEff = width - 2 * margin;
     $: heightEff = height - 2 * margin;
 
-    let legendWidth = 10;
-    let legendHeight = 10;
-
     let element: HTMLElement;
     let svg: HTMLElement;
     let g: SVGElement;
-    let svgLegend: SVGElement;
-
 
     let papers = data;
     let papersIds = data.map(d => d["Epic Code "]);
 
     // We only have the ids for now
     let influencesIds = Object.values(paperToInfluences).reduce((a, b) => a.concat(b))
-    influencesIds = [...new Set(influencesIds)]
-    // console.log(222, influencesIds)
+    influencesIds = [...new Set(influencesIds)].sort((p1, p2) => {
+        return p1.year - p2.year;
+    })
+    console.log(influencesIds)
 
     onMount(() => {
         updateDimensions();
@@ -101,31 +97,34 @@
                 // .tickFormat((d, i) => i))
                 .tickFormat((d, i) => ""))
 
-         d3.select(g).append("g")
-        .call(d3.axisLeft(y));
+        d3.select(g).append("g")
+            .call(d3.axisLeft(y));
 
         // TODO: always same order of influences
         d3.select(g)
             .selectAll(".row")
-          .data(data, d => d)
-          .join("g")
-          .classed("row", true)
-             .selectAll("rect")
-             // .data(d => allCols.map(col => [d["Epic Code "], d[col], col]))
-             // .data(d => paperToInfluences[d["Epic Code "]])
-             .data(d => influencesIds.map(influence => [influence, paperToInfluences[d["Epic Code "]], d["Epic Code "]]))
-             .join("rect")
-          .attr("x", function(d) {
-              return x(d[0]) })
-          .attr("y", function(d) { return y(d[2]) })
-          .attr("width", x.bandwidth() )
-          .attr("height", y.bandwidth() )
-          .style("fill", function(d) {
-              if (d[1] && d[1].includes(d[0])) {
-                  return "black"
-              }
-              return "white"
-          } )
+            .data(data, d => d)
+            .join("g")
+            .classed("row", true)
+            .selectAll("rect")
+            // .data(d => allCols.map(col => [d["Epic Code "], d[col], col]))
+            // .data(d => paperToInfluences[d["Epic Code "]])
+            .data(d => influencesIds.map(influence => [influence, paperToInfluences[d["Epic Code "]], d["Epic Code "]]))
+            .join("rect")
+            .attr("x", function (d) {
+                return x(d[0])
+            })
+            .attr("y", function (d) {
+                return y(d[2])
+            })
+            .attr("width", x.bandwidth())
+            .attr("height", y.bandwidth())
+            .style("fill", function (d) {
+                if (d[1] && d[1].includes(d[0])) {
+                    return "black"
+                }
+                return "white"
+            })
     }
 
     // $: render(width, height)

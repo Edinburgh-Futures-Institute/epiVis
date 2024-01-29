@@ -7,7 +7,8 @@
     } from "../dataLoader.ts";
     import {onMount} from "svelte";
     import {GRAY} from "../globals.ts";
-    import Circular2 from "./Circular2.svelte";
+    import CircularInst from "./CircularInst.svelte";
+    import CircularAff from "./CircularAff.svelte";
     import Helper from "./Helper.svelte";
 
     export let selectedNodeTypes;
@@ -42,7 +43,6 @@
         // if (width && height) {
         if (elementNet) {
             elementNet.innerHTML = ""
-
             let margin = 120;
 
             if (networkName == "Full") {
@@ -106,13 +106,16 @@
         <button class="tablinks" on:click={selectTab}>Countries</button>
         <button class="tablinks" on:click={selectTab}>Models+Institutions</button>
         <button class="tablinks" on:click={selectTab}>Institutions</button>
+        <button class="tablinks" on:click={selectTab}>Affiliations</button>
     </div>
 
     <div id="vis" bind:this={elementNet} on:resize={updateDimensions}>
     {#if selectedNet == "Institutions"}
-	    <Circular2>
-        </Circular2>
-    <!--{:else}-->
+	    <CircularInst>
+        </CircularInst>
+    {:else if selectedNet == "Affiliations"}
+        <CircularAff>
+        </CircularAff>
 <!--        <div id="vis" class="vis-frame" bind:this={elementNet}>-->
     {/if}
     </div>

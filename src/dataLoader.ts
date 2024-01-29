@@ -228,14 +228,14 @@ for (let d of data) {
 
     let influenced = d["Methodology Influenced by"]
     let influences = influenced.split(";");
+    // influences = influences.map(influence => {
+    //     let year = influence.slice(-4);
+    //     return {name: influence, year: year}
+    // })
 
-    let type: number;
     let influenceType = d["Model heavily relied on: 1. Yes, 2. No"]
-    if (influenceType?.includes("1")) {
-        type = 1;
-    } else {
-        type = 2;
-    }
+    let type: number = (influenceType?.includes("1")) ? 1 : 2;
+
 
     influenceNodes.push({id: d["Epic Code "], "layer": parseInt(d["Publication Year "])})
     influences.forEach(paper => {
@@ -245,10 +245,13 @@ for (let d of data) {
         influenceLinks.push({"source": paper, "target": d["Epic Code "], "influenceType": type})
         influenceNodes.push({"layer": year, "id": paper})
 
+        let paperObject = {"name": paper, "year": year}
+
         if (paperToInfluences[d["Epic Code "]]) {
-            paperToInfluences[d["Epic Code "]].push(paper)
+            // paperToInfluences[d["Epic Code "]].push(paper)
+            paperToInfluences[d["Epic Code "]].push(paperObject)
         } else {
-            paperToInfluences[d["Epic Code "]] = [paper]
+            paperToInfluences[d["Epic Code "]] = [paperObject]
         }
     })
 }
