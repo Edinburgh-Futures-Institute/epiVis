@@ -4,13 +4,14 @@
 
     import {onMount} from "svelte";
     import {
-        affiliationsFilename,
         allCols, data,
         influenceLinks,
         influenceNodes,
         paperToInfluences,
         paperAffiliationTable
     } from "../dataLoader.ts";
+
+    // console.log(33232, JSON.stringify(influenceLinks))
 
     let width: number;
     let height: number;
@@ -23,7 +24,6 @@
     let svg: HTMLElement;
     let g: SVGElement;
 
-    let papers = data;
     let papersIds = data.map(d => d["Epic Code "]);
 
     // We only have the ids for now
@@ -31,9 +31,10 @@
     influencesIds = [...new Set(influencesIds)].sort((p1, p2) => {
         return p1.year - p2.year;
     })
-    console.log(influencesIds)
+
 
     onMount(() => {
+        console.log("MOUNT")
         updateDimensions();
         getNet().then(() => {
             render(width, height);
@@ -48,31 +49,30 @@
     }
 
     async function getNet() {
-        // let indexToNodeId = {};
-        // let idToNodeIndex = {};
-        // influenceNodes.forEach((n, i) => {
-        //     indexToNodeId[i] = n.id
-        //     idToNodeIndex[n.id] = i
-        //
-        //     n.id = i;
-        // })
-        //
-        // influenceLinks.forEach(link => {
-        //     link.source = idToNodeIndex[link.source]
-        //     link.target = idToNodeIndex[link.target]
-        // })
+        let indexToNodeId = {};
+        let idToNodeIndex = {};
+        influenceNodes.forEach((n, i) => {
+            indexToNodeId[i] = n.id
+            idToNodeIndex[n.id] = i
+            n.id = i;
+        })
 
-        // console.log(influenceNodes);
-        // console.log(influenceLinks);
+        influenceLinks.forEach(link => {
+            // console.log(22, link)
+            link.source = idToNodeIndex[link.source]
+            link.target = idToNodeIndex[link.target]
+        })
 
-        // const graph = reorder.graph().nodes(influenceNodes).links(influenceLinks).init();
-        // console.log(graph.nodes());
+        const graph = reorder.graph(influenceNodes, influenceLinks, true).init();
 
         // const initial_crossings = reorder.count_crossings(graph);
-        // const perms = reorder.barycenter_order(graph);
+        const perms = reorder.barycenter_order(graph);
         // const perms2 = reorder.adjacent_exchange(graph, perms[0], perms[1]);
-        // console.log(perms);
-        // console.log(perms);
+        // console.log(perms[0], perms[1]);
+        // console.log(perms2);
+
+        papersIds = perms[0].map(n => indexToNodeId[n])
+        influencesIds = perms[1].map(n => indexToNodeId[n])
     }
 
     influenceNodes.filter(n => n);
@@ -80,15 +80,18 @@
     function render(width, height) {
         if (!svg) return;
 
+        console.log(influencesIds)
+        console.log(papersIds)
+
         var x = d3.scaleBand()
             .range([margin, widthEff])
             .domain(influencesIds)
             .padding(0.01);
 
-// Build X scales and axis:
         var y = d3.scaleBand()
             .range([heightEff, margin])
-            .domain(data.map(d => d["Epic Code "]))
+            // .domain(data.map(d => d["Epic Code "]))
+            .domain(papersIds)
             .padding(0.01);
 
         d3.select(g).append("g").classed("axis", true)
@@ -112,6 +115,7 @@
             .data(d => influencesIds.map(influence => [influence, paperToInfluences[d["Epic Code "]], d["Epic Code "]]))
             .join("rect")
             .attr("x", function (d) {
+                // console.log(d)
                 return x(d[0])
             })
             .attr("y", function (d) {
@@ -120,7 +124,9 @@
             .attr("width", x.bandwidth())
             .attr("height", y.bandwidth())
             .style("fill", function (d) {
-                if (d[1] && d[1].includes(d[0])) {
+                console.log(d)
+                // if (d[1] && d[1].includes(d[0])) {
+                if (d[1] && d[1].map(n => n.name).includes(d[0])) {
                     return "black"
                 }
                 return "white"

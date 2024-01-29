@@ -236,12 +236,14 @@ for (let d of data) {
     let influenceType = d["Model heavily relied on: 1. Yes, 2. No"]
     let type: number = (influenceType?.includes("1")) ? 1 : 2;
 
-
     influenceNodes.push({id: d["Epic Code "], "layer": parseInt(d["Publication Year "])})
-    influences.forEach(paper => {
+    // influences.forEach(paper => {
+    for (let paper of influences) {
         let year = extractNumbersFromString(paper)[0];
-        if (nullOrNS(year)) return;
+        // if (nullOrNS(year)) return;
+        if (nullOrNS(year)) continue;
 
+        // console.log(paper, d["Epic Code "])
         influenceLinks.push({"source": paper, "target": d["Epic Code "], "influenceType": type})
         influenceNodes.push({"layer": year, "id": paper})
 
@@ -253,8 +255,10 @@ for (let d of data) {
         } else {
             paperToInfluences[d["Epic Code "]] = [paperObject]
         }
-    })
+    }
 }
+// console.log(99999, JSON.stringify(influenceLinks))
+
 
 function parseDotNodeId(nodeId: string) {
     return nodeId.replace(",", "").replace(" ", "")
@@ -311,5 +315,6 @@ export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
 // export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
 export let map = await d3.json("./data/ne_10m_admin_0_countries_lakes.json")
+
 
 export {influenceNodes, influenceLinks}
