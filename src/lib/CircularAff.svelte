@@ -214,6 +214,18 @@
                         return ""
                     }
                     return "none"
+                }).attr("font-weight", d2 => {
+                    if (nodeToNeighbors[d.id].includes(d2.id)) {
+                        return "normal";
+                    } else if (d2 == d) {
+                        return "bold ";
+                    }
+                }).attr("font-size", d2 => {
+                    if (nodeToNeighbors[d.id].includes(d2.id)) {
+                        return "small";
+                    } else if (d2 == d) {
+                        return "medium ";
+                    }
                 })
 
             // TODO: make it faste by precomputing neighbors
