@@ -21,6 +21,7 @@
     $: heightEff = height - 2 * margin;
 
     let element: HTMLElement;
+    let tooltip: HTMLElement;
     let svg: HTMLElement;
     let g: SVGElement;
 
@@ -80,25 +81,37 @@
     function render(width, height) {
         if (!svg) return;
 
-        console.log(influencesIds)
-        console.log(papersIds)
-
         var x = d3.scaleBand()
             .range([margin, widthEff])
             .domain(influencesIds)
-            .padding(0.01);
+            .paddingInner(0.25)
 
         var y = d3.scaleBand()
             .range([heightEff, margin])
-            // .domain(data.map(d => d["Epic Code "]))
             .domain(papersIds)
-            .padding(0.01);
+            .paddingInner(0.5)
 
         d3.select(g).append("g").classed("axis", true)
             .attr("transform", "translate(0," + heightEff + ")")
             .call(d3.axisBottom(x)
                 // .tickFormat((d, i) => i))
                 .tickFormat((d, i) => ""))
+
+        // Add event listeners to show/hide tooltips
+          d3.select(g).selectAll(".tick")
+            .on("mouseover", function(e, d, i) {
+              d3.select(tooltip).transition()
+                .style("opacity", 1);
+              d3.select(tooltip).html("Value: " + d)
+                .style("left", (e.pageX - element.offsetLeft) + "px")
+                // .style("top", (e.pageY - element.offsetTop) + "px");
+                .style("top", e.pageY - (element.getBoundingClientRect().top + window.pageYOffset) + "px")
+            })
+            .on("mouseout", function() {
+              d3.select(tooltip).transition()
+                .style("opacity", 0);
+            });
+
 
         d3.select(g).append("g")
             .call(d3.axisLeft(y));
@@ -110,12 +123,9 @@
             .join("g")
             .classed("row", true)
             .selectAll("rect")
-            // .data(d => allCols.map(col => [d["Epic Code "], d[col], col]))
-            // .data(d => paperToInfluences[d["Epic Code "]])
             .data(d => influencesIds.map(influence => [influence, paperToInfluences[d["Epic Code "]], d["Epic Code "]]))
             .join("rect")
             .attr("x", function (d) {
-                // console.log(d)
                 return x(d[0])
             })
             .attr("y", function (d) {
@@ -124,8 +134,6 @@
             .attr("width", x.bandwidth())
             .attr("height", y.bandwidth())
             .style("fill", function (d) {
-                console.log(d)
-                // if (d[1] && d[1].includes(d[0])) {
                 if (d[1] && d[1].map(n => n.name).includes(d[0])) {
                     return "black"
                 }
@@ -137,6 +145,7 @@
 </script>
 
 <div id="influence-div" bind:this={element} on:resize={updateDimensions}>
+    <div bind:this={tooltip} id="influence-tooltip">TEST</div>
     <svg bind:this={svg} width={width} height={width}>
         <g bind:this={g} transform="translate({margin}, {margin})"></g>
     </svg>
@@ -151,9 +160,14 @@
         height: 100%;
     }
 
-    /*svg {*/
-    /*    display: inline-block;*/
-    /*    vertical-align: top;*/
-    /*}*/
+    #influence-tooltip {
+      position: absolute;
+      background-color: #f8f9fa;
+      padding: 8px;
+      border: 1px solid #ced4da;
+      border-radius: 4px;
+      pointer-events: none;
+      opacity: 0;
+    }
 </style>
 
