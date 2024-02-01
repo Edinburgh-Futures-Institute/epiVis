@@ -18,8 +18,13 @@
 
     const className = (i) => `p${i}`
 
+
+    // Columns with special character in their name need this render fct to work
     let heatMapColumns = allCols.map((col, i) => {
-        return {title: `C${i}`, data: col, className: className(i)}
+        return {title: `C${i}`, data: col, className: className(i), render: ( data, type, full, meta ) => {
+            console.log(full)
+            return full[col]
+        }}
     })
 
     function redraw(filteredData, hideColumns: boolean) {
@@ -58,6 +63,7 @@
                         let value = data[col];
                         // let cell = row.querySelector(`.${col}`);
                         let cell = row.querySelector(`.p${i}`);
+                        if (!cell) continue;
 
                         if (["P", "Y", "S"].includes(value)) {
                             cell.style.background = '#a1d99b'

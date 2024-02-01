@@ -25,7 +25,11 @@ export enum NodeTypes {
     Model = "Model"
 }
 
-export const papersFilename = "papers13Jan.csv";
+// export const papersFilename = "papers13Jan.csv";
+
+// New version with the lots of new ethic colored columns
+export const papersFilename = "papers13JanNEW.csv";
+
 export const affiliationsFilename = "affiliations13Jan.csv";
 export const authorsFilename = "authors13Jan.csv";
 
@@ -299,19 +303,56 @@ export const nodeTypeColorScale = d3.scaleOrdinal(Object.values(NodeTypes), [
 ])
 
 
+//
+// // COLUMNS FOR THE HEATMAP
+// const c1 = "Assumptions mentioned (Yes/No/Limited)"
+// const c2 = "Assumptions included in Mode/review  Design (Yes/No?limited)"
+// const c3 = "Impacts mentioned (YES/NO?Limited)"
+// const c4 = "Impacts included in the model/review design (YES/No)"
+// const c5 = "Nature of impacts (Positive/Negative/Mixed)"
+// const c6 = "Biases mentioned (Yes/No/Insufficiently mentioned)"
+// const c7 = "Impacts of biases explained (Yes/No/Insufficiently explained)"
+// const c8 = "Uncertainty explained (YES/NO/Insufficiently explained)"
+// const c9 = "Impacts of uncertainty explained (YES/NO/Insufficiently explained)"
+// const c10 = "Overall reporting (Sufficient/Insufficient)"
+// export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
-// COLUMNS FOR THE HEATMAP
-const c1 = "Assumptions mentioned (Yes/No/Limited)"
-const c2 = "Assumptions included in Mode/review  Design (Yes/No?limited)"
-const c3 = "Impacts mentioned (YES/NO?Limited)"
-const c4 = "Impacts included in the model/review design (YES/No)"
-const c5 = "Nature of impacts (Positive/Negative/Mixed)"
-const c6 = "Biases mentioned (Yes/No/Insufficiently mentioned)"
-const c7 = "Impacts of biases explained (Yes/No/Insufficiently explained)"
-const c8 = "Uncertainty explained (YES/NO/Insufficiently explained)"
-const c9 = "Impacts of uncertainty explained (YES/NO/Insufficiently explained)"
-const c10 = "Overall reporting (Sufficient/Insufficient)"
-export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
+
+
+// NEW COLUMNS with MODEL tab sheet
+const c1 = "Constraints: 1. No constraints mentioned; 2.There are constraints 3. Not clarified  "
+const c2 = " Multiplicity"
+const c3 = "Results of similar studies"
+const c4 = "Mentions impacts"
+const c5 = "Impacts BY DESIGN: 1.Not reported, 2.Claimed but not substantiated by nodel design ; 3. Sbstantiated by model design; 4. N/A (for review)  "
+const c6 = "Mentions impacts and type  of impacts: 1. Not reported; 2. Postive impact, 3. Negative impact, 4. Mixed impacts, 5. No impact;"
+const c7 = "Trade-offs"
+const c8 = "Opportunity costs"
+const c9 = " Reasons for differences observed"
+const c10 = "Does they explain factors contrinuting to viability? Does they inlude them in the model design? 1. Not discussed AT ALL; 2. Discussed but not inlcuded; 3. Discussed and inlcuded in the model/review design; 4. Mixed: 2 +3"
+const c11 = "Lack of knowledge attributable to variability: 1. No; 2.Partially; 3.Fully; 4.Attributed to methods"
+const c12 = "Lack of knowledge attributable to uncertainty";
+const c13 = "Full history of model development: 1.Yes;  2.No; 3. Very clealrly  "
+const c14 = "Validated using independent data ";
+const c15 = "Clear documentation: 1. very clear; 2.clear; 3. semi-clear; 4. unlcear";
+const c16 = "Biases? Direction and magnitude? Efforts to address bias?: 1. Not mentioned; 2 Simple metioned; 3. Direction and magnitude; 4. Efforts to address the biases  ";
+const c17 = "Conflicts of interest: 1. No conflict; 2.There is conflict; 3. Not clarified  ";
+const c18 = "Missing values";
+const c19 = "Code open source ";
+const c20 = "Assumption -BY DESIGN:   1.Simply mentioned and inlcuded; 2. Well mentioned and included; 3. Mentioned but NOT inlcuded;  4. NOT mentioned at ALL ";
+const c21 = "Verified: 1. Yes, 2. No , 3. Unknown ";
+const c22 = " Validated: 1. Yes; 2.No;  3.N/A (for reviews)";
+const c23 = "Sources and magnitude of uncertainty in the\r\nmodel—are these associated with parametric uncertainty or\r\nmodel selection? 1.parametric uncertainty, 2. model selection; 3. No associated"
+const c24 = "If interventions based on model predictions are implemented in\r\nthe real world, can the predicted benefits and harms to different\r\nindividuals and subpopulations be quantified? 1. Quantified; 2.Not quantified; 3. Unknown"
+const c25 = "Case-control study: 1. Yes; 2.No";
+const c26 = "Inter-disciplinarity (NO=highlighted in red) "
+const c27 = "Model heavily relied on: 1. Yes, 2. No"
+const c28 = "Model performance metrices"
+const c29 = "How many red areas?";
+
+
+export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29];
+// export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
 // export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
 export let map = await d3.json("./data/ne_10m_admin_0_countries_lakes.json")

@@ -73,7 +73,7 @@
         // console.log(perms2);
 
         papersIds = perms[0].map(n => indexToNodeId[n])
-        influencesIds = perms[1].map(n => indexToNodeId[n])
+        // influencesIds = perms[1].map(n => indexToNodeId[n])
     }
 
     influenceNodes.filter(n => n);
@@ -135,7 +135,8 @@
             .attr("width", x.bandwidth())
             .attr("height", y.bandwidth())
             .style("fill", function (d) {
-                if (d[1] && d[1].map(n => n.name).includes(d[0])) {
+                // if (d[1] && d[1].map(n => n.name).includes(d[0])) {
+                if (d[1] && d[1].includes(d[0])) {
                     return "black"
                 }
                 return "white"
