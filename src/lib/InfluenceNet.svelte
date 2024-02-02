@@ -33,6 +33,15 @@
 
     let papersFirstyear = [];
 
+    let yearToInfluences = d3.group(Object.values(paperIdTopaperObject), d => d.year);
+    console.log(33, yearToInfluences.get(1995))
+
+    let allInfYears = Object.values(paperIdTopaperObject).map(d => d.year).sort();
+    allInfYears = [...new Set(allInfYears)]
+    console.log(22, allInfYears)
+
+
+
     onMount(() => {
         updateDimensions();
         getNet().then(() => {
@@ -144,6 +153,36 @@
                 }
             })
 
+        // Bands
+        //Store all values of the y-axis to an array
+        var yval = []
+        d3.selectAll('.y.axis>g>text').each(function(d) {
+          yval.push(d);
+        });
+
+        // Create rects and assign opacity based on index
+        d3.select(g).selectAll('.band')
+            .data(influencesIds)
+            .join('rect')
+            .classed("band", true)
+             .attr('x', d => x(d))
+            .attr('y', 0)
+             .attr('height', heightEff)
+             .attr('width', x.padding() + x.step())
+            .attr("opacity", 0.2)
+            .attr('fill', function(d, i) {
+
+                // console.log(2, d)
+                let year = paperIdTopaperObject[d].year;
+                let index = allInfYears.indexOf(year)
+                 if (index % 2 == 0) {
+                    return "grey";
+                 } else {
+                    return "white";
+                 }
+             });
+
+
         d3.select(g).append("g")
             .call(d3.axisLeft(y));
 
@@ -153,9 +192,11 @@
             .data(data, d => d)
             .join("g")
             .classed("row", true)
-            .selectAll("rect")
+            .selectAll(".cell")
             .data(d => influencesIds.map(influence => [influence, paperToInfluences[d["Epic Code "]], d["Epic Code "]]))
             .join("rect")
+            .filter(d => d[1] && d[1].map(n => n.name).includes(d[0]))
+            .classed("cell", "true")
             .attr("x", function (d) {
                 return x(d[0])
             })
@@ -164,13 +205,14 @@
             })
             .attr("width", x.bandwidth())
             .attr("height", y.bandwidth())
-            .style("fill", function (d) {
+            .attr("fill", function (d) {
                 if (d[1] && d[1].map(n => n.name).includes(d[0])) {
                 // if (d[1] && d[1].includes(d[0])) {
                     return "black"
                 }
                 return "white"
             })
+            // .attr("stroke", "white")
     }
 
     // $: render(width, height)
