@@ -226,6 +226,7 @@ let influenceLinks = [];
 let influenceNodes = [];
 
 export let paperToInfluences = {};
+export let paperIdTopaperObject = {}
 
 for (let d of data) {
     if (nullOrNS(d["Publication Year "]) || nullOrNS(d["Epic Code "])) continue;
@@ -244,7 +245,6 @@ for (let d of data) {
     // influences.forEach(paper => {
     for (let paper of influences) {
         let year = extractNumbersFromString(paper)[0];
-        // if (nullOrNS(year)) return;
         if (nullOrNS(year)) continue;
 
         // console.log(paper, d["Epic Code "])
@@ -252,6 +252,7 @@ for (let d of data) {
         influenceNodes.push({"layer": year, "id": paper})
 
         let paperObject = {"name": paper, "year": year}
+        paperIdTopaperObject[paper] = paperObject;
 
         if (paperToInfluences[d["Epic Code "]]) {
             // paperToInfluences[d["Epic Code "]].push(paper)
@@ -345,13 +346,16 @@ const c22 = " Validated: 1. Yes; 2.No;  3.N/A (for reviews)";
 const c23 = "Sources and magnitude of uncertainty in the\r\nmodel—are these associated with parametric uncertainty or\r\nmodel selection? 1.parametric uncertainty, 2. model selection; 3. No associated"
 const c24 = "If interventions based on model predictions are implemented in\r\nthe real world, can the predicted benefits and harms to different\r\nindividuals and subpopulations be quantified? 1. Quantified; 2.Not quantified; 3. Unknown"
 const c25 = "Case-control study: 1. Yes; 2.No";
-const c26 = "Inter-disciplinarity (NO=highlighted in red) "
-const c27 = "Model heavily relied on: 1. Yes, 2. No"
+
+// These contain long text
+// const c26 = "Inter-disciplinarity (NO=highlighted in red) "
+// const c27 = "Model heavily relied on: 1. Yes, 2. No"
+
 const c28 = "Model performance metrices"
 const c29 = "How many red areas?";
 
 
-export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29];
+export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c28, c29];
 // export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
 // export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")

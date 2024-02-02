@@ -170,7 +170,13 @@
                 if (d.source.data["Intitute "] == d.target.data["Intitute "]) {
                     return "red"
                 }
-                return "black"
+                return "rgb(77,77,77)"
+            })
+            .attr("stroke-width", d => {
+                if (d.source.data["Intitute "] == d.target.data["Intitute "]) {
+                    return 2
+                }
+                return 1
             })
             .attr("fill", "none")
             .classed("link", true)
@@ -410,7 +416,6 @@
                 .style("alignment-baseline", "middle")
         }
     }
-
 
     // $: render(width, height)
 </script>

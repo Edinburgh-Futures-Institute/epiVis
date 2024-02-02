@@ -10,8 +10,7 @@
         paperToInfluences,
         paperAffiliationTable
     } from "../dataLoader.ts";
-
-    // console.log(33232, JSON.stringify(influenceLinks))
+    import {paperIdTopaperObject} from "../dataLoader.js";
 
     let width: number;
     let height: number;
@@ -27,15 +26,14 @@
 
     let papersIds = data.map(d => d["Epic Code "]);
 
-    // We only have the ids for now
     let influencesIds = Object.values(paperToInfluences).reduce((a, b) => a.concat(b))
     influencesIds = [...new Set(influencesIds)].sort((p1, p2) => {
         return p1.year - p2.year;
     })
 
+    let papersFirstyear = [];
 
     onMount(() => {
-        console.log("MOUNT")
         updateDimensions();
         getNet().then(() => {
             render(width, height);
@@ -59,7 +57,6 @@
         })
 
         influenceLinks.forEach(link => {
-            // console.log(22, link)
             link.source = idToNodeIndex[link.source]
             link.target = idToNodeIndex[link.target]
         })
@@ -73,10 +70,24 @@
         // console.log(perms2);
 
         papersIds = perms[0].map(n => indexToNodeId[n])
-        // influencesIds = perms[1].map(n => indexToNodeId[n])
+        influencesIds = perms[1].map(n => indexToNodeId[n])
+
+        influencesIds.sort((p1, p2) => {
+            return paperIdTopaperObject[p1].year - paperIdTopaperObject[p2].year;
+        })
+
+
+        let year0 = null;
+        influencesIds.forEach(paper => {
+            let year1 = paperIdTopaperObject[paper].year
+            if (year1 != year0) {
+                papersFirstyear.push(paper);
+                year0 = year1;
+            }
+        })
     }
 
-    influenceNodes.filter(n => n);
+    // influenceNodes.filter(n => n);
 
     function render(width, height) {
         if (!svg) return;
@@ -114,6 +125,23 @@
         d3.select(g).selectAll(".tick line")
             .attr("stroke-width", 2)
 
+        d3.select(g).selectAll(".tick")
+            .append("text")
+            .text(d => {
+                if (papersFirstyear.includes(d)) {
+                    return paperIdTopaperObject[d].year
+                }
+            })
+            .attr("fill", "black")
+            // .attr("x", d => {})
+            .attr("y", d => {
+                if (papersFirstyear.indexOf(d) % 2 == 0) {
+                    return 25
+                } else {
+                    return 40
+                }
+            })
+
         d3.select(g).append("g")
             .call(d3.axisLeft(y));
 
@@ -135,8 +163,8 @@
             .attr("width", x.bandwidth())
             .attr("height", y.bandwidth())
             .style("fill", function (d) {
-                // if (d[1] && d[1].map(n => n.name).includes(d[0])) {
-                if (d[1] && d[1].includes(d[0])) {
+                if (d[1] && d[1].map(n => n.name).includes(d[0])) {
+                // if (d[1] && d[1].includes(d[0])) {
                     return "black"
                 }
                 return "white"

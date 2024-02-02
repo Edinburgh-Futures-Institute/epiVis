@@ -21,8 +21,7 @@
 
     // Columns with special character in their name need this render fct to work
     let heatMapColumns = allCols.map((col, i) => {
-        return {title: `C${i}`, data: col, className: className(i), render: ( data, type, full, meta ) => {
-            console.log(full)
+        return {title: `${i}`, data: col, className: className(i), render: ( data, type, full, meta ) => {
             return full[col]
         }}
     })
