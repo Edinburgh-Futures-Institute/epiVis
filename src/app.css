@@ -87,7 +87,6 @@ button:focus-visible {
 
 
 /*DATATABLE css */
-
 .titleCol {
     /*text-align : center;*/
     font-weight: bold;
@@ -96,6 +95,14 @@ button:focus-visible {
 table.dataTable tr.dtrg-group th {
     background-color:rgba(0, 0, 0, 0.1);
     text-align:left
+}
+
+table {
+    border-collapse: collapse !important;
+}
+
+td {
+    padding-right: 0 !important;
 }
 
 /*table.dataTable tr.dtrg-group.dtrg-level-0 th{font-weight:bold}*/

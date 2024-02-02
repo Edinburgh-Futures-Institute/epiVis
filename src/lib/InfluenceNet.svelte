@@ -125,6 +125,8 @@
         d3.select(g).selectAll(".tick line")
             .attr("stroke-width", 2)
 
+
+        // Add time labels
         d3.select(g).selectAll(".tick")
             .append("text")
             .text(d => {
@@ -136,9 +138,9 @@
             // .attr("x", d => {})
             .attr("y", d => {
                 if (papersFirstyear.indexOf(d) % 2 == 0) {
-                    return 25
+                    return 15
                 } else {
-                    return 40
+                    return 30
                 }
             })
 

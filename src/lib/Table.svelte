@@ -21,7 +21,7 @@
 
     // Columns with special character in their name need this render fct to work
     let heatMapColumns = allCols.map((col, i) => {
-        return {title: `${i}`, data: col, className: className(i), render: ( data, type, full, meta ) => {
+        return {title: `${i}`, data: col, className: className(i), width: "10%", render: ( data, type, full, meta ) => {
             return full[col]
         }}
     })
@@ -50,7 +50,7 @@
                     //             return data;
                     //         }
                     //     }},
-                    {title: 'Epidemic waves', data: "Epidemic waves"},
+                    // {title: 'Epidemic waves', data: "Epidemic waves"},
                     {title: 'Models', data: "Models", createdCell: createdCellCb},
             ];
 
@@ -188,10 +188,6 @@
         background: #fff;
     }
 
-    tbody td {
-        border: 1px solid #f5f5f5;
-        padding: 4px 20px;
-    }
 
     tbody tr {
         transition: all, 0.2s;
@@ -209,9 +205,13 @@
     }
 
     #myTable {
-        border-collapse: separate;
+        /*border-collapse: separate;*/
+        border-collapse: collapse;
         border-spacing: 10;
     }
+
+/*    table {border-collapse: collapse}*/
+/*table td {padding: 0}*/
 
     /*    Datatable css is an app.css */
 </style>
