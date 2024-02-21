@@ -146,13 +146,6 @@
                 }
             })
 
-        // Bands
-        //Store all values of the y-axis to an array
-        var yval = []
-        d3.selectAll('.y.axis>g>text').each(function(d) {
-          yval.push(d);
-        });
-
         // Create rects and assign opacity based on index
         d3.select(g).selectAll('.band')
             .data(influencesIds)
@@ -174,8 +167,14 @@
              });
 
 
-        d3.select(g).append("g")
+        d3.select(g).append("g").classed("y", true)
             .call(d3.axisLeft(y));
+
+         d3.selectAll('.y>g>text')
+            .text(d => {
+                console.log(paperToInfluences[d])
+                return `${d} (${paperToInfluences[d].length})`
+            })
 
         // TODO: always same order of influences
         d3.select(g)
