@@ -1,4 +1,6 @@
 <script lang="ts">
+    import * as d3 from "d3"
+
     import {MODEL, PURPOSE, SPREAD, STAGE, allCols} from "../dataLoader.ts";
 
     import DataTable from 'datatables.net-dt';
@@ -15,6 +17,15 @@
     let columnNameTooltip: HTMLElement;
     $: hideColumns = false;
     let rerender = false;
+
+    // const cellColorScale = d3.scaleLinear()
+    //     .domain([1, 4])
+    //     .range(["rgb(193,222,172)",'rgb(133,30,30)'])
+
+    const cellColorScale = d3.scaleOrdinal()
+        .domain([1, 2, 3, 4])
+        .range(["rgb(193,222,172)",'rgb(103,206,74)', 'rgb(217,128,128)', 'rgb(141,36,36)'])
+
 
     const className = (i) => `p${i}`
 
@@ -70,6 +81,10 @@
                             cell.style.background = '#fdbb84'
                         } else if (["M", "L"].includes(value)) {
                             cell.style.background = '#ffeda0'
+                        } else if (["1", "2", "3", "4", "0"].includes(value)) {
+                            cell.style.background = cellColorScale(value)
+                        } else if (value == "N/A") {
+                            cell.style.background = "gray"
                         }
                     }
                 },

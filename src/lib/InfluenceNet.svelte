@@ -15,6 +15,8 @@
     let width: number;
     let height: number;
 
+    console.log(23, influenceLinks)
+
     const margin = 30;
     $: widthEff = width - 2 * margin;
     $: heightEff = height - 2 * margin;
@@ -34,11 +36,9 @@
     let papersFirstyear = [];
 
     let yearToInfluences = d3.group(Object.values(paperIdTopaperObject), d => d.year);
-    console.log(33, yearToInfluences.get(1995))
 
     let allInfYears = Object.values(paperIdTopaperObject).map(d => d.year).sort();
     allInfYears = [...new Set(allInfYears)]
-    console.log(22, allInfYears)
 
 
 
@@ -72,19 +72,14 @@
 
         const graph = reorder.graph(influenceNodes, influenceLinks, true).init();
 
-        // const initial_crossings = reorder.count_crossings(graph);
         const perms = reorder.barycenter_order(graph);
         // const perms2 = reorder.adjacent_exchange(graph, perms[0], perms[1]);
-        // console.log(perms[0], perms[1]);
-        // console.log(perms2);
-
         papersIds = perms[0].map(n => indexToNodeId[n])
         influencesIds = perms[1].map(n => indexToNodeId[n])
 
         influencesIds.sort((p1, p2) => {
             return paperIdTopaperObject[p1].year - paperIdTopaperObject[p2].year;
         })
-
 
         let year0 = null;
         influencesIds.forEach(paper => {
@@ -95,8 +90,6 @@
             }
         })
     }
-
-    // influenceNodes.filter(n => n);
 
     function render(width, height) {
         if (!svg) return;
@@ -171,8 +164,6 @@
              .attr('width', x.padding() + x.step())
             .attr("opacity", 0.2)
             .attr('fill', function(d, i) {
-
-                // console.log(2, d)
                 let year = paperIdTopaperObject[d].year;
                 let index = allInfYears.indexOf(year)
                  if (index % 2 == 0) {
@@ -195,7 +186,7 @@
             .selectAll(".cell")
             .data(d => influencesIds.map(influence => [influence, paperToInfluences[d["Epic Code "]], d["Epic Code "]]))
             .join("rect")
-            .filter(d => d[1] && d[1].map(n => n.name).includes(d[0]))
+            .filter(d => d[1] && d[1].map(n => n[0].name).includes(d[0]))
             .classed("cell", "true")
             .attr("x", function (d) {
                 return x(d[0])
@@ -206,13 +197,26 @@
             .attr("width", x.bandwidth())
             .attr("height", y.bandwidth())
             .attr("fill", function (d) {
-                if (d[1] && d[1].map(n => n.name).includes(d[0])) {
-                // if (d[1] && d[1].includes(d[0])) {
-                    return "black"
+                console.log(d)
+
+                if (d[1]) {
+                    for (let inf of d[1]) {
+                        if (inf[0].name == d[0]) {
+                            return inf[1] == "1" ? "red" : "black"
+                        }
+                    }
                 }
                 return "white"
+
+                // if (d[1] && d[1].map(n => n[0].name).includes(d[0])) {
+                // // if (d[1] && d[1].includes(d[0])) {
+                //     if (d[1][1] == "1") {
+                //         return "red"
+                //     }
+                //     return "black"
+                // }
+                // return "white"
             })
-            // .attr("stroke", "white")
     }
 
     // $: render(width, height)

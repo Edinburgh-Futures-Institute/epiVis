@@ -254,16 +254,14 @@ for (let d of data) {
         let paperObject = {"name": paper, "year": year}
         paperIdTopaperObject[paper] = paperObject;
 
+        // Save paper and type of influence
         if (paperToInfluences[d["Epic Code "]]) {
-            // paperToInfluences[d["Epic Code "]].push(paper)
-            paperToInfluences[d["Epic Code "]].push(paperObject)
+            paperToInfluences[d["Epic Code "]].push([paperObject, type] )
         } else {
-            paperToInfluences[d["Epic Code "]] = [paperObject]
+            paperToInfluences[d["Epic Code "]] = [[paperObject, type]]
         }
     }
 }
-// console.log(99999, JSON.stringify(influenceLinks))
-
 
 function parseDotNodeId(nodeId: string) {
     return nodeId.replace(",", "").replace(" ", "")
@@ -348,14 +346,14 @@ const c24 = "If interventions based on model predictions are implemented in\r\nt
 const c25 = "Case-control study: 1. Yes; 2.No";
 
 // These contain long text
-// const c26 = "Inter-disciplinarity (NO=highlighted in red) "
+const c26 = "Inter-disciplinarity (NO=highlighted in red) "
 // const c27 = "Model heavily relied on: 1. Yes, 2. No"
 
 const c28 = "Model performance metrices"
 const c29 = "How many red areas?";
 
 
-export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c28, c29];
+export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c28, c29];
 // export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
 // export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
