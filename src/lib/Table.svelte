@@ -22,9 +22,17 @@
     //     .domain([1, 4])
     //     .range(["rgb(193,222,172)",'rgb(133,30,30)'])
 
+    const LIGHTGREEN = "rgb(197,220,180)"
+    const GREEN = '#97d391'
+    const LIGHTRED = 'rgb(220,137,137)'
+    const RED = 'rgb(173,68,68)'
+    const YELLOW = '#ffeda0';
+
+
+
     const cellColorScale = d3.scaleOrdinal()
         .domain([1, 2, 3, 4])
-        .range(["rgb(193,222,172)",'rgb(103,206,74)', 'rgb(217,128,128)', 'rgb(141,36,36)'])
+        .range([LIGHTGREEN, GREEN, LIGHTRED, RED])
 
 
     const className = (i) => `p${i}`
@@ -76,13 +84,13 @@
                         if (!cell) continue;
 
                         if (["P", "Y", "S"].includes(value)) {
-                            cell.style.background = '#a1d99b'
+                            cell.style.background = GREEN
                         } else if (["N", "I"].includes(value)) {
-                            cell.style.background = '#fdbb84'
+                            cell.style.background = LIGHTRED
                         } else if (["M", "L"].includes(value)) {
-                            cell.style.background = '#ffeda0'
+                            cell.style.background = YELLOW
                         } else if (["1", "2", "3", "4", "0"].includes(value)) {
-                            cell.style.background = cellColorScale(value)
+                            cell.style.background = cellColorScale(Number(value))
                         } else if (value == "N/A") {
                             cell.style.background = "gray"
                         }
@@ -224,9 +232,6 @@
         border-collapse: collapse;
         border-spacing: 10;
     }
-
-/*    table {border-collapse: collapse}*/
-/*table td {padding: 0}*/
 
     /*    Datatable css is an app.css */
 </style>

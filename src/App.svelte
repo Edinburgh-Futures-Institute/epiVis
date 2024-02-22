@@ -185,11 +185,11 @@
             //     .graphviz()
             //     .renderDot(dotGraph());
 
-            d3.select("#vis4")
-                .graphviz()
-                .width(1400)
-                .height(1000)
-                .renderDot(dotGraphTime());
+            // d3.select("#vis4")
+            //     .graphviz()
+            //     .width(1400)
+            //     .height(1000)
+            //     .renderDot(dotGraphTime());
         }
     }
 
@@ -233,7 +233,7 @@
     </div>
 
     <Table {filteredData}>
-        </Table>
+    </Table>
 
 <!--        <Heatmap>-->
 <!--        </Heatmap>-->
@@ -244,10 +244,10 @@
 <!--        <Timevis>-->
 <!--        </Timevis>-->
 
-        <div class="vis-container">
-            <div id="vis4" class="vis-component">
-            </div>
-        </div>
+<!--        <div class="vis-container">-->
+<!--            <div id="vis4" class="vis-component">-->
+<!--            </div>-->
+<!--        </div>-->
 
 </main>
 

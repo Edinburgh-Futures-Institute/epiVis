@@ -6,7 +6,6 @@
     import {affiliationsFilename, paperAffiliationTable} from "../dataLoader.ts";
 
     // let specPath = "/netpanorama-vis/templates/InstitutionProj.json"
-
     // let specPath = "/netpanorama-vis/templates/affiliationProj.json"
     let specPath = "/netpanorama-vis/templates/affiliationProjOneTable.json"
 
@@ -22,7 +21,6 @@
     let element: HTMLElement;
     let svg: HTMLElement;
     let svgLegend: SVGElement;
-    let colorScale = d3.scaleLinear([0, 10], ["white", "blue"]);
     let nodeToNeighbors = {};
 
     onMount(() => {
@@ -41,7 +39,6 @@
 
     async function getNetpanNet() {
         if (width && element) {
-            // console.log(paperAffiliationTable)
             let viewer = await NetPanoramaTemplateViewer.render(specPath, {
                 affiliations: affiliationsFilename,
                 affiliationPaperLinks: paperAffiliationTable,
@@ -67,15 +64,15 @@
             })
 
             for (let link of links) {
-                let source = link.source.id;
-                let target = link.target.id;
+                let sourceId = link.source.id;
+                let targetId = link.target.id;
 
-                if (!nodeToNeighbors[source] || !nodeToNeighbors[target]) {
+                if (!nodeToNeighbors[sourceId] || !nodeToNeighbors[targetId]) {
                     continue;
                 }
 
-                nodeToNeighbors[source].push(target);
-                nodeToNeighbors[target].push(source);
+                nodeToNeighbors[sourceId].push(link.target);
+                nodeToNeighbors[targetId].push(link.source);
             }
         }
     }
@@ -83,7 +80,6 @@
     function render(width, height) {
         if (!svg) return;
 
-        // institutions.sort((a, b) => {
         affiliations.sort((a, b) => {
             let countryCompare = a.data["Country "].localeCompare(b.data["Country "])
             if (countryCompare == 0) {
@@ -92,12 +88,24 @@
             return countryCompare
         })
 
-        // let currentCountry = institutions[0].data["Country "]
         let currentCountry = affiliations[0].data["Country "]
         let pos = 1
         let countryToCount = {};
+        let countryToAff = d3.group(affiliations, d => d.data["Country "])
+        let countryToLinkCount = {};
 
-        // for (let inst of institutions) {
+        for (let [country, affilitations] of countryToAff.entries()) {
+            let totalLink = 0;
+            let intraLink = 0
+            affilitations.forEach(aff => {
+                totalLink += aff.degree ?? 0
+                let sameCountryNb = nodeToNeighbors[aff.id].filter(d => d.data["Country "] == country).length;
+                intraLink += sameCountryNb
+            })
+            // total number of link per country
+            countryToLinkCount[country] = totalLink - intraLink / 2;
+        }
+
         for (let inst of affiliations) {
             let country = inst.data["Country "]
 
@@ -115,6 +123,8 @@
 
             pos += 1;
         }
+
+        console.log(22, countryToCount)
 
         const radialScale = d3.scaleLinear([0, pos], [0, Math.PI * 2])
 
@@ -142,6 +152,12 @@
         //     .attr("y2", d => y(d.target))
         //     .attr("stroke", "black")
         //     .classed("link", true)
+
+        // const linksG = d3.group(links, d => {
+        //     let ids = [d.source.id, d.target.id];
+        //     ids.sort();
+        //     return ids.join("-")
+        // })
 
         const linksMark = d3.select(svg)
             .selectAll(".link")
@@ -183,13 +199,11 @@
 
         let nodesMark = d3.select(svg)
             .selectAll(".node")
-            // .data(institutions)
             .data(affiliations)
             .join("circle")
             .attr("cx", d => x(d))
             .attr("cy", d => y(d))
             .attr("r", d => radiusScale(d.degree))
-            // .attr("fill", d => countryColorScale(d.data["Country "]))
             .attr("fill", d => countryColorScale(d.data["Discipline"]))
             .attr("stroke", "black")
             .classed("node", true)
@@ -295,9 +309,11 @@
                 return 0
             })
             .text((d, i) => {
-                return Object.keys(countryToCount)[i]
+                let country = Object.keys(countryToCount)[i];
+                return `(${countryToLinkCount[country]}) ` + country
             })
             .attr("text-anchor", "middle")
+            .attr("font-size", "13px")
             .classed("textCountry", true)
             .on("mouseover", mouseOverCountry)
             .on("mouseleave", mouseLeaveCountry)
@@ -353,14 +369,14 @@
                 })
         }
 
-        // Institutions labels
+        // Affiliations labels
         d3.select(svg)
             .selectAll(".nodeText")
             .data(affiliations)
             .join("text")
             .attr("x", d => x(d) + 8)
             .attr("y", d => y(d) - 10)
-            .text(d => d.data["Afilliation name -"])
+            .text(d => `(${d.degree}) ` + d.data["Afilliation name -"])
             .classed("nodeText", true)
             .attr("display", "none")
             .attr("text-anchor", d => {

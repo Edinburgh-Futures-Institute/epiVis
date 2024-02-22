@@ -15,8 +15,6 @@
     let width: number;
     let height: number;
 
-    console.log(23, influenceLinks)
-
     const margin = 30;
     $: widthEff = width - 2 * margin;
     $: heightEff = height - 2 * margin;
@@ -172,7 +170,6 @@
 
          d3.selectAll('.y>g>text')
             .text(d => {
-                console.log(paperToInfluences[d])
                 return `${d} (${paperToInfluences[d].length})`
             })
 
@@ -196,8 +193,6 @@
             .attr("width", x.bandwidth())
             .attr("height", y.bandwidth())
             .attr("fill", function (d) {
-                console.log(d)
-
                 if (d[1]) {
                     for (let inf of d[1]) {
                         if (inf[0].name == d[0]) {
