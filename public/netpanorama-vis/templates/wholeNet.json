@@ -1,4 +1,6 @@
 {
+  "zoom": true,
+  "pan": true,
   "width": "[width]",
   "height": "[height]",
   "data": [
@@ -215,14 +217,21 @@
       "network": "network",
       "type": "webcola",
       "defaultNodeSize2": 0.01,
-      "linkDistance": 40,
+      "linkDistance": 400,
       "handleDisconnected": true,
       "avoidOverlap": true
     },
     {
-      "name": "forcelayout2",
+      "name": "forcelayout3",
       "network": "network",
       "type": "d3-force"
+    },
+    {
+      "name": "forceLayout2",
+      "network": "network",
+      "type": "webcola",
+      "avoidOverlap": true,
+      "handleDisconnected": true
     }
   ],
   "scales": [
@@ -230,8 +239,8 @@
       "name": "radius",
       "type": "linear",
       "range": [
-        90,
-        250
+        50,
+        900
       ],
       "domain": {
         "data": "network.nodes",
