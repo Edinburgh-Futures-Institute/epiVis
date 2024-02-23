@@ -1,7 +1,7 @@
 <script lang="ts">
     import * as d3 from "d3"
 
-    import {MODEL, PURPOSE, SPREAD, STAGE, allCols} from "../dataLoader.ts";
+    import {MODEL, PURPOSE, SPREAD, STAGE, allCols, colColor, colToGroup} from "../dataLoader.ts";
 
     import DataTable from 'datatables.net-dt';
     import 'datatables.net-rowgroup'; // Import RowGroup plugin
@@ -140,6 +140,9 @@
                         if (!columnName) {
                             columnName = th.textContent;
                         }
+
+                        // console.log(th, columnName, colToGroup[columnName])
+                        th.style.backgroundColor = colColor(colToGroup[columnName]);
 
                         th.addEventListener("mouseover", function() {
                             columnNameTooltip.innerHTML = columnName;

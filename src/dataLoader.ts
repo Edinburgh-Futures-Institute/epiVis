@@ -369,7 +369,39 @@ export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, 
 // export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c28, c29];
 // export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
-// export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")
+
+export const colToGroup: Record<string, any> = {
+    [c1]: "T",
+    [c2]: "T",
+    [c3]: "T",
+    [c4]: ["T", "B"],
+    [c5]: "T",
+    [c6]: ["T", "B"],
+    [c7]: ["B", "J"],
+    [c8]: ["B", "J"],
+    [c9]: "T",
+    [c10]: "T",
+    [c11]: "J",
+    [c12]: "J",
+    [c13]: "I",
+    [c14]: "I",
+    [c15]: "T",
+    [c16]: "T",
+    [c17]: "T",
+    [c18]: "T",
+    [c19]: "T",
+    [c20]: "T",
+    [c21]: "B",
+    [c22]: "B",
+    [c25]: "T",
+    [c26]: ["I", "T"],
+    [c28]: "I",
+    [c29]: "T"
+}
+export const colColor = d3.scaleOrdinal(["T", "I", "J", "B"], ["orange", "lightblue", "green", "purple"]).unknown("white");
+
+
+
 export let map = await d3.json("./data/ne_10m_admin_0_countries_lakes.json")
 
 
