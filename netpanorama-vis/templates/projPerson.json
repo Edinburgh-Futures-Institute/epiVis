@@ -1,4 +1,6 @@
 {
+  "pan": true,
+  "zoom": true,
   "width": "[width]",
   "height": "[height]",
   "data": [
@@ -17,6 +19,34 @@
       }
     }
   ],
+
+  "parameters": [
+    {
+      "name": "node_selection",
+      "network": "network",
+      "type": "selection",
+      "action": "replace",
+      "clearOnBackgroundClick": true
+    },
+    {
+      "name": "neighbours",
+      "source": "node_selection",
+      "transform": [
+        {
+          "type": "neighbours",
+          "direction": "both"
+        }
+      ]
+    },
+    {
+      "name": "timeRange",
+      "value": [
+        0,
+        0
+      ]
+    }
+  ],
+
   "networks": [
     {
       "name": "network",
@@ -87,16 +117,11 @@
   ],
   "layouts": [
     {
-      "name": "forcelayout2",
-      "network": "network",
-      "type": "d3-force"
-    },
-    {
       "name": "forcelayout",
       "network": "network",
       "type": "webcola",
       "defaultNodeSize22": 1,
-      "linkDistance": 100,
+      "linkDistance": 400,
       "handleDisconnected": true,
       "avoidOverlap": true
     }
@@ -106,8 +131,8 @@
       "name": "radius",
       "type": "linear",
       "range": [
-        90,
-        250
+        50,
+        900
       ],
       "domain": {
         "data": "network.nodes",
@@ -155,17 +180,76 @@
     {
       "entries": "network.links",
       "layout": "forcelayout",
-      "parallelLinks": "line",
       "mark": {
         "type": "linkpath",
         "start": "source",
         "end": "target",
-       "stroke": "gray"
+       "stroke": "gray",
+        "opacity":  {
+          "conditions": [
+            {
+              "selectionIsEmpty": "node_selection.nodes",
+              "value": 1
+            },
+            {
+              "inSelection": "neighbours.links",
+              "value": 1
+            }
+          ],
+          "value": 0.2
+        }
       }
     },
     {
       "entries": "network.nodes",
       "layout": "forcelayout",
+      "occlusion": true,
+      "mark": {
+        "type": "text",
+        "text": {
+          "conditions": [
+            {
+              "selectionIsEmpty": "node_selection.nodes",
+              "value": {
+                "expression": "datum.id"
+              }
+            },
+            {
+              "inSelection": "node_selection.nodes",
+              "value": {
+                "expression": "datum.id"
+              }
+            }
+          ],
+          "value": ""
+        },
+        "dx": 10,
+        "dy": 6,
+        "fontSize": 14,
+        "stroke": "white",
+        "fontWeight": "bold",
+        "strokeWidth": 0.5
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "actions": [
+        {
+          "interaction": "select",
+          "using": "cursor",
+          "event": "mouseover",
+          "action": "replace",
+          "selection": "node_selection"
+        },
+        {
+          "interaction": "select",
+          "using": "cursor",
+          "event": "mouseout",
+          "action": "remove",
+          "selection": "node_selection"
+        }
+      ],
       "mark": {
         "type": "symbol",
         "shape": {
@@ -182,6 +266,23 @@
         },
         "tooltip": {
           "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        },
+        "opacity": {
+          "conditions": [
+            {
+              "selectionIsEmpty": "node_selection.nodes",
+              "value": 1
+            },
+            {
+              "inSelection": "node_selection.nodes",
+              "value": 1
+            },
+            {
+              "inSelection": "neighbours.nodes",
+              "value": 1
+            }
+          ],
+          "value": 0.3
         }
       }
     }
