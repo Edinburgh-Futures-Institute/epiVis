@@ -28,7 +28,8 @@ export enum NodeTypes {
 // export const papersFilename = "papers13Jan.csv";
 
 // New version with the lots of new ethic colored columns
-export const papersFilename = "papers13JanNEW.csv";
+export const papersFilename = "papers13JanNEW2.csv";
+// export const papersFilename = "papers13JanNEW.csv";
 
 export const affiliationsFilename = "affiliations13Jan.csv";
 export const authorsFilename = "authors13Jan.csv";
@@ -81,7 +82,6 @@ export let affiliationsTable = await d3.csv(`./data/${affiliationsFilename}`, d 
 })
 
 
-// export let peopleTable = await d3.csv(`./data/${authorsFilename}`, d => {
 export let peopleTable = await d3.csv(`./data/${authorsFilename}`, d => {
     return d
 })
@@ -167,6 +167,8 @@ function createLinksTables() {
 
 
         let models = parseModels(paper[MODEL]);
+        paper[MODEL] = models
+        paper["Models"] = models
 
         models.forEach(m => {
             if (m != "4") {
@@ -180,7 +182,8 @@ function createLinksTables() {
 
 export function parseModels(models) {
     if (models) {
-        return models.split("(").map(d => d.split("").map(d2 => d2.split("+").map(d => d.split(",").map(d => d.split(")"))))).flat(Infinity).filter(m => !["", " ", "  ", "r", "e", "v", "i", "w"].includes(m));
+        let modelList = models.split("(").map(d => d.split("").map(d2 => d2.split("+").map(d => d.split(",").map(d => d.split(")"))))).flat(Infinity).filter(m => !["", " ", "  ", "r", "e", "v", "i", "w"].includes(m));
+        return modelList
     }
     return []
 }
@@ -232,20 +235,28 @@ for (let d of data) {
     if (nullOrNS(d["Publication Year "]) || nullOrNS(d["Epic Code "])) continue;
 
     let influenced = d["Methodology Influenced by"]
-    let influences = influenced.split(";");
+    let influences = influenced.split(";").map(p => p.trim());
     // influences = influences.map(influence => {
     //     let year = influence.slice(-4);
     //     return {name: influence, year: year}
     // })
 
     let influenceType = d["Model heavily relied on: 1. Yes, 2. No"]
-    let type: number = (influenceType?.includes("1")) ? 1 : 2;
+    // let type: number = (influenceType?.includes("1")) ? 1 : 2;
+
+    let influencesHeavy = [];
+    if (typeof influenceType == "string" && influenceType.includes("(")) {
+        influencesHeavy = influenceType.split("(")[1].split(")")[0].split(";")
+    }
+    influencesHeavy = influencesHeavy.map(p => p.trim());
 
     influenceNodes.push({id: d["Epic Code "], "layer": parseInt(d["Publication Year "])})
     // influences.forEach(paper => {
     for (let paper of influences) {
         let year = extractNumbersFromString(paper)[0];
         if (nullOrNS(year)) continue;
+
+        let type = influencesHeavy.includes(paper) ? 1 : 2;
 
         // console.log(paper, d["Epic Code "])
         influenceLinks.push({"source": paper, "target": d["Epic Code "], "influenceType": type})
@@ -353,7 +364,9 @@ const c28 = "Model performance metrices"
 const c29 = "How many red areas?";
 
 
-export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c28, c29];
+// TODO: col 23 and 24 to add later
+export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c25, c26, c28, c29];
+// export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c28, c29];
 // export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
 // export let map = await d3.json("src/assets/ne_10m_admin_0_countries_lakes.json")

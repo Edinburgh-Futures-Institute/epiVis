@@ -53,11 +53,17 @@
         }
 
         if (currentStrain) {
-            filtered = filtered.filter(d => d["AI strain"].includes(currentStrain));
+            console.log(currentStrain)
+            filtered = filtered.filter(d => {
+                console.log(d["AI strain"])
+                return d["AI strain"].includes(currentStrain)
+            });
         }
 
         if (currentModel) {
-            filtered = filtered.filter(d => d[MODEL] == currentModel);
+            filtered = filtered.filter(d => {
+                return d[MODEL].includes(currentModel)
+            });
         }
 
         if (currentYearMin || currentYearMax) {

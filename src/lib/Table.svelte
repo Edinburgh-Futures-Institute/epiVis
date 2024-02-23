@@ -61,7 +61,6 @@
             let columns = hideColumns ? [] : [
                 // {title: 'Id', data: "Epic Code "},
                     // {title: 'Title', data: "Title ", className: "titleCol"},
-                    {title: 'Year', data: "Publication Year "},
                     // {title: 'AI Strain', data: "AI strain", render: (data, type, row, meta) => {
                     //         if (typeof data !== 'string') {
                     //             return data.join(", ")
@@ -70,7 +69,9 @@
                     //         }
                     //     }},
                     // {title: 'Epidemic waves', data: "Epidemic waves"},
-                    {title: 'Models', data: "Models", createdCell: createdCellCb},
+
+                    {title: 'Year', data: "Publication Year "},
+                    {title: 'Models', data: "Models", createdCell: createdCellCb}
             ];
 
             datatable = new DataTable('#myTable', {
