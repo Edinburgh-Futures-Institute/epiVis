@@ -15,7 +15,7 @@
     let width: number;
     let height: number;
 
-    const margin = 30;
+    const margin = 50;
     $: widthEff = width - 2 * margin;
     $: heightEff = height - 2 * margin;
 
