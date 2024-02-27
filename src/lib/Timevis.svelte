@@ -19,7 +19,7 @@
 
     let modelData = []
     data.forEach(d => {
-        let models = parseModels(d[MODEL])
+        let models = d[MODEL]
         let time = d[PUBYEAR]
         models.forEach(m => {
             modelData.push({PUBYEAR: time, MODEL: m, name: MODELS[m]})

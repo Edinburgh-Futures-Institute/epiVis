@@ -1,4 +1,5 @@
 import * as d3 from "d3"
+import * as reorder from "reorder.js";
 
 
 
@@ -263,8 +264,10 @@ for (let d of data) {
         influenceLinks.push({"source": paper, "target": d["Epic Code "], "influenceType": type})
         influenceNodes.push({"layer": year, "id": paper})
 
+
         let paperObject = {"name": paper, "year": year}
         paperIdTopaperObject[paper] = paperObject;
+
 
         // Save paper and type of influence
         if (paperToInfluences[d["Epic Code "]]) {
@@ -274,6 +277,49 @@ for (let d of data) {
         }
     }
 }
+
+
+
+function buildInfluenceOrder() {
+    let indexToNodeId = {};
+    let idToNodeIndex = {};
+
+    influenceNodes.forEach((n, i) => {
+        indexToNodeId[i] = n.id
+        idToNodeIndex[n.id] = i
+        n.id = i;
+    })
+
+    influenceLinks.forEach(link => {
+        link.source = idToNodeIndex[link.source]
+        link.target = idToNodeIndex[link.target]
+    })
+
+    const graph = reorder.graph(influenceNodes, influenceLinks, true).init();
+
+    const perms = reorder.barycenter_order(graph);
+    let papersIds = perms[0].map(n => indexToNodeId[n])
+    let influencesIds = perms[1].map(n => indexToNodeId[n])
+
+    influencesIds.sort((p1, p2) => {
+        return paperIdTopaperObject[p1].year - paperIdTopaperObject[p2].year;
+    })
+
+    let papersFirstyear = [];
+    let year0 = null;
+    influencesIds.forEach(paper => {
+        let year1 = paperIdTopaperObject[paper].year
+        if (year1 != year0) {
+            papersFirstyear.push(paper);
+            year0 = year1;
+        }
+    })
+
+    return [influencesIds, papersIds, papersFirstyear]
+}
+
+export let [influencesIds, papersIds, papersFirstYear] = buildInfluenceOrder();
+
 
 function parseDotNodeId(nodeId: string) {
     return nodeId.replace(",", "").replace(" ", "")

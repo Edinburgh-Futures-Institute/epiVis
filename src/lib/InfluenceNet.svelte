@@ -4,11 +4,11 @@
 
     import {onMount} from "svelte";
     import {
-        allCols, data,
+        data,
         influenceLinks,
         influenceNodes,
         paperToInfluences,
-        paperAffiliationTable
+        influencesIds, papersIds, papersFirstYear
     } from "../dataLoader.ts";
     import {paperIdTopaperObject} from "../dataLoader.js";
 
@@ -24,21 +24,17 @@
     let svg: HTMLElement;
     let g: SVGElement;
 
-    let papersIds = data.map(d => d["Epic Code "]);
-
-    let influencesIds = Object.values(paperToInfluences).reduce((a, b) => a.concat(b))
-    influencesIds = [...new Set(influencesIds)].sort((p1, p2) => {
-        return p1.year - p2.year;
-    })
-
-    let papersFirstyear = [];
+    // let papersIds = data.map(d => d["Epic Code "]);
+    // let influencesIds = Object.values(paperToInfluences).reduce((a, b) => a.concat(b))
+    // influencesIds = [...new Set(influencesIds)].sort((p1, p2) => {
+    //     return p1.year - p2.year;
+    // })
+    // let papersFirstyear = [];
 
     let yearToInfluences = d3.group(Object.values(paperIdTopaperObject), d => d.year);
 
     let allInfYears = Object.values(paperIdTopaperObject).map(d => d.year).sort();
     allInfYears = [...new Set(allInfYears)]
-
-
 
     onMount(() => {
         updateDimensions();
@@ -55,40 +51,7 @@
     }
 
     async function getNet() {
-        let indexToNodeId = {};
-        let idToNodeIndex = {};
-        influenceNodes.forEach((n, i) => {
-            indexToNodeId[i] = n.id
-            idToNodeIndex[n.id] = i
-            n.id = i;
-        })
-
-        influenceLinks.forEach(link => {
-            link.source = idToNodeIndex[link.source]
-            link.target = idToNodeIndex[link.target]
-        })
-
-        const graph = reorder.graph(influenceNodes, influenceLinks, true).init();
-
-        const perms = reorder.barycenter_order(graph);
-        // const perms2 = reorder.adjacent_exchange(graph, perms[0], perms[1]);
-        papersIds = perms[0].map(n => indexToNodeId[n])
-        influencesIds = perms[1].map(n => indexToNodeId[n])
-
-        influencesIds.sort((p1, p2) => {
-            return paperIdTopaperObject[p1].year - paperIdTopaperObject[p2].year;
-        })
-
-        // console.log(influencesIds)
-
-        let year0 = null;
-        influencesIds.forEach(paper => {
-            let year1 = paperIdTopaperObject[paper].year
-            if (year1 != year0) {
-                papersFirstyear.push(paper);
-                year0 = year1;
-            }
-        })
+        return;
     }
 
     function render(width, height) {
@@ -132,14 +95,14 @@
         d3.select(g).selectAll(".tick")
             .append("text")
             .text(d => {
-                if (papersFirstyear.includes(d)) {
+                if (papersFirstYear.includes(d)) {
                     return paperIdTopaperObject[d].year
                 }
             })
             .attr("fill", "black")
             // .attr("x", d => {})
             .attr("y", d => {
-                if (papersFirstyear.indexOf(d) % 2 == 0) {
+                if (papersFirstYear.indexOf(d) % 2 == 0) {
                     return 15
                 } else {
                     return 30
