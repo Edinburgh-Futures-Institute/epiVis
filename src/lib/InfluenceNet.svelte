@@ -79,6 +79,8 @@
             return paperIdTopaperObject[p1].year - paperIdTopaperObject[p2].year;
         })
 
+        // console.log(influencesIds)
+
         let year0 = null;
         influencesIds.forEach(paper => {
             let year1 = paperIdTopaperObject[paper].year

@@ -105,49 +105,6 @@ export let authorToCountry: Object = {};
 createLinksTables();
 
 function createLinksTables() {
-    peopleTable.forEach(author => {
-        let paperId = author["Paper associated "];
-        let affiliation = author["Affiliation code 1"];
-
-        let paper = paperIdToPaper[paperId.toUpperCase()];
-        let models = paper ? paper[MODEL] : null;
-
-        let authorName = author.Author;
-
-        let authorCountry = affIdToCountry[affiliation];
-        authorToCountry[authorName] = authorCountry;
-
-        if (paperIdToAuthors[paperId]) {
-            paperIdToAuthors[paperId].push(authorName);
-        } else {
-            paperIdToAuthors[paperId] = [authorName];
-        }
-        
-        paperAffiliationTable.push({Paper: paperId, Affiliation: affiliation});
-
-        if (models) {
-            models = parseModels(models);
-
-            models.forEach(model => {
-                institutionModelTable.push({
-                    Model: model,
-                    Institution: affiliation
-                })
-            })
-        }
-    })
-
-    // This does not create link between the same country (such as France > France)
-    for (let [paper, authors] of Object.entries(paperIdToAuthors)) {
-        let countries = authors.map(a => authorToCountry[a])
-        countries = [...new Set(countries)]
-        for (let i = 0; i < countries.length; i++) {
-            for (let j = i + 1; j < countries.length; j++) {
-                countryToCountryTable.push({Country1: countries[i], Country2: countries[j]})
-            }
-        }
-    }
-
     for (let paper of data) {
         let strains = paper["AI strain"]
         let waves = paper["Epidemic waves"]
@@ -177,15 +134,59 @@ function createLinksTables() {
             }
         })
     }
+
+
+    peopleTable.forEach(author => {
+        let paperId = author["Paper associated "];
+        let affiliation = author["Affiliation code 1"];
+
+        let paper = paperIdToPaper[paperId.toUpperCase()];
+
+        let models = paper ? paper[MODEL] : null;
+
+        let authorName = author.Author;
+
+        let authorCountry = affIdToCountry[affiliation];
+        authorToCountry[authorName] = authorCountry;
+
+        if (paperIdToAuthors[paperId]) {
+            paperIdToAuthors[paperId].push(authorName);
+        } else {
+            paperIdToAuthors[paperId] = [authorName];
+        }
+        
+        paperAffiliationTable.push({Paper: paperId, Affiliation: affiliation});
+
+        if (models) {
+            models.forEach(model => {
+                institutionModelTable.push({
+                    Model: model,
+                    Institution: affiliation
+                })
+            })
+        }
+    })
+
+    // This does not create link between the same country (such as France > France)
+    for (let [paper, authors] of Object.entries(paperIdToAuthors)) {
+        let countries = authors.map(a => authorToCountry[a])
+        countries = [...new Set(countries)]
+        for (let i = 0; i < countries.length; i++) {
+            for (let j = i + 1; j < countries.length; j++) {
+                countryToCountryTable.push({Country1: countries[i], Country2: countries[j]})
+            }
+        }
+    }
 }
 
 
 export function parseModels(models) {
+    // if (models && Array.isArray(models)) {
     if (models) {
         let modelList = models.split("(").map(d => d.split("").map(d2 => d2.split("+").map(d => d.split(",").map(d => d.split(")"))))).flat(Infinity).filter(m => !["", " ", "  ", "r", "e", "v", "i", "w"].includes(m));
         return modelList
     }
-    return []
+    return [];
 }
 
 export function parseStrains(strains) {

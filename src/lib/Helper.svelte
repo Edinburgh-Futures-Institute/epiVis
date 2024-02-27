@@ -36,6 +36,8 @@
             This visualization is a heatmap showing the frequency of usage of different model types according the years.
             {:else if visualizationType == "Full"}
             This visualization shows a network of all entities in the data: papers, people, institutions, strains, waves, and countries.
+            {:else if visualizationType == "People"}
+            This visualization shows a network of all authors of papers. One isolated clique can be interpreted as one paper. Each author of the same paper will be connected to each other.
         {/if}
     </div>
 {/if}

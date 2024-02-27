@@ -124,8 +124,6 @@
             pos += 1;
         }
 
-        console.log(22, countryToCount)
-
         const radialScale = d3.scaleLinear([0, pos], [0, Math.PI * 2])
 
         // const countryColorScale = d3.scaleOrdinal(d3.schemeAccent)

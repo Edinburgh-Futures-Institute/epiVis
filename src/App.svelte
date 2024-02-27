@@ -40,8 +40,8 @@
     let viewer;
 
     let selectedNodeTypes = Object.values(NodeTypes);
-    // let selectedVis = "Full";
-    let selectedVis = "People";
+    let selectedVis = "Full";
+    // let selectedVis = "People";
 
     $: filteredData = filterData(currentStrain, currentInstitution, currentModel, currentYearMin, currentYearMax);
 
@@ -53,9 +53,7 @@
         }
 
         if (currentStrain) {
-            console.log(currentStrain)
             filtered = filtered.filter(d => {
-                console.log(d["AI strain"])
                 return d["AI strain"].includes(currentStrain)
             });
         }
@@ -72,8 +70,10 @@
 
                 let intervals = paperToTimes[d["Epic Code "]];
 
-                if (currentYearMin && intervals[0][0] < currentYearMin) return false;
-                if (currentYearMax && intervals[intervals.length - 1][1] > currentYearMax) return false;
+                // console.log(22, intervals)
+
+                if (currentYearMin && intervals[0][0] <= currentYearMin) return false;
+                if (currentYearMax && intervals[intervals.length - 1][1] >= currentYearMax) return false;
 
                 return true;
             });
