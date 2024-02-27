@@ -210,11 +210,19 @@
         width: 100%;
     }
 
+    .main-component {
+        /*padding-left: 40px;*/
+        padding-top: 2em;
+        padding-left: 2em;
+        box-sizing: border-box;
+    }
+
+
     #vis-div {
         display: flex;
         flex-direction: row;
         width: 100%;
         background-color: white;
-        column-gap: 3%;
+        column-gap: 1%;
     }
 </style>

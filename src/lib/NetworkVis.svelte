@@ -80,8 +80,7 @@
                     height: height - margin
                 }, "vis");
             } else if (networkName == "Institutions") {
-
-
+                //
             }
         }
     }
@@ -113,7 +112,6 @@
     {:else if selectedNet == "Affiliations"}
         <CircularAff>
         </CircularAff>
-<!--        <div id="vis" class="vis-frame" bind:this={elementNet}>-->
     {/if}
     </div>
 

@@ -9,7 +9,8 @@
     export let selectedNet: string;
 
     let element: HTMLElement;
-    let width: number = 180;
+    // let width: number = 180;
+    let width: number = 100;
     let height: number = 600;
     const legendSize = 100;
 
@@ -92,7 +93,7 @@
         /*flex-grow: 1;*/
         /*flex: 1;*/
         /*flex: 1 1 0;*/
-        width: 8%;
+        /*width: 8%;*/
         z-index: 10;
         position: relative;
     }
