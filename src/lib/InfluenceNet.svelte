@@ -100,7 +100,6 @@
                 }
             })
             .attr("fill", "black")
-            // .attr("x", d => {})
             .attr("y", d => {
                 if (papersFirstYear.indexOf(d) % 2 == 0) {
                     return 15
@@ -189,12 +188,14 @@
 </div>
 
 
+
 <style>
     #influence-div {
         /*justify-content: center;*/
         /*align-items: center;*/
-        width: 100%;
+        /*width: 100%;*/
         height: 100%;
+        flex: 2 1 auto;
     }
 
     #influence-tooltip {

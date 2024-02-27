@@ -13,8 +13,8 @@
     let height: number;
 
     let element: HTMLElement;
-    // let selectedVis = "Map";
-    let selectedVis = "Influence";
+    let selectedVis = "Map";
+    // let selectedVis = "Influence";
 
     function updateDimensions() {
         const rect = element.getBoundingClientRect();

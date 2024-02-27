@@ -40,8 +40,8 @@
     let viewer;
 
     let selectedNodeTypes = Object.values(NodeTypes);
-    let selectedVis = "Full";
-    // let selectedVis = "People";
+    // let selectedVis = "Full";
+    let selectedVis = "People";
 
     $: filteredData = filterData(currentStrain, currentInstitution, currentModel, currentYearMin, currentYearMax);
 
@@ -70,8 +70,6 @@
 
                 let intervals = paperToTimes[d["Epic Code "]];
 
-                // console.log(22, intervals)
-
                 if (currentYearMin && intervals[0][0] <= currentYearMin) return false;
                 if (currentYearMax && intervals[intervals.length - 1][1] >= currentYearMax) return false;
 
@@ -97,96 +95,10 @@
         return filtered
     }
 
-    function dotGraph() {
-        let dot = "digraph { rankdir=LR;"
 
-        let rankKey = "layer"
-
-        let rankToNodesIds: Record<string, (string | number)[]> = {};
-        influenceNodes.forEach(n => {
-            const rank = n[rankKey]
-            if (rankToNodesIds[rank]) {
-                rankToNodesIds[rank].push(n.id)
-            } else {
-                rankToNodesIds[rank] = [n.id]
-            }
-        })
-
-        for (let [rank, nodesIds] of Object.entries(rankToNodesIds)) {
-            nodesIds = nodesIds.map(v => `"${v}"`)
-            dot += `{rank=same; ${nodesIds.join(",")}}`
-        }
-
-        influenceLinks.forEach(link => {
-            // const dotLink = `${link.source.id} -> ${link.target.id};`
-            const dotLink = `"${link.source}" -> "${link.target}";`
-            dot += dotLink
-        })
-
-        dot += "}";
-        return dot
-    }
-
-    function dotGraphTime() {
-        let dot = "digraph { rankdir=LR;"
-        let rankKey = "layer"
-
-        let rankToNodesIds: Record<string, (string | number)[]> = {};
-        influenceNodes.forEach(n => {
-            const rank = n[rankKey]
-            if (rankToNodesIds[rank]) {
-                rankToNodesIds[rank].push(n.id)
-            } else {
-                rankToNodesIds[rank] = [n.id]
-            }
-        })
-
-        for (let [rank, nodesIds] of Object.entries(rankToNodesIds)) {
-            nodesIds = nodesIds.map(v => `"${v}"`)
-            dot += `{rank=same; ${rank}, ${nodesIds.join(",")}}`
-        }
-
-        influenceLinks.forEach(link => {
-            let type = (link.influenceType == 1) ? "solid" : "dotted";
-            let color = (link.influenceType == 1) ? "red" : "black";
-
-            // const dotLink = `"${link.source}" -> "${link.target}" [style="${type}"];`;
-            const dotLink = `"${link.source}" -> "${link.target}" [color="${color}"];`;
-            dot += dotLink;
-        })
-
-        let ranks = Object.keys(rankToNodesIds);
-        for (let i = 0; i < ranks.length - 2; i++) {
-            let r = ranks[i];
-            let r2 = ranks[i + 1];
-            dot += `${r} -> ${r2};`
-        }
-
-        dot += "}";
-        return dot
-    }
 
     async function render(element) {
         if (element) {
-            // await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/wholeNet.json", {
-            //     filename: papersFilename,
-            // }, "vis1");
-
-            // let projPerson = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/projPerson.json", {
-            //     filename: papersFilename,
-            //     authorsFilename: authorsPapaersFilename,
-            // }, "vis2");
-
-            // NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluence.json", {
-            //     filename: papersFilename,
-            // }, "vis3");
-
-            // console.log(333, JSON.stringify(influenceNodes2))
-            // let view = await NetPanoramaTemplateViewer.render("../netpanorama-vis/templates/PaperInfluenceTime.json", {
-            //     nodes: influenceNodes,
-            //     links: influenceLinks,
-            // }, "vis4");
-
             // d3.select("#vis4")
             //     .graphviz()
             //     .renderDot(dotGraph());
@@ -226,12 +138,8 @@
     </div>
 
     <div id="vis-div" class="main-component">
-<!--        <Map {filteredData}>-->
-<!--        </Map>-->
         <Visualization {filteredData}>
         </Visualization>
-
-<!--            <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} specPath="../netpanorama-vis/templates/wholeNet.json">-->
         <NetworkVis bind:selectedNodeTypes={selectedNodeTypes} bind:selectedNet="{selectedVis}" bind:viewer="{viewer}" specPath="/netpanorama-vis/templates/wholeNet.json">
         </NetworkVis>
         <NetworkLegend bind:selectedNodeTypes={selectedNodeTypes} selectedNet="{selectedVis}">
@@ -308,12 +216,5 @@
         width: 100%;
         background-color: white;
         column-gap: 3%;
-    }
-
-    .vis-component {
-        /*display: inline-block;*/
-        /*width: 40vw;*/
-        /*width: 40vw;*/
-        height: 100vh;
     }
 </style>

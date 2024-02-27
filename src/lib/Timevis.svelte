@@ -108,5 +108,6 @@
 <style>
     #heatmap {
         height: 100%;
+        flex-shrink: 0;
     }
 </style>

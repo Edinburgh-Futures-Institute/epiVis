@@ -293,8 +293,10 @@
 <style>
     #main-div {
         /*flex: 1 1 0;*/
+        flex: 2 1 auto;
         /*width: 100%;*/
         height: 100%;
+        /*flex-shrink: 0;*/
     }
 
     #legend {

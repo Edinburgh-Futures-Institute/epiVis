@@ -95,9 +95,6 @@
 
 
 <div id="mainDivNet" bind:this={element}>
-<!--    <div class="title">-->
-<!--        Visualization 2-->
-<!--    </div>-->
     <div class="tab">
         <span class="title"> Visualization Type 2 </span>
 
@@ -132,7 +129,8 @@
     }
 
     #vis {
-        width: 100%;
+        /*width: 100%;*/
+        width: 90%;
         /*height: 90%;*/
         height: 72vh;
     }
