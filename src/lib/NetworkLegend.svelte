@@ -15,7 +15,7 @@
     const legendSize = 100;
 
     $: {
-        d3.select("#svg-legend").html("")
+        // d3.select("#svg-legend").html("")
 
         if (element && selectedNet) {
             d3.select("#svg-legend")
@@ -90,7 +90,10 @@
 
 <style>
     div {
-        z-index: 10;
+        /*z-index: 10;*/
         position: relative;
+        /*flex: 0 1 auto;*/
+        flex-basis: 0;
+        flex-grow: 1;
     }
 </style>

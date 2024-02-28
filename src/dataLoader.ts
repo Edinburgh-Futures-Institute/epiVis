@@ -412,7 +412,7 @@ const c29 = "How many red areas?";
 
 
 // TODO: col 23 and 24 to add later
-export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c25, c26, c28, c29];
+export const allColsUnordered = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c25, c26, c28, c29];
 // export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c28, c29];
 // export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
@@ -446,15 +446,13 @@ export const colToGroup: Record<string, any> = {
     [c29]: "T"
 }
 
-export const colToGroupSorted = Object.groupBy(
+export const groupToColSorted = Object.groupBy(
     Object.entries(colToGroup), (v) => {
         return v[1];
     }
 )
 
-console.log(22, colToGroupSorted)
-
-
+export const allCols = Object.values(groupToColSorted).reduce((a, b) => a.concat(b.map(v => v[0])), []);
 
 
 export const colColor = d3.scaleOrdinal(["T", "I", "J", "B"], ["orange", "lightblue", "green", "purple"]).unknown("white");

@@ -1,7 +1,7 @@
 <script lang="ts">
     import * as d3 from "d3"
 
-    import {MODEL, PURPOSE, SPREAD, STAGE, allCols, colColor, colToGroup} from "../dataLoader.ts";
+    import {MODEL, PURPOSE, SPREAD, STAGE, allCols, colColor, colToGroup, groupToColSorted} from "../dataLoader.ts";
 
     import DataTable from 'datatables.net-dt';
     import 'datatables.net-rowgroup'; // Import RowGroup plugin
@@ -100,7 +100,6 @@
                     }
                 },
                 initComplete: function(settings, json) {
-
                     // Button for redrawing
                     let button = document.createElement("button");
                     button.style.display = "inline-block"
@@ -134,7 +133,6 @@
                     searchInput.parentNode.insertBefore(columnNameTooltip, searchInput.nextSibling);
 
                     // Add the complex header layout to the table
-
                     let headerRow = document.createElement("tr")
 
                     function createHeaderCol(title, colspan) {
@@ -144,22 +142,23 @@
                         return row;
                     }
 
-                    headerRow.append(
-                        createHeaderCol("g1", 2),
-                        createHeaderCol("g2", 2)
-                    );
+                    headerRow.append(createHeaderCol("", columns.length))
+                    for (let [group, cols] of Object.entries(groupToColSorted)) {
+                        headerRow.append(
+                            createHeaderCol(group, cols.length)
+                        );
+                    }
 
                     let header = this.api().table().header();
                     header.prepend(headerRow);
-
-
                 },
                 "headerCallback": function(thead, data, start, end, display) {
                     var ths = thead.querySelectorAll('th');
 
                     // Attach mouseover event to each header cell
                     ths.forEach(th => {
-                        let columnName: string = allCols[th.cellIndex - 6]
+                        // let columnName: string = allCols[th.cellIndex - 6]
+                        let columnName: string = allCols[th.cellIndex - columns.length]
                         if (!columnName) {
                             columnName = th.textContent;
                         }
@@ -187,9 +186,9 @@
 
         }
 
-        datatable.order(
-            [[0, 'desc']]
-        ).draw()
+        // datatable.order(
+        //     [[0, 'desc']]
+        // ).draw()
     }
 
     const createdCellCb = (td, cellData, rowData, row, col) => {

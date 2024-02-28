@@ -99,20 +99,22 @@
 
         <button class="tablinks" on:click={selectTab}>Full</button>
         <button class="tablinks" on:click={selectTab}>People</button>
-        <button class="tablinks" on:click={selectTab}>Countries</button>
-        <button class="tablinks" on:click={selectTab}>Models+Institutions</button>
-        <button class="tablinks" on:click={selectTab}>Institutions</button>
+<!--        <button class="tablinks" on:click={selectTab}>Countries</button>-->
+<!--        <button class="tablinks" on:click={selectTab}>Models+Institutions</button>-->
+<!--        <button class="tablinks" on:click={selectTab}>Institutions</button>-->
         <button class="tablinks" on:click={selectTab}>Affiliations</button>
     </div>
 
     <div id="vis" bind:this={elementNet} on:resize={updateDimensions}>
-    {#if selectedNet == "Institutions"}
-	    <CircularInst>
-        </CircularInst>
-    {:else if selectedNet == "Affiliations"}
-        <CircularAff>
-        </CircularAff>
-    {/if}
+        {#if selectedNet == "Institutions"}
+            <CircularInst>
+            </CircularInst>
+        {:else if selectedNet == "Affiliations"}
+            <CircularAff>
+            </CircularAff>
+        <!--{:else}-->
+    <!--        <div id="vis" bind:this={elementNet} on:resize={updateDimensions}>-->
+        {/if}
     </div>
 
     <Helper visualizationType="{selectedNet}" parentEl="{element}"></Helper>
@@ -122,7 +124,13 @@
 
 <style>
     #mainDivNet {
-        flex: 1 1 0;
+        /*width: 200px;*/
+        /*flex: 1 1 0;*/
+        /*flex: 0 0 auto;*/
+        flex-basis: 0;
+        flex-grow: 1;
+
+
         position: relative;
     }
 

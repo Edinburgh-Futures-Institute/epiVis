@@ -5,15 +5,10 @@
     import {onMount} from "svelte";
     import {affiliationsFilename, paperAffiliationTable} from "../dataLoader.ts";
 
-    // let specPath = "/netpanorama-vis/templates/InstitutionProj.json"
-    // let specPath = "/netpanorama-vis/templates/affiliationProj.json"
     let specPath = "/netpanorama-vis/templates/affiliationProjOneTable.json"
 
     let width: number;
     let height: number;
-
-    let legendWidth = 10;
-    let legendHeight = 10;
 
     let affiliations: [];
     let links: [];
@@ -391,7 +386,8 @@
 
         renderLegend();
         function renderLegend() {
-            d3.select("#svg-legend").html("")
+            return;
+            // d3.select("#svg-legend").html("")
 
             let xStart = 10;
             // let xStart = 100;
@@ -436,9 +432,6 @@
 
 <div id="circular-div" bind:this={element} on:resize={updateDimensions}>
     <svg bind:this={svg} width={width} height={height} viewBox="{-width / 2}, {-height / 2}, {width}, {height}">
-        <!--    <svg bind:this={svg} width={width} height={width}>-->
-    </svg>
-    <svg bind:this={svgLegend} width={legendWidth} height={legendHeight}>
     </svg>
 </div>
 <div id="affiliationNet">
@@ -449,7 +442,7 @@
     #circular-div {
         /*justify-content: center;*/
         /*align-items: center;*/
-        width: 100%;
+        /*width: 100%;*/
         height: 100%;
     }
 
