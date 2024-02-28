@@ -445,6 +445,18 @@ export const colToGroup: Record<string, any> = {
     [c28]: "I",
     [c29]: "T"
 }
+
+export const colToGroupSorted = Object.groupBy(
+    Object.entries(colToGroup), (v) => {
+        return v[1];
+    }
+)
+
+console.log(22, colToGroupSorted)
+
+
+
+
 export const colColor = d3.scaleOrdinal(["T", "I", "J", "B"], ["orange", "lightblue", "green", "purple"]).unknown("white");
 
 

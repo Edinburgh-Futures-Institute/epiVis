@@ -76,6 +76,8 @@
 
             datatable = new DataTable('#myTable', {
                 columns: columns.concat(heatMapColumns),
+                orderCellsTop: true,
+                // fixedHeader: true,
                 createdRow: function (row, data, dataIndex) {
                     for (let i = 0; i < allCols.length; i++) {
                         let col = allCols[i];
@@ -97,7 +99,7 @@
                         }
                     }
                 },
-                "initComplete": function(settings, json) {
+                initComplete: function(settings, json) {
 
                     // Button for redrawing
                     let button = document.createElement("button");
@@ -130,6 +132,27 @@
                     // Insert the div after the search input
                     // let searchInput = document.querySelector('.dataTables_filter');
                     searchInput.parentNode.insertBefore(columnNameTooltip, searchInput.nextSibling);
+
+                    // Add the complex header layout to the table
+
+                    let headerRow = document.createElement("tr")
+
+                    function createHeaderCol(title, colspan) {
+                        let row = document.createElement("th");
+                        row.setAttribute("colspan", colspan);
+                        row.innerHTML = title
+                        return row;
+                    }
+
+                    headerRow.append(
+                        createHeaderCol("g1", 2),
+                        createHeaderCol("g2", 2)
+                    );
+
+                    let header = this.api().table().header();
+                    header.prepend(headerRow);
+
+
                 },
                 "headerCallback": function(thead, data, start, end, display) {
                     var ths = thead.querySelectorAll('th');
@@ -156,13 +179,12 @@
                         // Customize the title shown in the group row
                         let index = rows[0][0]
                         let datum = filteredData[index];
-
                         let title = `${datum["Epic Code "]}: ${group} (${datum["Publication Year "]}) (${datum["Epidemic waves"]})`
                         return title
-                        // return group
                     }
                 }
             });
+
         }
 
         datatable.order(
