@@ -26,10 +26,7 @@
                 "field": "Institution"
               },
               "target_node_type": "Institution",
-              "target_id_field": "id",
-              "data": [
-                "*"
-              ]
+              "target_id_field": "id"
             }
           ]
         }
@@ -44,16 +41,16 @@
   ],
   "layouts": [
     {
-      "name": "forcelayout",
+      "name": "forcelayout2",
       "network": "network",
       "type": "d3-force"
     },
     {
-      "name": "forcelayout2",
+      "name": "forcelayout",
       "network": "network",
       "type": "webcola",
-      "defaultNodeSize22": 1,
-      "linkDistance": 10,
+      "defaultNodeSize2": 1000,
+      "linkDistance": 500,
       "handleDisconnected": true,
       "avoidOverlap": true
     }
@@ -64,7 +61,7 @@
       "type": "linear",
       "range": [
         90,
-        250
+        800
       ],
       "domain": {
         "data": "network.nodes",
@@ -132,6 +129,7 @@
       "layout": "forcelayout",
       "mark": {
         "type": "symbol",
+        "stroke": ""[strokeColor]"",
         "shape": {
           "field": "_type",
           "scale": "shapeScale"
