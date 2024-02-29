@@ -101,7 +101,7 @@
         <button class="tablinks" on:click={selectTab}>People</button>
 <!--        <button class="tablinks" on:click={selectTab}>Countries</button>-->
 <!--        <button class="tablinks" on:click={selectTab}>Models+Institutions</button>-->
-<!--        <button class="tablinks" on:click={selectTab}>Institutions</button>-->
+        <button class="tablinks" on:click={selectTab}>Institutions</button>
         <button class="tablinks" on:click={selectTab}>Affiliations</button>
     </div>
 

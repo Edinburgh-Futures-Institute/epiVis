@@ -15,7 +15,7 @@
     const legendSize = 100;
 
     $: {
-        // d3.select("#svg-legend").html("")
+        d3.select("#svg-legend").html("")
 
         if (element && selectedNet) {
             d3.select("#svg-legend")
