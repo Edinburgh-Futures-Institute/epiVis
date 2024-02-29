@@ -7,8 +7,8 @@
 
     let specPath = "/netpanorama-vis/templates/affiliationProjOneTable.json"
 
-    let width: number;
-    let height: number;
+    let width: number = 10;
+    let height: number = 10;
 
     let affiliations: [];
     let links: [];
@@ -386,8 +386,7 @@
 
         renderLegend();
         function renderLegend() {
-            return;
-            // d3.select("#svg-legend").html("")
+            d3.select("#svg-legend").html("")
 
             let xStart = 10;
             // let xStart = 100;
