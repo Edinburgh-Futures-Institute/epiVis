@@ -128,8 +128,9 @@
         /*flex: 1 1 0;*/
         /*flex: 0 0 auto;*/
         flex-basis: 0;
-        flex-grow: 1;
+        flex-grow: 2;
 
+        width: 0;
 
         position: relative;
     }

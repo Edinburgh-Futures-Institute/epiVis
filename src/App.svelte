@@ -184,7 +184,8 @@
     #title {
         /*margin-right: 6%;*/
         /*width: 500px;*/
-        width: 20%;
+        width: 30%;
+        /*margin-right: 2em;*/
     }
 
     #title-img {

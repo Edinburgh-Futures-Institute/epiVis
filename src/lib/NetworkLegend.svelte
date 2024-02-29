@@ -94,6 +94,6 @@
         position: relative;
         /*flex: 0 1 auto;*/
         flex-basis: 0;
-        flex-grow: 1;
+        flex-grow: 0;
     }
 </style>
