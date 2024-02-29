@@ -5,7 +5,7 @@
     import {onMount} from "svelte";
     import {affiliationsFilename, paperAffiliationTable} from "../dataLoader.ts";
 
-    let specPath = "/netpanorama-vis/templates/affiliationProjOneTable.json"
+    let specPath = "./netpanorama-vis/templates/affiliationProjOneTable.json"
 
     let width: number = 10;
     let height: number = 10;
