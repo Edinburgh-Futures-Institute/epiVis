@@ -33,6 +33,8 @@ export const papersFilename = "papers13JanNEW2.csv";
 // export const papersFilename = "papers13JanNEW.csv";
 
 export const affiliationsFilename = "affiliations13Jan.csv";
+// export const affiliationsFilename = "institutionGPT.csv";
+
 export const authorsFilename = "authors13Jan.csv";
 
 
@@ -141,7 +143,8 @@ function createLinksTables() {
         let paperId = author["Paper associated "];
         let affiliation = author["Affiliation code 1"];
 
-        let paper = paperIdToPaper[paperId.toUpperCase()];
+        // let paper = paperIdToPaper[paperId.toUpperCase()];
+        let paper = paperIdToPaper[paperId.toLowerCase()];
 
         let models = paper ? paper[MODEL] : null;
 

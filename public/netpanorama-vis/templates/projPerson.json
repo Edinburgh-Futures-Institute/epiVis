@@ -131,8 +131,8 @@
       "name": "radius",
       "type": "linear",
       "range": [
-        50,
-        900
+        20,
+        450
       ],
       "domain": {
         "data": "network.nodes",
@@ -267,6 +267,7 @@
         "tooltip": {
           "expression": "datum.id + ' (degree ' + datum.degree + ')' "
         },
+        "stroke": ""[strokeColor]"",
         "opacity": {
           "conditions": [
             {

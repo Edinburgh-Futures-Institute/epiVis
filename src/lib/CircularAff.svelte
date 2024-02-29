@@ -48,10 +48,6 @@
             affiliations = viewer.state.network.nodes
             links = viewer.state.network.links
 
-            // TODO: affiliation codes in authors table do not exist in affiliation table
-            // console.log(affiliations)
-            // console.log("LINKS ", links)
-
             affiliations = affiliations.filter(aff => aff.data);
             // Fill neighbor map
             affiliations.forEach(node => {
@@ -287,9 +283,33 @@
             .on("mouseover", mouseOverCountry)
             .on("mouseleave", mouseLeaveCountry)
 
+        // Nb of links per country
         d3.select(svg)
             .selectAll("textCountry")
-            // .data(pie(Object.values(countryToCount)))
+            .data(pie(Object.entries(countryToCount)))
+            .join("text")
+            .attr("transform", (d, i) => {
+                return `translate(${arc.centroid(d)})`
+            })
+            .attr("x", (d, i) => {
+                return -10;
+            })
+            .attr("y", d => {
+                return 0
+            })
+            .text((d, i) => {
+                let country = Object.keys(countryToCount)[i];
+                // return `(${countryToLinkCount[country]}) ` + country
+                return country
+            })
+            .attr("text-anchor", "middle")
+            .attr("font-size", "13px")
+            .classed("textCountry", true)
+            .on("mouseover", mouseOverCountry)
+            .on("mouseleave", mouseLeaveCountry)
+
+        d3.select(svg)
+            .selectAll("textCountryNb")
             .data(pie(Object.entries(countryToCount)))
             .join("text")
             .attr("transform", (d, i) => {
@@ -299,15 +319,15 @@
                 return 0;
             })
             .attr("y", d => {
-                return 0
+                return 15
             })
             .text((d, i) => {
                 let country = Object.keys(countryToCount)[i];
-                return `(${countryToLinkCount[country]}) ` + country
+                return `(${countryToLinkCount[country]})`
             })
             .attr("text-anchor", "middle")
             .attr("font-size", "13px")
-            .classed("textCountry", true)
+            .classed("textCountryNb", true)
             .on("mouseover", mouseOverCountry)
             .on("mouseleave", mouseLeaveCountry)
 

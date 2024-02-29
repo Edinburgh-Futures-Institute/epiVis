@@ -163,8 +163,8 @@
                             columnName = th.textContent;
                         }
 
-                        // console.log(th, columnName, colToGroup[columnName])
-                        th.style.backgroundColor = colColor(colToGroup[columnName]);
+                        // Color headers
+                        // th.style.backgroundColor = colColor(colToGroup[columnName]);
 
                         th.addEventListener("mouseover", function() {
                             columnNameTooltip.innerHTML = columnName;
@@ -186,9 +186,9 @@
 
         }
 
-        // datatable.order(
-        //     [[0, 'desc']]
-        // ).draw()
+        datatable.order(
+            [[0, 'desc']]
+        ).draw()
     }
 
     const createdCellCb = (td, cellData, rowData, row, col) => {
