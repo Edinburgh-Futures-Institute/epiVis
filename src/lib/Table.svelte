@@ -24,15 +24,29 @@
 
     const LIGHTGREEN = "rgb(197,220,180)"
     const GREEN = '#97d391'
-    const LIGHTRED = 'rgb(220,137,137)'
-    const RED = 'rgb(173,68,68)'
+    // const LIGHTRED = 'rgb(220,137,137)'
+    // const RED = 'rgb(173,68,68)'
+    // const LIGHTBLUE = "rgb(180,191,220)"
+    // const BLUE = '#7a87ce'
+
+    const LIGHTRED = '#f4a582'
+    const RED = 'rgba(202,0,32,0.6)'
+    const LIGHTBLUE = "#92c5de"
+    const BLUE = 'rgba(5,113,176,0.6)'
+
+
     const YELLOW = '#ffeda0';
 
 
 
-    const cellColorScale = d3.scaleOrdinal()
+
+    // const cellColorScale = d3.scaleOrdinal()
+    //     .domain([1, 2, 3, 4])
+    //     .range([LIGHTGREEN, GREEN, LIGHTRED, RED])
+
+    const cellColorScale4 = d3.scaleOrdinal()
         .domain([1, 2, 3, 4])
-        .range([LIGHTGREEN, GREEN, LIGHTRED, RED])
+        .range([BLUE, LIGHTBLUE, LIGHTRED, RED])
 
 
     const className = (i) => `p${i}`
@@ -87,13 +101,14 @@
                         if (!cell) continue;
 
                         if (["P", "Y", "S"].includes(value)) {
-                            cell.style.background = GREEN
+                            // cell.style.background = GREEN
+                            cell.style.background = LIGHTBLUE
                         } else if (["N", "I"].includes(value)) {
                             cell.style.background = LIGHTRED
                         } else if (["M", "L"].includes(value)) {
                             cell.style.background = YELLOW
                         } else if (["1", "2", "3", "4", "0"].includes(value)) {
-                            cell.style.background = cellColorScale(Number(value))
+                            cell.style.background = cellColorScale4(Number(value))
                         } else if (value == "N/A") {
                             cell.style.background = "gray"
                         }
@@ -183,7 +198,6 @@
                     }
                 }
             });
-
         }
 
         datatable.order(

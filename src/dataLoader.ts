@@ -15,6 +15,9 @@ export const MODELS: Record<number, string> = {
     9: "Experiment"
 }
 
+export const modelTable = Object.entries(MODELS).map(v => {
+    return {id: v[0], model: v[1]};
+})
 
 export enum NodeTypes {
     Person = "Person",

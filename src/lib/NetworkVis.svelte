@@ -1,8 +1,9 @@
 <script lang="ts">
     import {
+        affiliationsTable,
         authorsFilename,
         countryToCountryTable,
-        institutionModelTable, paperModelTable,
+        institutionModelTable, modelTable, paperModelTable,
         papersFilename, paperWaveTable, strainWaveTable, waveCountryTable
     } from "../dataLoader.ts";
     import {onMount} from "svelte";
@@ -77,6 +78,8 @@
             } else if (networkName == "Models+Institutions") {
                 viewer = NetPanoramaTemplateViewer.render(instModelNetPath, {
                     data: institutionModelTable,
+                    modelTable: modelTable,
+                    affTable: affiliationsTable,
                     strokeColor: GRAY,
                     width: width,
                     height: height - margin
