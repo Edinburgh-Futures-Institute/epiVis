@@ -5,8 +5,17 @@
     {
       "name": "institutionModels",
       "values": "[data]"
+    },
+    {
+      "name": "models",
+      "values": "[modelTable]"
+    },
+    {
+      "name": "affiliations",
+      "values": "[affTable]"
     }
   ],
+
   "networks": [
     {
       "name": "network",
@@ -29,16 +38,73 @@
               "target_id_field": "id"
             }
           ]
+        },
+        {
+          "data": "models",
+          "yieldsNodes": [
+            {
+              "id_field": "id",
+              "type": "Model",
+              "data": ["*"]
+            }
+          ],
+          "yieldsLinks": [
+          ]
+        },
+
+        {
+          "data": "affiliations",
+          "yieldsNodes": [
+            {
+              "id_field": "Affiliation code",
+              "type": "Institution",
+              "data": ["*"]
+            }
+          ],
+          "yieldsLinks": [
+          ]
         }
       ],
       "transform": [
         {
           "type": "metric",
           "metric": "degree"
+        },
+        {
+          "type": "filterNodes",
+          "expression": "datum.degree > 0"
         }
       ]
     }
   ],
+
+  "parameters": [
+    {
+      "name": "node_selection",
+      "network": "network",
+      "type": "selection",
+      "action": "replace",
+      "clearOnBackgroundClick": true
+    },
+    {
+      "name": "neighbours",
+      "source": "node_selection",
+      "transform": [
+        {
+          "type": "neighbours",
+          "direction": "both"
+        }
+      ]
+    },
+    {
+      "name": "timeRange",
+      "value": [
+        0,
+        0
+      ]
+    }
+  ],
+
   "layouts": [
     {
       "name": "forcelayout2",
@@ -114,6 +180,39 @@
     }
   ],
   "vis": [
+
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "occlusion": true,
+      "mark": {
+        "type": "text",
+        "text": {
+          "conditions": [
+            {
+              "selectionIsEmpty": "node_selection.nodes",
+              "value": {
+                "expression": "datum.data ? datum.data.model || datum.data['Afilliation name -'] : datum.id"
+              }
+            },
+            {
+              "inSelection": "node_selection.nodes",
+              "value": {
+                "expression": "datum.data ? datum.data.model : datum.id"
+              }
+            }
+          ],
+          "value": ""
+        },
+        "dx": 10,
+        "dy": 6,
+        "fontSize": 14,
+        "stroke": "white",
+        "fontWeight": "bold",
+        "strokeWidth": 0.5
+      }
+    },
+
     {
       "entries": "network.links",
       "layout": "forcelayout",
