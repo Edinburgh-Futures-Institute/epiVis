@@ -8,10 +8,10 @@
     import 'datatables.net-dt/css/jquery.dataTables.min.css';
 
     import {onMount} from "svelte";
+    import {Legend} from "../legend.ts";
 
     export let filteredData;
 
-    // let datatable: DataTable;
     let datatable;
     let element;
     let columnNameTooltip: HTMLElement;
@@ -34,10 +34,7 @@
     const LIGHTBLUE = "#92c5de"
     const BLUE = 'rgba(5,113,176,0.6)'
 
-
     const YELLOW = '#ffeda0';
-
-
 
 
     // const cellColorScale = d3.scaleOrdinal()
@@ -136,11 +133,29 @@
                     let searchInput = document.querySelector('.dataTables_filter');
                     searchInput.parentNode.insertBefore(button, searchInput.nextSibling);
 
+
+                    // Legend of cells
+                    let legend = document.createElement("div");
+                    legend.className = "table-legend";
+                    legend.style.display = "inline-block"
+                    legend.innerHTML = '';
+                    legend.style.marginLeft = "20px";
+                    searchInput.parentNode.insertBefore(legend, searchInput.nextSibling);
+
+                    let leg = Legend(cellColorScale4, {
+                        title: "",
+                        tickSize: 0
+                    })
+                    legend.appendChild(leg)
+
+
+
                     // Title of column element
                     columnNameTooltip = document.createElement("div");
                     columnNameTooltip.style.display = "inline-block"
                     columnNameTooltip.style.float = 'right';
-                    columnNameTooltip.style.marginRight = "20px";
+                    columnNameTooltip.style.marginRight = "15px";
+                    columnNameTooltip.style.width = "50%";
                     columnNameTooltip.innerHTML = 'Column Title';
 
                     // Insert the div after the search input
@@ -220,7 +235,7 @@
 
 </script>
 
-<div id="mainTableDiv" class="main-componenttt">
+<div id="mainTableDiv" class="main-component">
     <div id="title-div">
         <span class="title">Papers Found</span> The table lists all papers corresponding to the above specified filter criteria. Selecting an entity in one or more of the visualizations, will add/remove additional filter criteria.
     </div>
