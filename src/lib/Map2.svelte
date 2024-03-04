@@ -15,7 +15,6 @@
     let element;
     let projection;
 
-    // let colorScale = d3.scaleLinear([0, 10], ["white", "blue"]);
     let colorScale = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, 10]);
 
     let grayedOut = "rgb(234,234,234)"
@@ -42,7 +41,6 @@
 
         d3.select("#svg")
             .select("g")
-            // .attr("cursor", "pointer")
             .selectAll("path")
             .data(map.features)
             .join("path")
@@ -60,6 +58,8 @@
                 }
             })
             .attr("stroke-width", 1);
+
+        setZoom();
     });
 
 
@@ -82,7 +82,6 @@
     $: run(filteredData);
 
     function run(filteredData) {
-        console.log("MAP")
         processData();
         render();
     }
@@ -104,6 +103,22 @@
                 }
             })
             .attr("stroke-width", 1);
+    }
+
+
+    function zoomed({transform}) {
+        // const zx = transform.rescaleX(x).interpolate(d3.interpolateRound);
+        // const zy = transform.rescaleY(y).interpolate(d3.interpolateRound);
+
+        d3.select("#svg")
+            .select("g")
+            .attr("transform", transform)
+      }
+
+    function setZoom() {
+        d3.select("#svg")
+            // .select("g")
+            .call(d3.zoom().on("zoom", zoomed));
     }
 
     function setLegend() {

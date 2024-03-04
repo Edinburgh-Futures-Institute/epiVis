@@ -125,7 +125,7 @@
 
         // Global size of visualization
         // const distance = height / 2.5;
-        const distance = height / 2.75;
+        const distance = height / 2.85;
 
 
         const x = (d) => distance * Math.cos(radialScale(d.pos))

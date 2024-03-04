@@ -465,7 +465,8 @@ export const colColor = d3.scaleOrdinal(["T", "I", "J", "B"], ["orange", "lightb
 
 
 
-export let map = await d3.json("./data/ne_10m_admin_0_countries_lakes.json")
+// export let map = await d3.json("./data/ne_10m_admin_0_countries_lakes.json")
+export let map = await d3.json("./data/ne_50m_admin_0_countries.json")
 
 
 export {influenceNodes, influenceLinks}

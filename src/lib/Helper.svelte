@@ -35,11 +35,20 @@
         {:else if visualizationType == "Models"}
             This visualization is a heatmap showing the frequency of usage of different model types according the years.
             {:else if visualizationType == "Full"}
-            This visualization shows a network of all entities in the data: papers, people, institutions, strains, waves, and countries.
-            {:else if visualizationType == "People"}
+            This visualization shows a network of all entities in the data: papers, people, institutions, strains, waves, countries, and model types.
+            {:else if visualizationType == "Co-authorship"}
             This visualization shows a network of all authors of papers. One isolated clique can be interpreted as one paper. Each author of the same paper will be connected to each other.
+            {:else if visualizationType == "Models+Institutions"}
+            This network shows the types of models used by the different institutions. A link between an institution and a model represents a publication by this institution using this model type.
+
+            {:else if visualizationType == "Affiliations"}
+            This network shows which affiliations collaborated together. A link between 2 affiliations represents a paper that have been published with authors from the two affiliations. The affiliations are groupes by countries and disciplines.
+
+
+
+
             {:else if visualizationType == "Influence"}
-            This visualization shows a heatmap of the influences of papers in the dataset. The rows represents the papers while the columns represent the influencing papers.
+            This visualization shows a heatmap of the influences of papers in the dataset. The rows represents the papers (with their EPIC code) while the columns represent the influencing papers. A red cell shows an heavy influence.
         {/if}
     </div>
 {/if}

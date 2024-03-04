@@ -32,7 +32,7 @@
     <div class="tab">
         <span class="title"> Visualization Type 1 </span>
 
-        <button class="tablinks" on:click={selectTab}>Map</button>
+        <button class="tablinks" on:click={selectTab} autofocus>Map</button>
         <button class="tablinks" on:click={selectTab}>Models</button>
         <button class="tablinks" on:click={selectTab}>Influence</button>
     </div>

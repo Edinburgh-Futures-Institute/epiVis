@@ -102,11 +102,11 @@
     <div class="tab">
         <span class="title"> Visualization Type 2 </span>
 
-        <button class="tablinks" on:click={selectTab}>Full</button>
+        <button class="tablinks" on:click={selectTab} autofocus>Full</button>
         <button class="tablinks" on:click={selectTab}>Co-authorship</button>
 <!--        <button class="tablinks" on:click={selectTab}>Countries</button>-->
         <button class="tablinks" on:click={selectTab}>Models+Institutions</button>
-        <button class="tablinks" on:click={selectTab}>Institutions</button>
+<!--        <button class="tablinks" on:click={selectTab}>Institutions</button>-->
         <button class="tablinks" on:click={selectTab}>Affiliations</button>
     </div>
 
