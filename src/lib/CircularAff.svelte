@@ -123,7 +123,11 @@
         // const radiusScale = d3.scaleLinear(d3.extent(institutions.map(d => d.degree)), [4, 10]);
         const radiusScale = d3.scaleLinear(d3.extent(affiliations.map(d => d.degree)), [4, 10]);
 
-        const distance = height / 2.5;
+        // Global size of visualization
+        // const distance = height / 2.5;
+        const distance = height / 2.75;
+
+
         const x = (d) => distance * Math.cos(radialScale(d.pos))
         const y = (d) => {
             return distance * Math.sin(radialScale(d.pos))
@@ -292,7 +296,8 @@
                 return `translate(${arc.centroid(d)})`
             })
             .attr("x", (d, i) => {
-                return -10;
+                // return -10;
+                // return -10;
             })
             .attr("y", d => {
                 return 0
@@ -302,7 +307,19 @@
                 // return `(${countryToLinkCount[country]}) ` + country
                 return country
             })
-            .attr("text-anchor", "middle")
+            .attr("text-anchor", d => {
+                // let rad = radialScale(d.pos);
+                let rad = (d.startAngle + d.endAngle - 3) / 2
+                console.log(rad)
+                if (rad < Math.PI / 2 || rad > 3 * Math.PI / 2) {
+                    console.log("RIGHT")
+                    return "start";
+                } else {
+                    return "end"
+                }
+
+                // return "middle"
+            })
             .attr("font-size", "13px")
             .classed("textCountry", true)
             .on("mouseover", mouseOverCountry)
@@ -461,7 +478,7 @@
     #circular-div {
         /*justify-content: center;*/
         /*align-items: center;*/
-        /*width: 100%;*/
+        width: 100%;
         height: 100%;
     }
 
