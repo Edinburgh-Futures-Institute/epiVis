@@ -1,4 +1,6 @@
 {
+  "zoom": true,
+  "pan": true,
   "width": "[width]",
   "height": "[height]",
   "data": [

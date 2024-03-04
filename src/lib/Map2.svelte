@@ -23,6 +23,7 @@
     let groupByCountry = {};
 
     function updateDimensions() {
+        console.log("update ")
         const rect = element.getBoundingClientRect();
         width = rect.width;
         height = rect.height;
@@ -81,6 +82,7 @@
     $: run(filteredData);
 
     function run(filteredData) {
+        console.log("MAP")
         processData();
         render();
     }
@@ -94,12 +96,6 @@
 
                 let papers = groupByCountry[country]
                 let size = papers ? papers.length : 0;
-
-                // if (size) {
-                //     return colorScale(size)
-                // } else {
-                //     return grayedOut
-                // }
 
                 if (countriesInTheData.includes(country)) {
                     return colorScale(size)
@@ -127,6 +123,8 @@
     <div class="vis-frame">
         <div id="legend"></div>
 <!--        <svg id="svg" width={width} height={height - 100}>-->
+
+<!--        Lower height removes Antarctica -->
         <svg id="svg" width={width} height={height * 0.75}>
             <g></g>
         </svg>

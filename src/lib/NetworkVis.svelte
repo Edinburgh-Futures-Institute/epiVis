@@ -59,7 +59,7 @@
                     modelPapersLinks: paperModelTable
                 }, "vis");
 
-            } else if (networkName == "People") {
+            } else if (networkName == "Co-authorship") {
                 viewer = await NetPanoramaTemplateViewer.render(peopleNetPath, {
                     filename: papersFilename,
                     strokeColor: GRAY,
@@ -103,7 +103,7 @@
         <span class="title"> Visualization Type 2 </span>
 
         <button class="tablinks" on:click={selectTab}>Full</button>
-        <button class="tablinks" on:click={selectTab}>People</button>
+        <button class="tablinks" on:click={selectTab}>Co-authorship</button>
 <!--        <button class="tablinks" on:click={selectTab}>Countries</button>-->
         <button class="tablinks" on:click={selectTab}>Models+Institutions</button>
         <button class="tablinks" on:click={selectTab}>Institutions</button>

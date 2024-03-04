@@ -12,7 +12,7 @@ export function Legend(color, {
         ticks = width / 64,
         tickFormat,
         tickValues
-    } = {}) {
+    } = {}, domainLabels: any[]) {
 
         function ramp(color, n = 256) {
             const canvas = document.createElement("canvas");
@@ -131,23 +131,27 @@ export function Legend(color, {
             };
         }
 
+        if (domainLabels) {
+            x.domain(domainLabels);
+        }
+
         svg.append("g")
             .attr("transform", `translate(0,${height - marginBottom})`)
-            .call(d3.axisBottom(x.domain(["Very good", "Good", "Bad", "Very bad"]))
+            .call(d3.axisBottom(x)
                 .ticks(ticks, typeof tickFormat === "string" ? tickFormat : undefined)
                 .tickFormat(typeof tickFormat === "function" ? tickFormat : undefined)
                 .tickSize(tickSize)
                 .tickValues(tickValues))
-            // .call(tickAdjust)
-            // .call(g => g.select(".domain").remove())
-            // .call(g => g.append("text")
-            //     .attr("x", marginLeft)
-            //     .attr("y", marginTop + marginBottom - height - 6)
-            //     .attr("fill", "currentColor")
-            //     .attr("text-anchor", "start")
-            //     .attr("font-weight", "bold")
-            //     .attr("class", "title-legend")
-            //     .text(title));
+            .call(tickAdjust)
+            .call(g => g.select(".domain").remove())
+            .call(g => g.append("text")
+                .attr("x", marginLeft)
+                .attr("y", marginTop + marginBottom - height - 6)
+                .attr("fill", "currentColor")
+                .attr("text-anchor", "start")
+                .attr("font-weight", "bold")
+                .attr("class", "title-legend")
+                .text(title));
 
         return svg.node();
     }

@@ -38,6 +38,8 @@
             This visualization shows a network of all entities in the data: papers, people, institutions, strains, waves, and countries.
             {:else if visualizationType == "People"}
             This visualization shows a network of all authors of papers. One isolated clique can be interpreted as one paper. Each author of the same paper will be connected to each other.
+            {:else if visualizationType == "Influence"}
+            This visualization shows a heatmap of the influences of papers in the dataset. The rows represents the papers while the columns represent the influencing papers.
         {/if}
     </div>
 {/if}

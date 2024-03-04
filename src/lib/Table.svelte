@@ -145,7 +145,7 @@
                     let leg = Legend(cellColorScale4, {
                         title: "",
                         tickSize: 0
-                    })
+                    }, ["Very good", "Good", "Bad", "Very bad"])
                     legend.appendChild(leg)
 
 
