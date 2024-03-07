@@ -26,8 +26,8 @@
 
     const fullNetPath = "./netpanorama-vis/templates/wholeNet.json"
     const peopleNetPath = "./netpanorama-vis/templates/projPerson.json"
-    const countryProjNetPath = "/netpanorama-vis/templates/countryProj.json"
-    const instModelNetPath = "/netpanorama-vis/templates/institutionModel.json"
+    const countryProjNetPath = "./netpanorama-vis/templates/countryProj.json"
+    const instModelNetPath = "./netpanorama-vis/templates/institutionModel.json"
 
     onMount(() => {
         updateDimensions();

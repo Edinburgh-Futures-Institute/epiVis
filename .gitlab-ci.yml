@@ -1,0 +1,23 @@
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - npm run build
+  tags:
+    - deploy
+  only:
+    refs:
+      - main
+
+deploy-frontend:
+  stage: deploy
+  script:
+    - sudo cp -r -f dist/* /var/www/epi-vis.designinformatics.org/html
+  tags:
+    - deploy
+  only:
+    refs:
+      - main
