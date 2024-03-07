@@ -1,0 +1,137 @@
+{
+  "data": [
+    {
+      "name": "affiliations",
+      "url": "./data/[affiliations]",
+      "format": {
+        "type": "csv"
+      }
+    },
+    {
+      "name": "affiliationPaper",
+      "values": "[affiliationPaperLinks]"
+    }
+  ],
+  "networks": [
+    {
+      "name": "networkAff",
+      "parts": [
+        {
+          "data": "affiliations",
+          "yieldsNodes": [
+            {
+              "id_field": "Affiliation code",
+              "type": "Affiliation",
+              "data": [
+                "*"
+              ]
+            }
+          ],
+          "yieldsLinks": []
+        }
+      ]
+    },
+
+    {
+      "name": "network",
+      "parts": [
+        {
+          "data": "affiliationPaper",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Affiliation"
+              },
+              "source_node_type": "Affiliation",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Paper"
+              },
+              "target_node_type": "Paper",
+              "target_id_field": "id",
+              "data": [
+                "*"
+              ]
+            }
+          ]
+        },
+        {
+          "data": "affiliations",
+          "yieldsNodes": [
+            {
+              "id_field": "Affiliation code",
+              "type": "Affiliation",
+              "data": [
+                "*"
+              ]
+            }
+          ],
+          "yieldsLinks": [
+          ]
+        }
+      ],
+      "transform": [
+        {
+          "type": "project",
+          "fieldName": "_type",
+          "remainingNodeType": "Affiliation",
+          "removedNodeType": "Paper",
+          "directed": false
+        },
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    }
+  ],
+
+  "layouts": [
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "d3-force"
+    }
+  ],
+  "vis2": [
+    {
+      "entries": "network.links",
+      "layout": "l",
+      "mark": {
+        "type": "linkpath",
+        "start": "source",
+        "end": "target",
+       "stroke": "gray"
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "l",
+      "mark": {
+        "type": "symbol",
+        "shape": {
+          "field": "_type",
+          "scale": "shapeScale"
+        },
+        "size": {
+          "field": "degree",
+          "scale": "radius"
+        },
+        "fill": {
+          "field": "_type",
+          "scale": "color"
+        },
+        "fill22": {
+          "fielddd": "datum.Country",
+          "expression": "datum.data.Country",
+          "scale": "countryColor"
+        },
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        }
+      }
+    }
+  ]
+}

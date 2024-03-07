@@ -1,0 +1,224 @@
+{
+    "data": [
+        {
+      "name": "data",
+      "localStorage": "20_Sept.csv",
+      "format": {"type": "csv"}
+    }
+    ],
+
+    "networks": [
+        {
+            "name": "network",
+            "parts": [
+                {
+                    "data": "data",
+                    "yieldsNodes": [
+                        // {
+                        //     "id_field": "AI strain",
+                        //     "type": "Strain",
+                        //     "data": []
+                        // },
+                        {
+                            "id_field": "Epic Code ",
+                            "type": "Paper",
+                            "data": []
+                        },
+                        {
+                            "id_field": "First Author",
+                            "type": "Person",
+                            "data": []
+                        },
+                        {
+                            "id_field": "Second Author ",
+                            "type": "Person",
+                            "data": []
+                        },
+                        {
+                            "id_field": "Third Author ",
+                            "type": "Person",
+                            "data": []
+                        }
+                    ],
+
+                    "yieldsLinks": [
+                        // {
+                        //     "source_id": {"field": "AI strain"}, // the field we created
+                        //     "source_node_type": "Strain",
+                        //     "source_id_field": "id",
+
+                        //     "target_id": {"field": "Epidemic wave"}, // the field we created
+                        //     "target_node_type": "Wave",
+                        //     "target_id_field": "id",
+
+                        //     "data": []
+                        // },
+                        {
+                            "source_id": {"field": "Epic Code "}, // the field we created
+                            "source_node_type": "Paper",
+                            "target_id": {"field": "First Author"}, // the field we created
+                            "target_node_type": "Person",
+                            "data": []
+                        },
+                        {
+                            "source_id": {"field": "Epic Code "}, // the field we created
+                            "source_node_type": "Paper",
+                            "target_id": {"field": "Second Author "}, // the field we created
+                            "target_node_type": "Person",
+                            "data": []
+                        },
+                        {
+                            "source_id": {"field": "Epic Code "}, // the field we created
+                            "source_node_type": "Paper",
+                            "target_id": {"field": "Third Author "}, // the field we created
+                            "target_node_type": "Person",
+                            "data": []
+                        }
+                        // {
+                        //     "source_id": {"field": "First Author"}, // the field we created
+                        //     "source_node_type": "Person",
+                        //     "target_id": {"field": "Affiliation of 1st author"}, // the field we created
+                        //     "target_node_type": "Institution",
+                        //     "data": []
+                        // },
+                        // {
+                        //     "source_id": {"field": "Second Author "}, // the field we created
+                        //     "source_node_type": "Person",
+                        //     "target_id": {"field": "Affiliation of 2nd author"}, // the field we created
+                        //     "target_node_type": "Institution",
+                        //     "data": []
+                        // },
+                        // {
+                        //     "source_id": {"field": "Third Author "}, // the field we created
+                        //     "source_node_type": "Person",
+                        //     "target_id": {"field": "Affiliation of 3rd author"}, // the field we created
+                        //     "target_node_type": "Institution",
+                        //     "data": []
+                        // },
+                    ]
+                }
+            ],
+            "transform": [
+                {"type": "project", "fieldName": "_type", "remainingNodeType": "Person", "removedNodeType": "Paper", "directed": false},
+                // {"type": "metric", "metric": "degree"}
+            ],
+            // "ignoreDanglingLinks": false
+        },
+        // {
+        //     "name": "netProj",
+        //     "nodes": "network.nodes",
+        //     "links": "network.links",
+        //     "directed": false,
+        //     "source_node": [ "id", "source" ],
+        //     "target_node": [ "id",  "target" ],
+        //     "transform": [
+        //         // {"type": "project", "fieldName": "_type", "remainingNodeType": "Paper", "removedNodeType": "Person", "directed": false},
+        //         {"type": "metric", "metric": "degree"}
+        //     ],
+        //     "ignoreDanglingLinks": false
+        // }
+        // {
+        //     "name": "netProj",
+        //     // "nodes": "network.nodes",
+        //     "links": "network.links",
+        //     "directed": false,
+        //     "source_node": [ "id", "source" ],
+        //     "target_node": [ "id",  "target" ],
+        //     "transform": [
+        //         // {"type": "project", "fieldName": "_type", "remainingNodeType": "Paper", "removedNodeType": "Person", "directed": false},
+        //         {"type": "metric", "metric": "degree"}
+        //     ],
+        //     // "ignoreDanglingLinks": false
+        // }
+    ],
+
+  "layouts": [
+    // {
+    //   "name": "layout",
+    //   "network": "network",
+    //   "type": "webcola",
+    //   "avoidOverlap": true
+    // },
+
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "d3-force"
+    }
+  ],
+
+  "scales": [
+    {
+      "name": "radius",
+      "type": "linear",
+      "range": [200, 500],
+      "domain": { "data": "network.nodes", "field": "degree" }
+    },
+    {
+        "name": "color",
+        "type": "ordinal",
+        "range": ["lightblue", "lightgreen", "red", "purple", "orange"],
+        // "scheme": "category20",
+        "domain": ["Person", "Paper", "Strain", "Wave", "Institution"]
+    },
+     {
+      "name": "shapeScale",
+      "type": "ordinal",
+      "range": [
+        "circle",
+        "square",
+        "diamond",
+        "triangle",
+        "cross"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
+    },
+  ],
+
+  "vis": [
+    // {
+    //   "entries": "network.links",
+    //   "layout": "forcelayout",
+    //   "mark": {
+    //     "type": "linkpath",
+    //     "start": "source",
+    //     "end": "target",
+    //    "stroke": "gray"
+    //   }
+    // },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+    //   "mark": {
+    //     "type": "circle",
+    //     "area": { "field": "degree", "scale": "radius" },
+    //     "fill": { "field": "_type", "scale": "color" }
+    //     "tooltip": { "expression": "datum.id + ' (degree ' + datum.degree + ')'" }
+    //   },
+      "mark": {
+        "type": "symbol",
+        "shape": {
+          "field": "_type",
+          "scale": "shapeScale"
+        },
+        "size": {
+          "field": "degree",
+          "scale": "radius"
+        },
+        "fill": {
+          "field": "_type",
+          "scale": "color"
+        },
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        }
+      }
+    }
+  ]
+}

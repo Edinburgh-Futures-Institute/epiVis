@@ -1,0 +1,248 @@
+{
+  "width": "[width]",
+  "height": "[height]",
+  "data": [
+    {
+      "name": "data",
+      "url": "./data/[filename]",
+      "format": {
+        "type": "csv"
+      }
+    },
+    {
+      "name": "authors",
+      "url": "./data/[authorsFilename]",
+      "format": {
+        "type": "csv"
+      }
+    },
+    {
+      "name": "countryLinks",
+      "values": "[links]"
+    }
+  ],
+  "networks": [
+    {
+      "name": "network",
+      "parts": [
+        {
+          "data": "data",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Region of study "
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "AI strain"
+              },
+              "target_node_type": "Strain",
+              "data": []
+            }
+          ]
+        },
+        {
+          "data": "countryLinks",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Country1"
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "Country2"
+              },
+              "target_node_type": "Country",
+              "data": []
+            }
+          ]
+        }
+      ],
+      "transform": [
+        {"type": "filterNodes2", "expression": "datum.id !== '' "},
+              {"type": "filterNodes2", "expression": "datum.id !== ' ' "},
+              {"type": "filterNodes2", "expression": "datum.id !== 'not specified' "},
+        {
+          "type": "project",
+          "fieldName": "_type",
+          "remainingNodeType": "Country",
+          "removedNodeType": "Strain",
+          "directed": false
+        },
+        {
+          "typed": "metric",
+          "metric": "degree"
+        },
+        {"type": "filterNodes", "expression": "datum.id !== '' "}
+      ]
+    },
+
+    {
+      "name": "network2",
+      "parts": [
+        {
+          "data": "data",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Region of study "
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "AI strain"
+              },
+              "target_node_type": "Strain",
+              "data": []
+            }
+          ]
+        },
+        {
+          "data": "countryLinks",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Country1"
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "Country2"
+              },
+              "target_node_type": "Country",
+              "data": []
+            }
+          ]
+        }
+      ],
+      "transform": [
+        {"type": "filterNodes2", "expression": "datum.id !== '' "},
+              {"type": "filterNodes2", "expression": "datum.id !== ' ' "},
+              {"type": "filterNodes2", "expression": "datum.id !== 'not specified' "},
+        {
+          "type": "project",
+          "fieldName": "_type",
+          "remainingNodeType": "Country",
+          "removedNodeType": "Strain",
+          "directed": false
+        },
+        {
+          "typed": "metric",
+          "metric": "degree"
+        },
+        {"type": "filterNodes", "expression": "datum.id !== '' "}
+      ]
+    }
+
+  ],
+  "layouts": [
+    {
+      "name": "forcelayout2",
+      "network": "network",
+      "type": "d3-force"
+    },
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "webcola",
+      "defaultNodeSize22": 1,
+      "linkDistance": 100,
+      "handleDisconnected": true,
+      "avoidOverlap": true
+    }
+  ],
+  "scales": [
+    {
+      "name": "radius",
+      "type": "linear",
+      "range": [
+        90,
+        250
+      ],
+      "domain": {
+        "data": "network.nodes",
+        "field": "degree"
+      }
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange",
+        "brown"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution",
+        "Country"
+      ]
+    },
+    {
+      "name": "shapeScale",
+      "type": "ordinal",
+      "range": [
+        "circle",
+        "square",
+        "diamond",
+        "triangle",
+        "cross",
+        "triangle-down"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution",
+        "Country"
+      ]
+    }
+  ],
+  "vis": [
+    {
+      "entries": "network.links",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "linkpath",
+        "start": "source",
+        "end": "target",
+       "stroke": "gray"
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "symbol",
+        "shape": {
+          "field": "_type",
+          "scale": "shapeScale"
+        },
+        "size": {
+          "field": "degree",
+          "scale": "radius"
+        },
+        "fill": {
+          "field": "_type",
+          "scale": "color"
+        },
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,220 @@
+{
+  "data": [
+    {
+      "name": "affiliations",
+      "url": "./data/[affiliations]",
+      "format": {
+        "type": "csv"
+      }
+    }
+  ],
+  "networks": [
+    {
+      "name": "networkAff",
+      "parts": [
+        {
+          "data": "affiliations",
+          "yieldsNodes": [
+            {
+              "id_field": "Intitute ",
+              "type": "Institution",
+              "data": [
+                "*"
+              ]
+            }
+          ],
+          "yieldsLinks": []
+        }
+      ],
+      "transform": [
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    },
+    {
+      "name": "network",
+      "parts": [
+        {
+          "data": "affiliations",
+          "yieldsNodes": [
+            {
+              "id_field": "Intitute ",
+              "type": "Institution",
+              "data": [
+                "*"
+              ]
+            }
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Intitute "
+              },
+              "source_node_type": "Institution",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Paper associated "
+              },
+              "target_node_type": "Paper",
+              "target_id_field": "id",
+              "data": [
+                "*"
+              ]
+            }
+          ]
+        }
+      ],
+      "transform": [
+        {
+          "type": "project",
+          "fieldName": "_type",
+          "remainingNodeType": "Institution",
+          "removedNodeType": "Paper",
+          "directed": false
+        },
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    }
+  ],
+
+  "orderings": [
+        {
+            "name": "degree_order",
+            "data": "network.nodes",
+            "orderBy": "degree"
+        },
+        {
+            "name": "country",
+            "data": "network.nodes",
+            "orderBy": "Country"
+        }
+    ],
+
+  "layouts": [
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "d3-force"
+    },
+      {
+      "name": "l",
+      "data": "network.nodes",
+      "order": "degree_order",
+      "pattern": "circle"
+    }
+  ],
+  "scales": [
+    {
+      "name": "radius",
+      "type": "linear",
+      "range": [
+        90,
+        250
+      ],
+      "domain": {
+        "data": "network.nodes",
+        "field": "degree"
+      }
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
+    },
+    {
+      "name": "countryColor",
+      "type": "ordinal",
+      "ranged": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange",
+        "yellow"
+      ],
+      "domain": [
+        "China",
+        "France",
+        "Spain",
+        "Japan",
+        "Russia",
+        "South Korea"
+      ]
+    },
+    {
+      "name": "shapeScale",
+      "type": "ordinal",
+      "range": [
+        "circle",
+        "square",
+        "diamond",
+        "triangle",
+        "cross"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution"
+      ]
+    }
+  ],
+  "vis2": [
+    {
+      "entries": "network.links",
+      "layout": "l",
+      "mark": {
+        "type": "linkpath",
+        "start": "source",
+        "end": "target",
+       "stroke": "gray"
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "l",
+      "mark": {
+        "type": "symbol",
+        "shape": {
+          "field": "_type",
+          "scale": "shapeScale"
+        },
+        "size": {
+          "field": "degree",
+          "scale": "radius"
+        },
+        "fill": {
+          "field": "_type",
+          "scale": "color"
+        },
+        "fill22": {
+          "fielddd": "datum.Country",
+          "expression": "datum.data.Country",
+          "scale": "countryColor"
+        },
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        }
+      }
+    }
+  ]
+}

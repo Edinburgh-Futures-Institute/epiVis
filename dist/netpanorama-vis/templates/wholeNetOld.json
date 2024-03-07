@@ -1,0 +1,323 @@
+{
+  "width": "[width]",
+  "height": "[height]",
+  "data": [
+    {
+      "name": "data",
+      "url": "./data/[filename]",
+      "format": {
+        "type": "csv"
+      }
+    },
+    {
+      "name": "authors",
+      "url": "./data/[authorsFilename]",
+      "format": {
+        "type": "csv"
+      }
+    },
+    {
+      "name": "strainWave",
+      "values": "[strainWavesLinks]"
+    },
+    {
+      "name": "strainPaper",
+      "values": "[strainPapersLinks]"
+    }
+  ],
+  "parameters": [
+    {
+      "name": "node_selection",
+      "network": "network",
+      "type": "selection",
+      "action": "replace",
+      "clearOnBackgroundClick": true
+    },
+    {
+      "name": "neighbours",
+      "source": "node_selection",
+      "transform": [
+        {
+          "type": "neighbours",
+          "direction": "both"
+        }
+      ]
+    },
+    {
+      "name": "timeRange",
+      "value": [
+        0,
+        0
+      ]
+    }
+  ],
+  "networks": [
+    {
+      "name": "network",
+      "parts": [
+        {
+          "data": "data",
+          "yieldsNodes": [
+            {
+              "id_field": "AI strain",
+              "type": "Strain",
+              "data": []
+            },
+            {
+              "id_field": "Epic Code ",
+              "type": "Paper",
+              "data": []
+            }
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "AI strain"
+              },
+              "source_node_type": "Strain",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Epidemic waves"
+              },
+              "target_node_type": "Wave",
+              "target_id_field": "id",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Epidemic waves"
+              },
+              "source_node_type": "Wave",
+              "target_id": {
+                "field": "Epic Code "
+              },
+              "target_node_type": "Paper",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Region of study "
+              },
+              "source_node_type": "Country",
+              "target_id": {
+                "field": "Epidemic waves"
+              },
+              "target_node_type": "Wave",
+              "data": []
+            }
+          ]
+        },
+        {
+          "data": "authors",
+          "yieldsNodes": [
+          ],
+          "yieldsLinks": [
+            {
+              "source_id": {
+                "field": "Paper associated "
+              },
+              "source_node_type": "Paper",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Author"
+              },
+              "target_node_type": "Person",
+              "target_id_field": "id",
+              "data": []
+            },
+            {
+              "source_id": {
+                "field": "Afilliation name 1"
+              },
+              "source_node_type": "Institution",
+              "source_id_field": "id",
+              "target_id": {
+                "field": "Author"
+              },
+              "target_node_type": "Person",
+              "target_id_field": "id",
+              "data": []
+            }
+          ]
+        }
+      ],
+      "transform": [
+        {
+          "type": "filterNodes",
+          "expression": "datum.id !== '' "
+        },
+        {
+          "type": "filterNodes",
+          "expression": "datum.id !== ' ' "
+        },
+        {
+          "type": "filterNodes",
+          "expression": "datum.id !== 'not specified' "
+        },
+        {
+          "type": "metric",
+          "metric": "degree"
+        }
+      ]
+    }
+  ],
+  "layouts": [
+    {
+      "name": "forcelayout",
+      "network": "network",
+      "type": "webcola",
+      "defaultNodeSize22": 1,
+      "linkDistance": 12,
+      "handleDisconnected": true,
+      "avoidOverlap": true
+    },
+    {
+      "name": "forcelayout2",
+      "network": "network",
+      "type": "d3-force"
+    }
+  ],
+  "scales": [
+    {
+      "name": "radius",
+      "type": "linear",
+      "range": [
+        90,
+        250
+      ],
+      "domain": {
+        "data": "network.nodes",
+        "field": "degree"
+      }
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "range": [
+        "lightblue",
+        "lightgreen",
+        "red",
+        "purple",
+        "orange",
+        "brown",
+        "yellow"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution",
+        "Country",
+        "Model"
+      ]
+    },
+    {
+      "name": "shapeScale",
+      "type": "ordinal",
+      "range": [
+        "circle",
+        "square",
+        "diamond",
+        "triangle",
+        "cross",
+        "triangle-down",
+        "diamond"
+      ],
+      "domain": [
+        "Person",
+        "Paper",
+        "Strain",
+        "Wave",
+        "Institution",
+        "Country",
+        "Model"
+      ]
+    }
+  ],
+  "vis": [
+    {
+      "entries": "network.links",
+      "layout": "forcelayout",
+      "mark": {
+        "type": "linkpath",
+        "start": "source",
+        "end": "target",
+        "stroke": "gray"
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "actions": [
+        {
+          "interaction": "select",
+          "using": "cursor",
+          "event": "mouseover",
+          "action": "replace",
+          "selection": "node_selection"
+        },
+        {
+          "interaction": "select",
+          "using": "cursor",
+          "event": "mouseout",
+          "action": "remove",
+          "selection": "node_selection"
+        }
+      ],
+      "mark": {
+        "type": "symbol",
+        "shape": {
+          "field": "_type",
+          "scale": "shapeScale"
+        },
+        "size": {
+          "field": "degree",
+          "scale": "radius"
+        },
+        "fill": {
+          "field": "_type",
+          "scale": "color"
+        },
+        "stroke": ""[strokeColor]"",
+        "tooltip": {
+          "expression": "datum.id + ' (degree ' + datum.degree + ')' "
+        },
+        "opacity": {
+          "conditions": [
+            {
+              "selectionIsEmpty": "node_selection.nodes",
+              "value": 1
+            },
+            {
+              "inSelection": "node_selection.nodes",
+              "value": 1
+            },
+            {
+              "inSelection": "neighbours.nodes",
+              "value": 1
+            }
+          ],
+          "value": 0.3
+        }
+      }
+    },
+    {
+      "entries": "network.nodes",
+      "layout": "forcelayout",
+      "ifInSelection": "node_selection.nodes",
+      "mark": {
+        "type": "text",
+        "text": {
+          "expression": "datum.id"
+        },
+        "dx": 6,
+        "dy": 6,
+        "fontSize": 14,
+        "stroke": "white",
+        "fontWeight": "bold",
+        "strokeWidth": 0.5
+      }
+    }
+  ]
+}
