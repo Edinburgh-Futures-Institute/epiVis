@@ -1,17 +1,19 @@
 stages:
-#  - build
+  - build
   - deploy
 
-#build:
-#  stage: build
-#  script:
-##    - export PATH="$PATH:/home/ubuntu/.nvm/versions/node/v21.7.0/bin"
-#    - /home/ubuntu/.nvm/versions/node/v21.7.0/lib/node_modules/npm run build
-#  tags:
-#    - deploy
-#  only:
-#    refs:
-#      - main
+build:
+  image: node:20
+  stage: build
+  script:
+#    - cd packages/public/client/
+#    - npm install --only=production
+    - npm run build
+  tags:
+    - deploy
+  only:
+    refs:
+      - main
 
 deploy-frontend:
   stage: deploy
