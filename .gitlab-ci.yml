@@ -7,7 +7,7 @@ build:
   stage: build
   script:
 #    - cd packages/public/client/
-#    - npm install --only=production
+    - npm install
     - npm run build
   tags:
     - deploy
