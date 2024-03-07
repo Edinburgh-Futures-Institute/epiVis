@@ -5,7 +5,7 @@ stages:
 build:
   stage: build
   script:
-    - /home/ubuntu/.nvm/versions/node/v21.7.0/lib/node_modules/npm run build
+    - sudo /home/ubuntu/.nvm/versions/node/v21.7.0/lib/node_modules/npm run build
   tags:
     - deploy
   only:
