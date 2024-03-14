@@ -37,6 +37,10 @@
   ],
   "parameters": [
     {
+      "name": "showLabels",
+      "value": true
+    },
+    {
       "name": "node_selection",
       "network": "network",
       "type": "selection",
@@ -376,6 +380,7 @@
     {
       "entries": "network.nodes",
       "layout": "forcelayout",
+      "if": "params.showLabels",
       "mark": {
         "type": "text",
         "text": {
