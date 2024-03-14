@@ -32,8 +32,10 @@ export enum NodeTypes {
 // export const papersFilename = "papers13Jan.csv";
 
 // New version with the lots of new ethic colored columns
-export const papersFilename = "papers13JanNEW2.csv";
+// export const papersFilename = "papers13JanNEW2.csv";
 // export const papersFilename = "papers13JanNEW.csv";
+export const papersFilename = "papers19Jan.csv";
+
 
 export const affiliationsFilename = "affiliations13Jan.csv";
 // export const affiliationsFilename = "institutionGPT.csv";
@@ -398,7 +400,7 @@ const c12 = "Lack of knowledge attributable to uncertainty";
 const c13 = "Full history of model development: 1.Yes;  2.No; 3. Very clealrly  "
 const c14 = "Validated using independent data ";
 const c15 = "Clear documentation: 1. very clear; 2.clear; 3. semi-clear; 4. unlcear";
-const c16 = "Biases? Direction and magnitude? Efforts to address bias?: 1. Not mentioned; 2 Simple metioned; 3. Direction and magnitude; 4. Efforts to address the biases  ";
+export const c16 = "Biases? Direction and magnitude? Efforts to address bias?: 1. Not mentioned; 2 Simple metioned; 3. Direction and magnitude; 4. Efforts to address the biases  ";
 const c17 = "Conflicts of interest: 1. No conflict; 2.There is conflict; 3. Not clarified  ";
 const c18 = "Missing values";
 const c19 = "Code open source ";

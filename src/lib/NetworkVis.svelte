@@ -24,6 +24,10 @@
     let width: number;
     let height: number;
 
+    let showLabels = true;
+
+    // $: toggleLabels(showLabels);
+
     const fullNetPath = "./netpanorama-vis/templates/wholeNet.json"
     const peopleNetPath = "./netpanorama-vis/templates/projPerson.json"
     const countryProjNetPath = "./netpanorama-vis/templates/countryProj.json"
@@ -33,6 +37,13 @@
         updateDimensions();
         // render(width, height)
     })
+
+    function toggleLabels(show: boolean) {
+        showLabels = !showLabels;
+        if (viewer) {
+            viewer.setParam("showLabels", showLabels)
+        }
+    }
 
     function updateDimensions() {
         const rect = elementNet.getBoundingClientRect();
@@ -68,7 +79,7 @@
                     height: height - margin
                 }, "vis");
             } else if (networkName == "Countries") {
-                viewer = NetPanoramaTemplateViewer.render(countryProjNetPath, {
+                viewer = await NetPanoramaTemplateViewer.render(countryProjNetPath, {
                     filename: papersFilename,
                     authorsFilename: authorsFilename,
                     width: width,
@@ -76,7 +87,7 @@
                     links: countryToCountryTable
                 }, "vis");
             } else if (networkName == "Models+Institutions") {
-                viewer = NetPanoramaTemplateViewer.render(instModelNetPath, {
+                viewer = await NetPanoramaTemplateViewer.render(instModelNetPath, {
                     data: institutionModelTable,
                     modelTable: modelTable,
                     affTable: affiliationsTable,
@@ -108,6 +119,11 @@
         <button class="tablinks" on:click={selectTab}>Models+Institutions</button>
 <!--        <button class="tablinks" on:click={selectTab}>Institutions</button>-->
         <button class="tablinks" on:click={selectTab}>Affiliations</button>
+
+        <label>
+          <input type="checkbox" on:click={toggleLabels} checked>
+          <span class="checkmark">Show Labels</span>
+        </label>
     </div>
 
     <div id="vis" bind:this={elementNet} on:resize={updateDimensions}>
@@ -117,14 +133,10 @@
         {:else if selectedNet == "Affiliations"}
             <CircularAff>
             </CircularAff>
-        <!--{:else}-->
-    <!--        <div id="vis" bind:this={elementNet} on:resize={updateDimensions}>-->
         {/if}
     </div>
 
     <Helper visualizationType="{selectedNet}" parentEl="{element}"></Helper>
-
-    <!--<div id="vis" class="vis-frame" bind:this={elementNet}>-->
 </div>
 
 <style>

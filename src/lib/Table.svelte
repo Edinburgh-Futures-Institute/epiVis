@@ -1,7 +1,17 @@
 <script lang="ts">
     import * as d3 from "d3"
 
-    import {MODEL, PURPOSE, SPREAD, STAGE, allCols, colColor, colToGroup, groupToColSorted} from "../dataLoader.ts";
+    import {
+        MODEL,
+        PURPOSE,
+        SPREAD,
+        STAGE,
+        allCols,
+        colColor,
+        colToGroup,
+        groupToColSorted,
+        c16
+    } from "../dataLoader.ts";
 
     import DataTable from 'datatables.net-dt';
     import 'datatables.net-rowgroup'; // Import RowGroup plugin
@@ -44,6 +54,21 @@
     const cellColorScale4 = d3.scaleOrdinal()
         .domain([1, 2, 3, 4])
         .range([BLUE, LIGHTBLUE, LIGHTRED, RED])
+
+    function multiValueColorScale(value) {
+        let array = value.split(",");
+
+
+        if (array.length == 1 && array[0] == "1") {
+            return RED
+        } else if (array.length == 1 && array[0] == '2') {
+            return LIGHTRED
+        } else if (array.length == 2) {
+            return LIGHTBLUE
+        } else if (array.length == 3) {
+            return BLUE
+        }
+    }
 
 
     const className = (i) => `p${i}`
@@ -97,41 +122,44 @@
                         let cell = row.querySelector(`.p${i}`);
                         if (!cell) continue;
 
-                        if (["P", "Y", "S"].includes(value)) {
-                            // cell.style.background = GREEN
-                            cell.style.background = LIGHTBLUE
-                        } else if (["N", "I"].includes(value)) {
-                            cell.style.background = LIGHTRED
-                        } else if (["M", "L"].includes(value)) {
-                            cell.style.background = YELLOW
-                        } else if (["1", "2", "3", "4", "0"].includes(value)) {
-                            cell.style.background = cellColorScale4(Number(value))
-                        } else if (value == "N/A") {
-                            cell.style.background = "gray"
+                        if (col == c16) {
+                            cell.style.background = multiValueColorScale(value);
+                        } else {
+                            if (["P", "Y", "S"].includes(value)) {
+                                // cell.style.background = GREEN
+                                cell.style.background = LIGHTBLUE
+                            } else if (["N", "I"].includes(value)) {
+                                cell.style.background = LIGHTRED
+                            } else if (["M", "L"].includes(value)) {
+                                cell.style.background = YELLOW
+                            } else if (["1", "2", "3", "4", "0"].includes(value)) {
+                                cell.style.background = cellColorScale4(Number(value))
+                            } else if (value == "N/A") {
+                                cell.style.background = "gray"
+                            }
                         }
                     }
                 },
                 initComplete: function(settings, json) {
                     // Button for redrawing
-                    let button = document.createElement("button");
-                    button.style.display = "inline-block"
-                    button.innerHTML = 'Hide';
-                    button.style.marginLeft = "20px";
+                    // let button = document.createElement("button");
+                    // button.style.display = "inline-block"
+                    // button.innerHTML = 'Hide';
+                    // button.style.marginLeft = "20px";
+                    //
+                    // button.onclick = () => {
+                    //     rerender = true;
+                    //     hideColumns = !hideColumns;
+                    //
+                    //     // Weird but I have to call the function
+                    //     redraw(filteredData, hideColumns)
+                    //     rerender = false;
+                    // }
 
-                    button.onclick = () => {
-                        rerender = true;
-                        hideColumns = !hideColumns;
-
-                        // Weird but I have to call the function
-                        redraw(filteredData, hideColumns)
-                        // hideColumns = true;
-
-                        rerender = false;
-                    }
 
                     // Insert the div after the search input
                     let searchInput = document.querySelector('.dataTables_filter');
-                    searchInput.parentNode.insertBefore(button, searchInput.nextSibling);
+                    // searchInput.parentNode.insertBefore(button, searchInput.nextSibling);
 
 
                     // Legend of cells
@@ -149,7 +177,6 @@
                     legend.appendChild(leg)
 
 
-
                     // Title of column element
                     columnNameTooltip = document.createElement("div");
                     columnNameTooltip.style.display = "inline-block"
@@ -164,14 +191,12 @@
 
                     // Add the complex header layout to the table
                     let headerRow = document.createElement("tr")
-
                     function createHeaderCol(title, colspan) {
                         let row = document.createElement("th");
                         row.setAttribute("colspan", colspan);
                         row.innerHTML = title
                         return row;
                     }
-
                     headerRow.append(createHeaderCol("", columns.length))
                     for (let [group, cols] of Object.entries(groupToColSorted)) {
                         headerRow.append(
@@ -187,7 +212,6 @@
 
                     // Attach mouseover event to each header cell
                     ths.forEach(th => {
-                        // let columnName: string = allCols[th.cellIndex - 6]
                         let columnName: string = allCols[th.cellIndex - columns.length]
                         if (!columnName) {
                             columnName = th.textContent;
@@ -197,7 +221,12 @@
                         // th.style.backgroundColor = colColor(colToGroup[columnName]);
 
                         th.addEventListener("mouseover", function() {
-                            columnNameTooltip.innerHTML = columnName;
+                            if (Object.keys(groupToColSorted).includes(th.textContent)) {
+                                columnNameTooltip.innerHTML = th.textContent;
+                            } else {
+                                columnNameTooltip.innerHTML = columnName;
+                            }
+                            // console.log(th, th.textContent);
                         });
                     })
                 },

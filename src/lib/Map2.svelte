@@ -76,6 +76,7 @@
                 groupByCountry[region] = [filteredData]
             }
         }
+        console.log(groupByCountry)
     }
 
 

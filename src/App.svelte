@@ -40,8 +40,8 @@
     let viewer;
 
     let selectedNodeTypes = Object.values(NodeTypes);
-    let selectedVis = "Full";
-    // let selectedVis = "People";
+    // let selectedVis = "Full";
+    let selectedVis = "Co-authorship";
 
     $: filteredData = filterData(currentStrain, currentInstitution, currentModel, currentYearMin, currentYearMax);
 

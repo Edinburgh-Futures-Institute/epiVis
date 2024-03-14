@@ -41,6 +41,8 @@
                 height: 0
             }, "affiliationNet");
 
+            d3.select("#affiliationNet").html("");
+
             // affiliations = viewer.state.network.nodes
             // links = viewer.state.network.links
 
@@ -310,9 +312,7 @@
             .attr("text-anchor", d => {
                 // let rad = radialScale(d.pos);
                 let rad = (d.startAngle + d.endAngle - 3) / 2
-                console.log(rad)
                 if (rad < Math.PI / 2 || rad > 3 * Math.PI / 2) {
-                    console.log("RIGHT")
                     return "start";
                 } else {
                     return "end"
