@@ -22,7 +22,7 @@
     let groupByCountry = {};
 
     function updateDimensions() {
-        console.log("update ")
+        // console.log("update ")
         const rect = element.getBoundingClientRect();
         width = rect.width;
         height = rect.height;
@@ -76,7 +76,7 @@
                 groupByCountry[region] = [filteredData]
             }
         }
-        console.log(groupByCountry)
+        // console.log(groupByCountry)
     }
 
 

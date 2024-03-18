@@ -1,23 +1,36 @@
 import * as d3 from "d3"
 import * as reorder from "reorder.js";
+import {mode} from "d3";
 
 
 
-export const MODELS: Record<number, string> = {
-    1: "Machine Learning",
-    2: "Compartmental",
-    3: "Stochastic - Bayesian",
-    4: "Mixed Approaches",
-    5: "Other Statistical (non stochastic)",
-    6: "Qualitative",
-    7: "Phylogenetic",
-    8: "Simulation",
-    9: "Experiment"
+// export const MODELS: Record<number, string> = {
+//     1: "Machine Learning",
+//     2: "Compartmental",
+//     3: "Stochastic - Bayesian",
+//     4: "Mixed Approaches",
+//     5: "Other Statistical (non stochastic)",
+//     6: "Qualitative",
+//     7: "Phylogenetic",
+//     8: "Simulation",
+//     9: "Experiment"
+// }
+export const MODELS: Record<string, string> = {
+    m1: "Machine Learning",
+    m2: "Compartmental",
+    m3: "Stochastic - Bayesian",
+    m4: "Mixed Approaches",
+    m5: "Other Statistical (non stochastic)",
+    m6: "Qualitative",
+    m7: "Phylogenetic",
+    m8: "Simulation",
+    m9: "Experiment"
 }
 
 export const modelTable = Object.entries(MODELS).map(v => {
     return {id: v[0], model: v[1]};
 })
+console.log(modelTable)
 
 export enum NodeTypes {
     Person = "Person",
@@ -193,6 +206,10 @@ export function parseModels(models) {
     // if (models && Array.isArray(models)) {
     if (models) {
         let modelList = models.split("(").map(d => d.split("").map(d2 => d2.split("+").map(d => d.split(",").map(d => d.split(")"))))).flat(Infinity).filter(m => !["", " ", "  ", "r", "e", "v", "i", "w"].includes(m));
+
+        // Model have id of the shape "mX" to not have the same than other node types
+        modelList = modelList.map(n => "m" + n)
+
         return modelList
     }
     return [];
