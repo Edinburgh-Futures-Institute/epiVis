@@ -50,7 +50,8 @@ export enum NodeTypes {
 export const papersFilename = "papers19Jan.csv";
 
 
-export const affiliationsFilename = "affiliations13Jan.csv";
+// export const affiliationsFilename = "affiliations13Jan.csv";
+export const affiliationsFilename = "affiliations19Jan.csv";
 // export const affiliationsFilename = "institutionGPT.csv";
 
 export const authorsFilename = "authors13Jan.csv";
