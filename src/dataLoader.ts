@@ -472,6 +472,17 @@ export const colToGroup: Record<string, any> = {
     [c29]: "T"
 }
 
+export const abbNean = {
+    T: "Transparency",
+    I: "Independence",
+    J: "Justice",
+    B: "Beneficence",
+    "T,B": "Transparency, Beneficence",
+    "B,J": "Beneficence, Justice",
+    "I,T": "Independence, Transparency"
+}
+
+
 export const groupToColSorted = Object.groupBy(
     Object.entries(colToGroup), (v) => {
         return v[1];

@@ -19,6 +19,7 @@
 
     import {onMount} from "svelte";
     import {Legend} from "../legend.ts";
+    import {abbNean} from "../dataLoader.js";
 
     export let filteredData;
 
@@ -28,22 +29,12 @@
     $: hideColumns = false;
     let rerender = false;
 
-    // const cellColorScale = d3.scaleLinear()
-    //     .domain([1, 4])
-    //     .range(["rgb(193,222,172)",'rgb(133,30,30)'])
-
     const LIGHTGREEN = "rgb(197,220,180)"
     const GREEN = '#97d391'
-    // const LIGHTRED = 'rgb(220,137,137)'
-    // const RED = 'rgb(173,68,68)'
-    // const LIGHTBLUE = "rgb(180,191,220)"
-    // const BLUE = '#7a87ce'
-
     const LIGHTRED = '#f4a582'
     const RED = 'rgba(202,0,32,0.6)'
     const LIGHTBLUE = "#92c5de"
     const BLUE = 'rgba(5,113,176,0.6)'
-
     const YELLOW = '#ffeda0';
 
 
@@ -55,9 +46,9 @@
         .domain([1, 2, 3, 4])
         .range([BLUE, LIGHTBLUE, LIGHTRED, RED])
 
+
     function multiValueColorScale(value) {
         let array = value.split(",");
-
 
         if (array.length == 1 && array[0] == "1") {
             return RED
@@ -105,7 +96,6 @@
                     //         }
                     //     }},
                     // {title: 'Epidemic waves', data: "Epidemic waves"},
-
                     {title: 'Year', data: "Publication Year "},
                     {title: 'Models', data: "Models", createdCell: createdCellCb}
             ];
@@ -161,7 +151,6 @@
                     let searchInput = document.querySelector('.dataTables_filter');
                     // searchInput.parentNode.insertBefore(button, searchInput.nextSibling);
 
-
                     // Legend of cells
                     let legend = document.createElement("div");
                     legend.className = "table-legend";
@@ -194,6 +183,9 @@
                     function createHeaderCol(title, colspan) {
                         let row = document.createElement("th");
                         row.setAttribute("colspan", colspan);
+                        // row.innerHTML = title
+
+                        title = abbNean[title] ?? "";
                         row.innerHTML = title
                         return row;
                     }
@@ -226,7 +218,6 @@
                             } else {
                                 columnNameTooltip.innerHTML = columnName;
                             }
-                            // console.log(th, th.textContent);
                         });
                     })
                 },

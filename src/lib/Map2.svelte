@@ -8,12 +8,18 @@
     import {Legend} from "../legend.ts";
 
     export let filteredData;
+    export let parentEl;
 
     let width: number;
     let height: number = 100;
 
     let element;
     let projection;
+    let tooltipEl: HTMLElement;
+    let tooltip = "";
+    let nb = "";
+    let x;
+    let y;
 
     let colorScale = d3.scaleSequential(d3.interpolateYlOrRd).domain([0, 10]);
 
@@ -30,6 +36,8 @@
 
     onMount(() => {
         updateDimensions();
+
+        tooltipEl.style.display = "none"
 
         // projection = d3.geoMercator()
         // projection = geoEckert3()
@@ -57,7 +65,25 @@
                     return grayedOut
                 }
             })
-            .attr("stroke-width", 1);
+            .attr("stroke-width", 1)
+            .on("mouseover", (e, d) => {
+                tooltipEl.style.display = ""
+
+                let country = d.properties.SOVEREIGNT.toLowerCase();
+                let papers = groupByCountry[country]
+                let size = papers ? papers.length : 0;
+
+                tooltip = country;
+                nb = size;
+
+                let el = parentEl.getBoundingClientRect()
+
+                x = e.pageX - parentEl.offsetLeft;
+		        y = e.pageY - (el.top + window.scrollY);
+            })
+            .on("mouseout", (e, d) => {
+                tooltipEl.style.display = "none"
+            })
 
         setZoom();
     });
@@ -136,6 +162,12 @@
 </script>
 
 <div id="main-div" bind:this={element} on:resize={updateDimensions}>
+
+    <div id="map-tooltip" bind:this={tooltipEl} style="top: {y}px; left: {x}px;" class="tooltip">
+        {tooltip} <br>
+        {nb} papers
+    </div>
+
     <div class="vis-frame">
         <div id="legend"></div>
 <!--        <svg id="svg" width={width} height={height - 100}>-->
@@ -155,6 +187,15 @@
         /*width: 100%;*/
         height: 100%;
         /*flex-shrink: 0;*/
+    }
+
+    #map-tooltip {
+        position: absolute;
+        padding: 0.5em;
+        margin: 4px;
+        border: 1px solid black;
+
+        background-color: white;
     }
 
     #legend {

@@ -28,7 +28,7 @@
     function updateDimensions() {
         const rect = element.getBoundingClientRect();
         // width = rect.width - legendWidth - 200;
-        width = rect.width;
+        width = rect.width * 1.2;
         height = rect.height;
     }
 
@@ -113,7 +113,6 @@
                 currentCountry = country;
             }
             inst.pos = pos;
-
             pos += 1;
         }
 
@@ -127,7 +126,8 @@
 
         // Global size of visualization
         // const distance = height / 2.5;
-        const distance = height / 2.85;
+        // const distance = height / 2.85;
+        const distance = width / 3.1;
 
 
         const x = (d) => distance * Math.cos(radialScale(d.pos))
@@ -289,7 +289,7 @@
             .on("mouseover", mouseOverCountry)
             .on("mouseleave", mouseLeaveCountry)
 
-        // Nb of links per country
+        // Country labels
         d3.select(svg)
             .selectAll("textCountry")
             .data(pie(Object.entries(countryToCount)))
@@ -298,7 +298,6 @@
                 return `translate(${arc.centroid(d)})`
             })
             .attr("x", (d, i) => {
-                // return -10;
                 // return -10;
             })
             .attr("y", d => {
@@ -317,14 +316,15 @@
                 } else {
                     return "end"
                 }
-
                 // return "middle"
             })
             .attr("font-size", "13px")
+            .attr("font-weight", "bold")
             .classed("textCountry", true)
             .on("mouseover", mouseOverCountry)
             .on("mouseleave", mouseLeaveCountry)
 
+        // Country count
         d3.select(svg)
             .selectAll("textCountryNb")
             .data(pie(Object.entries(countryToCount)))
@@ -343,6 +343,7 @@
                 return `(${countryToLinkCount[country]})`
             })
             .attr("text-anchor", "middle")
+            .attr("font-weight", "bold")
             .attr("font-size", "13px")
             .classed("textCountryNb", true)
             .on("mouseover", mouseOverCountry)
@@ -443,7 +444,6 @@
                 })
 
             // Add one dot in the legend for each name.
-            // d3.select(svgLegend)
             d3.select("#svg-legend")
                 .selectAll("mylabels")
                 .data(countryColorScale.domain())

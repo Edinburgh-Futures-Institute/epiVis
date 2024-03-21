@@ -13,6 +13,7 @@
     let height: number;
 
     let element: HTMLElement;
+    let container: HTMLElement;
     let selectedVis = "Map";
     // let selectedVis = "Influence";
 
@@ -38,9 +39,9 @@
     </div>
 
 
-    <div id="vis-container">
+    <div id="vis-container" bind:this={container}>
         {#if selectedVis === "Map"}
-            <Map2 {filteredData}>
+            <Map2 {filteredData} parentEl="{container}">
             </Map2>
         {:else if selectedVis === "Models"}
             <Timevis>
