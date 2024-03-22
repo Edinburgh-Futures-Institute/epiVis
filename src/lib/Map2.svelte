@@ -134,9 +134,6 @@
 
 
     function zoomed({transform}) {
-        // const zx = transform.rescaleX(x).interpolate(d3.interpolateRound);
-        // const zy = transform.rescaleY(y).interpolate(d3.interpolateRound);
-
         d3.select("#svg")
             .select("g")
             .attr("transform", transform)

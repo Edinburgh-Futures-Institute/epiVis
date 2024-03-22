@@ -10,7 +10,7 @@
         colColor,
         colToGroup,
         groupToColSorted,
-        c16
+        c16, c5, c6, c10, c12, c13, c15, c17, c20, c21, c22, c23, c24, c25, c26, c29
     } from "../dataLoader.ts";
 
     import DataTable from 'datatables.net-dt';
@@ -46,6 +46,10 @@
         .domain([1, 2, 3, 4])
         .range([BLUE, LIGHTBLUE, LIGHTRED, RED])
 
+    const cellColorScale5 = d3.scaleOrdinal()
+        .domain([1, 2, 3, 4, 5])
+        .range([BLUE, LIGHTBLUE, YELLOW, LIGHTRED, RED])
+
 
     function multiValueColorScale(value) {
         let array = value.split(",");
@@ -67,9 +71,15 @@
 
     // Columns with special character in their name need this render fct to work
     let heatMapColumns = allCols.map((col, i) => {
-        return {title: `${i}`, data: col, className: className(i), width: "10%", render: ( data, type, full, meta ) => {
+        let colDef = {title: `${i}`, data: col, className: className(i), width: "10%", render: ( data, type, full, meta ) => {
             return full[col]
         }}
+
+        if (col == c26) {
+            colDef.className = 'small-text';
+        }
+
+        return colDef
     })
 
     function redraw(filteredData, hideColumns: boolean) {
@@ -97,7 +107,7 @@
                     //     }},
                     // {title: 'Epidemic waves', data: "Epidemic waves"},
                     {title: 'Year', data: "Publication Year "},
-                    {title: 'Models', data: "Models", createdCell: createdCellCb}
+                    // {title: 'Models', data: "Models", createdCell: createdCellCb}
             ];
 
             datatable = new DataTable('#myTable', {
@@ -112,9 +122,67 @@
                         let cell = row.querySelector(`.p${i}`);
                         if (!cell) continue;
 
+                        let colorScale;
+
                         if (col == c16) {
                             cell.style.background = multiValueColorScale(value);
-                        } else {
+                        } else if (col == c5) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3, 4])
+                            .range([RED, LIGHTRED, LIGHTBLUE, "gray"])
+                        } else if (col == c6) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3, 4])
+                            .range([RED, LIGHTBLUE, LIGHTRED, YELLOW])
+                        } else if (col == c10) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3, 4])
+                            .range([RED, LIGHTRED, LIGHTBLUE, YELLOW])
+                        } else if (col == c12) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3, 4])
+                            .range([BLUE, LIGHTBLUE, LIGHTRED, RED])
+                        } else if (col == c13) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3])
+                            .range([LIGHTBLUE, LIGHTRED, BLUE])
+                        } else if (col == c15) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3, 4])
+                            .range([BLUE, LIGHTBLUE, LIGHTRED, YELLOW])
+                        } else if (col == c17) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3])
+                            .range([LIGHTBLUE, LIGHTBLUE, "gray"])
+                        } else if (col == c20) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3, 4])
+                            .range([LIGHTBLUE, BLUE, LIGHTRED, RED])
+                        } else if (col == c21) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3, 4])
+                            .range([LIGHTBLUE, LIGHTRED, YELLOW])
+                        } else if (col == c22) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3, 4])
+                            .range([LIGHTBLUE, LIGHTRED, "gray"])
+                        } else if (col == c23) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, "1,2"])
+                            .range([LIGHTBLUE, LIGHTBLUE])
+                        } else if (col == c24) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2, 3])
+                            .range([LIGHTBLUE, LIGHTRED, YELLOW])
+                        }  else if (col == c25) {
+                            colorScale = d3.scaleOrdinal()
+                            .domain([1, 2])
+                            .range([LIGHTBLUE, LIGHTRED])
+                        }  else if (col == c29) {
+                            colorScale = d3.scaleLinear()
+                            .domain([1, 15])
+                            .range([LIGHTBLUE, RED])
+                        }  else {
                             if (["P", "Y", "S"].includes(value)) {
                                 // cell.style.background = GREEN
                                 cell.style.background = LIGHTBLUE
@@ -128,6 +196,15 @@
                                 cell.style.background = "gray"
                             }
                         }
+
+                        if (colorScale) {
+                            if (value.includes(",")) {
+                                cell.style.background = colorScale(value)
+                            } else {
+                                cell.style.background = colorScale(Number(value))
+                            }
+                        }
+
                     }
                 },
                 initComplete: function(settings, json) {
@@ -159,10 +236,10 @@
                     legend.style.marginLeft = "20px";
                     searchInput.parentNode.insertBefore(legend, searchInput.nextSibling);
 
-                    let leg = Legend(cellColorScale4, {
+                    let leg = Legend(cellColorScale5, {
                         title: "",
                         tickSize: 0
-                    }, ["Very good", "Good", "Bad", "Very bad"])
+                    }, ["Very good", "Good", "Neutal", "Bad", "Very bad"])
                     legend.appendChild(leg)
 
 

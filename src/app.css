@@ -100,6 +100,10 @@ td {
     padding-right: 0 !important;
 }
 
+.small-text {
+    font-size: 9pt;
+}
+
 /*table.dataTable tr.dtrg-group.dtrg-level-0 th{font-weight:bold}*/
 
 /*table.dataTable tr.dtrg-group.dtrg-level-1 th,table.dataTable tr.dtrg-group.dtrg-level-2 th,table.dataTable tr.dtrg-group.dtrg-level-3 th,table.dataTable tr.dtrg-group.dtrg-level-4 th,table.dataTable tr.dtrg-group.dtrg-level-5 th {*/

@@ -294,7 +294,6 @@ for (let d of data) {
         let paperObject = {"name": paper, "year": year}
         paperIdTopaperObject[paper] = paperObject;
 
-
         // Save paper and type of influence
         if (paperToInfluences[d["Epic Code "]]) {
             paperToInfluences[d["Epic Code "]].push([paperObject, type] )
@@ -403,43 +402,43 @@ export const nodeTypeColorScale = d3.scaleOrdinal(Object.values(NodeTypes), [
 
 
 // NEW COLUMNS with MODEL tab sheet
-const c1 = "Constraints: 1. No constraints mentioned; 2.There are constraints 3. Not clarified  "
-const c2 = " Multiplicity"
-const c3 = "Results of similar studies"
-const c4 = "Mentions impacts"
-const c5 = "Impacts BY DESIGN: 1.Not reported, 2.Claimed but not substantiated by nodel design ; 3. Sbstantiated by model design; 4. N/A (for review)  "
-const c6 = "Mentions impacts and type  of impacts: 1. Not reported; 2. Postive impact, 3. Negative impact, 4. Mixed impacts, 5. No impact;"
-const c7 = "Trade-offs"
-const c8 = "Opportunity costs"
-const c9 = " Reasons for differences observed"
-const c10 = "Does they explain factors contrinuting to viability? Does they inlude them in the model design? 1. Not discussed AT ALL; 2. Discussed but not inlcuded; 3. Discussed and inlcuded in the model/review design; 4. Mixed: 2 +3"
-const c11 = "Lack of knowledge attributable to variability: 1. No; 2.Partially; 3.Fully; 4.Attributed to methods"
-const c12 = "Lack of knowledge attributable to uncertainty";
-const c13 = "Full history of model development: 1.Yes;  2.No; 3. Very clealrly  "
-const c14 = "Validated using independent data ";
-const c15 = "Clear documentation: 1. very clear; 2.clear; 3. semi-clear; 4. unlcear";
+export const c1 = "Constraints: 1. No constraints mentioned; 2.There are constraints 3. Not clarified  "
+export const c2 = " Multiplicity"
+export const c3 = "Results of similar studies"
+export const c4 = "Mentions impacts"
+export const c5 = "Impacts BY DESIGN: 1.Not reported, 2.Claimed but not substantiated by nodel design ; 3. Sbstantiated by model design; 4. N/A (for review)  "
+export const c6 = "Mentions impacts and type  of impacts: 1. Not reported; 2. Postive impact, 3. Negative impact, 4. Mixed impacts, 5. No impact;"
+export const c7 = "Trade-offs"
+export const c8 = "Opportunity costs"
+export const c9 = " Reasons for differences observed"
+export const c10 = "Does they explain factors contrinuting to viability? Does they inlude them in the model design? 1. Not discussed AT ALL; 2. Discussed but not inlcuded; 3. Discussed and inlcuded in the model/review design; 4. Mixed: 2 +3"
+export const c11 = "Lack of knowledge attributable to variability: 1. No; 2.Partially; 3.Fully; 4.Attributed to methods"
+export const c12 = "Lack of knowledge attributable to uncertainty";
+export const c13 = "Full history of model development: 1.Yes;  2.No; 3. Very clealrly  "
+export const c14 = "Validated using independent data ";
+export const c15 = "Clear documentation: 1. very clear; 2.clear; 3. semi-clear; 4. unlcear";
 export const c16 = "Biases? Direction and magnitude? Efforts to address bias?: 1. Not mentioned; 2 Simple metioned; 3. Direction and magnitude; 4. Efforts to address the biases  ";
-const c17 = "Conflicts of interest: 1. No conflict; 2.There is conflict; 3. Not clarified  ";
-const c18 = "Missing values";
-const c19 = "Code open source ";
-const c20 = "Assumption -BY DESIGN:   1.Simply mentioned and inlcuded; 2. Well mentioned and included; 3. Mentioned but NOT inlcuded;  4. NOT mentioned at ALL ";
-const c21 = "Verified: 1. Yes, 2. No , 3. Unknown ";
-const c22 = " Validated: 1. Yes; 2.No;  3.N/A (for reviews)";
-const c23 = "Sources and magnitude of uncertainty in the\r\nmodel—are these associated with parametric uncertainty or\r\nmodel selection? 1.parametric uncertainty, 2. model selection; 3. No associated"
-const c24 = "If interventions based on model predictions are implemented in\r\nthe real world, can the predicted benefits and harms to different\r\nindividuals and subpopulations be quantified? 1. Quantified; 2.Not quantified; 3. Unknown"
-const c25 = "Case-control study: 1. Yes; 2.No";
+export const c17 = "Conflicts of interest: 1. No conflict; 2.There is conflict; 3. Not clarified  ";
+export const c18 = "Missing values";
+export const c19 = "Code open source ";
+export const c20 = "Assumption -BY DESIGN:   1.Simply mentioned and inlcuded; 2. Well mentioned and included; 3. Mentioned but NOT inlcuded;  4. NOT mentioned at ALL ";
+export const c21 = "Verified: 1. Yes, 2. No , 3. Unknown ";
+export const c22 = " Validated: 1. Yes; 2.No;  3.N/A (for reviews)";
+export const c23 = "Sources and magnitude of uncertainty in the model—are these associated with parametric uncertainty or model selection? 1.parametric uncertainty, 2. model selection; 3. No associated"
+export const c24 = "If interventions based on model predictions are implemented in the real world, can the predicted benefits and harms to different individuals and subpopulations be quantified? 1. Quantified; 2.Not quantified; 3.Unknown"
+export const c25 = "Case-control study: 1. Yes; 2.No";
 
 // These contain long text
-const c26 = "Inter-disciplinarity (NO=highlighted in red) "
+export const c26 = "Inter-disciplinarity (NO=highlighted in red) "
 // const c27 = "Model heavily relied on: 1. Yes, 2. No"
 
-const c28 = "Model performance metrices"
-const c29 = "How many red areas?";
+export const c28 = "Model performance metrices"
+export const c29 = "How many red areas?";
 
 
 // TODO: col 23 and 24 to add later
-export const allColsUnordered = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c25, c26, c28, c29];
-// export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c28, c29];
+// export const allColsUnordered = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c25, c26, c28, c29];
+export const allColsUnordered = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c28, c29];
 // export const allCols = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10];
 
 
@@ -466,10 +465,12 @@ export const colToGroup: Record<string, any> = {
     [c20]: "T",
     [c21]: "B",
     [c22]: "B",
+    [c23]: "B",
+    [c24]: "J",
     [c25]: "T",
     [c26]: ["I", "T"],
     [c28]: "I",
-    [c29]: "T"
+    // [c29]: "T"
 }
 
 export const abbNean = {
@@ -491,6 +492,7 @@ export const groupToColSorted = Object.groupBy(
 
 export const allCols = Object.values(groupToColSorted).reduce((a, b) => a.concat(b.map(v => v[0])), []);
 
+allCols.splice(allCols.length - 1, 0, c29);
 
 export const colColor = d3.scaleOrdinal(["T", "I", "J", "B"], ["orange", "lightblue", "green", "purple"]).unknown("white");
 
